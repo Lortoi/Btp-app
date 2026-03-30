@@ -1,4 +1,3 @@
-import { MeshGradient } from "@paper-design/shaders-react"
 import { useEffect, useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -11,28 +10,12 @@ export default function InvitePage() {
   const [location] = useLocation()
   // Extraire le token de l'URL
   const token = location.startsWith('/invite/') ? location.split('/invite/')[1] : ""
-  const [dimensions, setDimensions] = useState({ width: 1920, height: 1080 })
-  const [mounted, setMounted] = useState(false)
   const [invitation, setInvitation] = useState<TeamInvitation | null>(null)
   const [loading, setLoading] = useState(true)
   const [code, setCode] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [verifying, setVerifying] = useState(false)
   const [, setLocation] = useLocation()
-
-  const colors = ["#72b9bb", "#b5d9d9", "#ffd1bd", "#ffebe0", "#8cc5b8", "#dbf4a4"]
-
-  useEffect(() => {
-    setMounted(true)
-    const update = () =>
-      setDimensions({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      })
-    update()
-    window.addEventListener("resize", update)
-    return () => window.removeEventListener("resize", update)
-  }, [])
 
   useEffect(() => {
     if (token) {
@@ -96,25 +79,8 @@ export default function InvitePage() {
     }
   }
 
-  if (!mounted) return null
-
   return (
-    <section className="relative w-full min-h-screen overflow-hidden bg-background flex items-center justify-center">
-      <div className="fixed inset-0 w-screen h-screen">
-        <MeshGradient
-          width={dimensions.width}
-          height={dimensions.height}
-          colors={colors}
-          distortion={0.8}
-          swirl={0.6}
-          grainMixer={0}
-          grainOverlay={0}
-          speed={0.42}
-          offsetX={0.08}
-        />
-        <div className="absolute inset-0 pointer-events-none bg-white/20 dark:bg-black/25" />
-      </div>
-
+    <section className="relative w-full min-h-screen overflow-hidden bg-transparent flex items-center justify-center">
       <div className="relative z-10 max-w-md mx-auto px-6 w-full">
         <Card className="bg-white/10 dark:bg-black/20 backdrop-blur-lg rounded-2xl border border-white/20 p-8 shadow-2xl">
           {loading ? (

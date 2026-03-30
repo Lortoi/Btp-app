@@ -1,5 +1,5 @@
-import HeroSection from '../HeroSection';
+import { HeroSection } from "../HeroSection"
 
 export default function HeroSectionExample() {
-  return <HeroSection />;
+  return <HeroSection />
 }

@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import TeamSidebar from '@/components/TeamSidebar'
-import { GlobalBackground } from '@/components/GlobalBackground'
 import { 
   Building, 
   Calendar,
@@ -42,7 +41,6 @@ export default function TeamDashboard() {
 
   return (
     <>
-      <GlobalBackground />
       <div className="flex min-h-screen relative overflow-hidden">
         {/* Sidebar */}
         <TeamSidebar />

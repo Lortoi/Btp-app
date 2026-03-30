@@ -1,9 +1,8 @@
-import { MeshGradient } from "@paper-design/shaders-react"
 import { useEffect, useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { useLocation } from "wouter"
-import { Users, User, Key, Settings } from "lucide-react"
+import { Key, Settings } from "lucide-react"
 import { fetchTeamMembers, verifyTeamMemberCode, verifyAdminCode, type TeamMember } from "@/lib/supabase"
 import { Card, CardContent } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog"
@@ -12,8 +11,6 @@ import { useAuth } from "@/context/AuthContext"
 
 export default function LoginPage() {
   const { user, loading: authLoading } = useAuth()
-  const [dimensions, setDimensions] = useState({ width: 1920, height: 1080 })
-  const [mounted, setMounted] = useState(false)
   const [code, setCode] = useState("")
   const [loginMode, setLoginMode] = useState<'admin' | 'team'>('admin')
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([])
@@ -21,20 +18,6 @@ export default function LoginPage() {
   const [isAdminCodeDialogOpen, setIsAdminCodeDialogOpen] = useState(false)
   const [newAdminCode, setNewAdminCode] = useState("")
   const [, setLocation] = useLocation()
-
-  const colors = ["#72b9bb", "#b5d9d9", "#ffd1bd", "#ffebe0", "#8cc5b8", "#dbf4a4"]
-
-  useEffect(() => {
-    setMounted(true)
-    const update = () =>
-      setDimensions({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      })
-    update()
-    window.addEventListener("resize", update)
-    return () => window.removeEventListener("resize", update)
-  }, [])
 
   useEffect(() => {
     // Rediriger vers /auth si l'utilisateur n'est pas connecté
@@ -110,26 +93,7 @@ export default function LoginPage() {
   }
 
   return (
-    <section className="relative w-full min-h-screen overflow-hidden bg-background flex items-center justify-center">
-      <div className="fixed inset-0 w-screen h-screen">
-        {mounted && (
-          <>
-            <MeshGradient
-              width={dimensions.width}
-              height={dimensions.height}
-              colors={colors}
-              distortion={0.8}
-              swirl={0.6}
-              grainMixer={0}
-              grainOverlay={0}
-              speed={0.42}
-              offsetX={0.08}
-            />
-            <div className="absolute inset-0 pointer-events-none bg-white/20 dark:bg-black/25" />
-          </>
-        )}
-      </div>
-
+    <section className="relative w-full min-h-screen overflow-hidden bg-transparent flex items-center justify-center">
       <div className="relative z-10 max-w-md mx-auto px-6 w-full">
         <div className="bg-white/10 dark:bg-black/20 backdrop-blur-lg rounded-2xl border border-white/20 p-8 shadow-2xl">
           <div className="mb-8">

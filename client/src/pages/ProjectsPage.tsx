@@ -30,10 +30,11 @@ export default function ProjectsPage() {
       files.forEach(file => {
         const reader = new FileReader();
         reader.onload = (e) => {
-          if (e.target?.result) {
+          const result = e.target?.result;
+          if (result) {
             setNewChantier(prev => ({
               ...prev,
-              images: [...prev.images, e.target.result as string]
+              images: [...prev.images, result as string]
             }));
           }
         };
