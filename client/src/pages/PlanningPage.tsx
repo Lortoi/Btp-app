@@ -3,6 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar, Building, Clock, User } from 'lucide-react';
 import { useChantiers } from '@/context/ChantiersContext';
 import { useState, useMemo } from 'react';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 
 // Fonction pour parser la durée et calculer la date de fin
 function calculateEndDate(dateDebut: string, duree: string): Date {
@@ -79,6 +83,13 @@ function getDaysInMonth(year: number, month: number) {
 export default function PlanningPage() {
   const { chantiers } = useChantiers();
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [isNewEventOpen, setIsNewEventOpen] = useState(false)
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
+  const [datePickerKey, setDatePickerKey] = useState(0)
+  const [newEventTime, setNewEventTime] = useState("11:30")
+  const [newEventTitle, setNewEventTitle] = useState("Rendez-vous")
+  const [customEvents, setCustomEvents] = useState<Array<{ id: string; dateKey: string; time: string; title: string }>>([])
+  const [editingEventId, setEditingEventId] = useState<string | null>(null)
   
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -124,6 +135,110 @@ export default function PlanningPage() {
   const goToToday = () => {
     setCurrentDate(new Date());
   };
+
+  const handleTodayClick = () => {
+    const today = new Date()
+    setCurrentDate(today)
+    openNewEvent(today)
+  }
+
+  const setMonthYear = (nextMonth: number, nextYear: number) => {
+    setCurrentDate(new Date(nextYear, nextMonth, 1))
+  }
+
+  const toDateInputValue = (d: Date) => {
+    const yyyy = d.getFullYear()
+    const mm = String(d.getMonth() + 1).padStart(2, "0")
+    const dd = String(d.getDate()).padStart(2, "0")
+    return `${yyyy}-${mm}-${dd}`
+  }
+
+  const fromDateInputValue = (value: string) => {
+    const [y, m, d] = value.split("-").map((x) => Number(x))
+    if (!y || !m || !d) return null
+    return new Date(y, m - 1, d)
+  }
+
+  const shiftSelectedDateByDays = (delta: number) => {
+    if (!selectedDate) return
+    const next = new Date(selectedDate)
+    next.setDate(next.getDate() + delta)
+    setSelectedDate(next)
+    setCurrentDate(next)
+    setDatePickerKey((k) => k + 1)
+  }
+
+  const shiftTimeHours = (delta: number) => {
+    const [hhRaw, mmRaw] = (newEventTime || "00:00").split(":")
+    const hh = Number(hhRaw)
+    const mm = Number(mmRaw)
+    const safeH = Number.isFinite(hh) ? hh : 0
+    const safeM = Number.isFinite(mm) ? mm : 0
+    const nextH = (safeH + delta + 24) % 24
+    const next = `${String(nextH).padStart(2, "0")}:${String(safeM).padStart(2, "0")}`
+    setNewEventTime(next)
+  }
+
+  const dateKey = (d: Date) => d.toISOString().slice(0, 10)
+
+  const openNewEvent = (d: Date) => {
+    setSelectedDate(d)
+    setEditingEventId(null)
+    setIsNewEventOpen(true)
+  }
+
+  const addCustomEvent = () => {
+    if (!selectedDate) return
+    if (!newEventTime.trim() || !newEventTitle.trim()) return
+
+    setCustomEvents((prev) => [
+      ...prev,
+      {
+        id: crypto.randomUUID(),
+        dateKey: dateKey(selectedDate),
+        time: newEventTime.trim(),
+        title: newEventTitle.trim(),
+      },
+    ])
+    setIsNewEventOpen(false)
+  }
+
+  const openEditEvent = (event: { id: string; dateKey: string; time: string; title: string }) => {
+    const [y, m, d] = event.dateKey.split("-").map((x) => Number(x))
+    const dt = new Date(y, (m || 1) - 1, d || 1)
+    setSelectedDate(dt)
+    setCurrentDate(dt)
+    setNewEventTime(event.time)
+    setNewEventTitle(event.title)
+    setEditingEventId(event.id)
+    setIsNewEventOpen(true)
+  }
+
+  const saveEditedEvent = () => {
+    if (!editingEventId) return
+    if (!selectedDate) return
+    if (!newEventTime.trim() || !newEventTitle.trim()) return
+
+    setCustomEvents((prev) =>
+      prev.map((ev) =>
+        ev.id === editingEventId
+          ? {
+              ...ev,
+              dateKey: dateKey(selectedDate),
+              time: newEventTime.trim(),
+              title: newEventTitle.trim(),
+            }
+          : ev,
+      ),
+    )
+    setIsNewEventOpen(false)
+  }
+
+  const deleteEditedEvent = () => {
+    if (!editingEventId) return
+    setCustomEvents((prev) => prev.filter((ev) => ev.id !== editingEventId))
+    setIsNewEventOpen(false)
+  }
   
   return (
     <PageWrapper>
@@ -150,9 +265,32 @@ export default function PlanningPage() {
                 >
                   <Calendar className="h-5 w-5 rotate-180" />
                 </button>
-                <h2 className="text-xl font-semibold">
-                  {monthNames[month]} {year}
-                </h2>
+                <div className="flex items-center gap-2">
+                  <select
+                    value={month}
+                    onChange={(e) => setMonthYear(Number(e.target.value), year)}
+                    className="h-10 min-w-[140px] rounded-xl bg-black/20 backdrop-blur-md border border-white/20 px-4 text-sm text-white shadow-sm outline-none transition-colors hover:bg-white/10 focus:ring-2 focus:ring-white/30"
+                    aria-label="Mois"
+                  >
+                    {monthNames.map((mName, idx) => (
+                      <option key={mName} value={idx}>
+                        {mName}
+                      </option>
+                    ))}
+                  </select>
+                  <select
+                    value={year}
+                    onChange={(e) => setMonthYear(month, Number(e.target.value))}
+                    className="h-10 w-[110px] rounded-xl bg-black/20 backdrop-blur-md border border-white/20 px-4 text-sm text-white shadow-sm outline-none transition-colors hover:bg-white/10 focus:ring-2 focus:ring-white/30"
+                    aria-label="Année"
+                  >
+                    {Array.from({ length: 11 }, (_, i) => year - 5 + i).map((y) => (
+                      <option key={y} value={y}>
+                        {y}
+                      </option>
+                    ))}
+                  </select>
+                </div>
                 <button
                   onClick={goToNextMonth}
                   className="p-2 rounded-lg hover:bg-white/10 transition-colors"
@@ -161,7 +299,7 @@ export default function PlanningPage() {
                 </button>
               </div>
               <button
-                onClick={goToToday}
+                onClick={handleTodayClick}
                 className="px-4 py-2 rounded-lg bg-white/20 backdrop-blur-md text-white hover:bg-white/30 transition-colors text-sm"
               >
                 Aujourd'hui
@@ -187,6 +325,7 @@ export default function PlanningPage() {
               {days.map((day, index) => {
                 const dayChantiers = getChantiersForDay(day.date);
                 const isToday = day.isToday;
+                const dayCustomEvents = customEvents.filter((e) => e.dateKey === dateKey(day.date))
                 
                 return (
                   <div
@@ -197,7 +336,13 @@ export default function PlanningPage() {
                           ? 'bg-white/10 border-white/30 border-2'
                           : 'bg-black/10 border-white/10'
                         : 'bg-black/5 border-white/5 opacity-50'
-                    }`}
+                    } cursor-pointer hover:bg-white/10 transition-colors`}
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => openNewEvent(day.date)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") openNewEvent(day.date)
+                    }}
                   >
                     <div className={`text-sm font-medium mb-1 ${
                       day.isCurrentMonth ? 'text-white' : 'text-white/50'
@@ -205,6 +350,36 @@ export default function PlanningPage() {
                       {day.date.getDate()}
                     </div>
                     
+                    {/* Rendez-vous (démo) */}
+                    <div className="space-y-1 mb-1">
+                      {dayCustomEvents.slice(0, 2).map((event, idx) => (
+                        <div
+                          key={event.id}
+                          className="text-xs bg-black/20 backdrop-blur-md border border-white/10 text-white rounded px-1 py-0.5 truncate"
+                          title={`${event.time} - ${event.title}`}
+                          role="button"
+                          tabIndex={0}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            openEditEvent(event)
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                              e.stopPropagation()
+                              openEditEvent(event)
+                            }
+                          }}
+                        >
+                          {event.time} {event.title}
+                        </div>
+                      ))}
+                      {dayCustomEvents.length > 2 && (
+                        <div className="text-xs text-white/70">
+                          +{dayCustomEvents.length - 2} autre(s)
+                        </div>
+                      )}
+                    </div>
+
                     {/* Afficher les chantiers */}
                     <div className="space-y-1">
                       {dayChantiers.slice(0, 2).map(chantier => {
@@ -243,6 +418,121 @@ export default function PlanningPage() {
             </div>
           </CardContent>
         </Card>
+
+        <Dialog open={isNewEventOpen} onOpenChange={setIsNewEventOpen}>
+          <DialogContent className="bg-black/30 backdrop-blur-xl border border-white/10 text-white rounded-2xl">
+            <DialogHeader>
+              <DialogTitle className="text-white">Nouveau rendez-vous</DialogTitle>
+            </DialogHeader>
+
+            <div className="grid gap-4 py-2">
+              <div className="space-y-2">
+                <Label htmlFor="planning-event-date" className="text-white">Date</Label>
+                <div className="flex items-center gap-2">
+                  <Input
+                    key={datePickerKey}
+                    id="planning-event-date"
+                    type="date"
+                    value={selectedDate ? toDateInputValue(selectedDate) : ""}
+                    onDoubleClick={(e) => {
+                      const el = e.currentTarget as any
+                      if (typeof el?.showPicker === "function") el.showPicker()
+                    }}
+                    onChange={(e) => {
+                      const next = fromDateInputValue(e.target.value)
+                      if (!next) return
+                      setSelectedDate(next)
+                      setCurrentDate(next)
+                    }}
+                    className="bg-black/20 border-white/10 text-white"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => shiftSelectedDateByDays(-1)}
+                    className="text-white border-white/20 hover:bg-white/10 px-3"
+                    disabled={!selectedDate}
+                    title="Jour précédent"
+                  >
+                    ←
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => shiftSelectedDateByDays(1)}
+                    className="text-white border-white/20 hover:bg-white/10 px-3"
+                    disabled={!selectedDate}
+                    title="Jour suivant"
+                  >
+                    →
+                  </Button>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="planning-event-time" className="text-white">Heure</Label>
+                <div className="flex items-center gap-2">
+                  <Input
+                    id="planning-event-time"
+                    type="time"
+                    value={newEventTime}
+                    onChange={(e) => setNewEventTime(e.target.value)}
+                    className="bg-black/20 border-white/10 text-white"
+                  />
+                  <div className="grid grid-rows-2 gap-1">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => shiftTimeHours(1)}
+                      className="text-white border-white/20 hover:bg-white/10 px-3 h-9 w-9"
+                      title="Heure +1"
+                    >
+                      ↑
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => shiftTimeHours(-1)}
+                      className="text-white border-white/20 hover:bg-white/10 px-3 h-9 w-9"
+                      title="Heure -1"
+                    >
+                      ↓
+                    </Button>
+                  </div>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="planning-event-title" className="text-white">Titre</Label>
+                <Input
+                  id="planning-event-title"
+                  type="text"
+                  value={newEventTitle}
+                  onChange={(e) => setNewEventTitle(e.target.value)}
+                  className="bg-black/20 border-white/10 text-white"
+                />
+              </div>
+            </div>
+
+            <DialogFooter>
+              <Button
+                variant="outline"
+                onClick={() => setIsNewEventOpen(false)}
+                className="text-white border-white/20 hover:bg-white/10"
+              >
+                Annuler
+              </Button>
+              {editingEventId ? (
+                <>
+                  <Button variant="outline" onClick={deleteEditedEvent} className="text-white border-white/20 hover:bg-white/10">
+                    Supprimer
+                  </Button>
+                  <Button onClick={saveEditedEvent}>Enregistrer</Button>
+                </>
+              ) : (
+                <Button onClick={addCustomEvent}>Ajouter</Button>
+              )}
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
 
         {/* Légende */}
         <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white">

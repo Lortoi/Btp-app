@@ -1,6 +1,8 @@
 import Sidebar from '@/components/Sidebar'
 import { useLocation } from 'wouter'
 import { AnimatePresence, motion } from 'framer-motion'
+import { useEffect } from 'react'
+import { agentDebugLog } from '@/lib/agentDebugLog'
 
 interface PageWrapperProps {
   children: React.ReactNode
@@ -34,6 +36,25 @@ const contentVariants = {
 
 export function PageWrapper({ children }: PageWrapperProps) {
   const [location] = useLocation();
+
+  // #region agent log
+  useEffect(() => {
+    agentDebugLog(
+      "PageWrapper.tsx:effect",
+      "route content mounted",
+      { location },
+      "H1-framer-animatepresence",
+    );
+    return () => {
+      agentDebugLog(
+        "PageWrapper.tsx:cleanup",
+        "route content cleanup",
+        { location },
+        "H1-framer-animatepresence",
+      );
+    };
+  }, [location]);
+  // #endregion
 
   return (
     <div className="flex min-h-screen relative overflow-hidden">

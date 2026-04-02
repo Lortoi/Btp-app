@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import { useLocation } from "wouter";
+import { agentDebugLog } from "@/lib/agentDebugLog";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -53,6 +55,17 @@ const pageVariants = {
 
 function Router() {
   const [location] = useLocation();
+
+  // #region agent log
+  useEffect(() => {
+    agentDebugLog(
+      "App.tsx:Router",
+      "wouter location changed",
+      { location },
+      "H3-wouter-navigation",
+    );
+  }, [location]);
+  // #endregion
 
   const getComponent = () => {
     // Vérifier si c'est une route d'invitation
