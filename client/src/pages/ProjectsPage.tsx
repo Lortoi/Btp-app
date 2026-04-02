@@ -5,10 +5,146 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Building, Plus, Calendar, Clock, User, Image as ImageIcon, X } from 'lucide-react';
-import { useState, useCallback, useEffect } from 'react';
+import {
+  Building,
+  Plus,
+  Calendar,
+  Clock,
+  User,
+  Image as ImageIcon,
+  X,
+  Hammer,
+  MapPin,
+  HardHat,
+  ClipboardList,
+} from 'lucide-react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import { Link, useLocation } from 'wouter';
 import { useChantiers, Chantier, Client } from '@/context/ChantiersContext';
+import { Badge } from '@/components/ui/badge';
+
+type MockStatutChantier = 'En cours' | 'Planifié' | 'Terminé';
+
+interface MockChantier {
+  id: string;
+  nom: string;
+  client: string;
+  typeTravaux: string;
+  localisation: string;
+  dateDebut: string;
+  dateFin: string;
+  montant: number;
+  statut: MockStatutChantier;
+  avancement: number;
+  couleur: string;
+}
+
+const mockChantiers: MockChantier[] = [
+  {
+    id: '1',
+    nom: 'Rénovation Dupont',
+    client: 'Jean Dupont',
+    typeTravaux: 'Rénovation cuisine',
+    localisation: 'Paris 15e',
+    dateDebut: '2026-04-01',
+    dateFin: '2026-04-08',
+    montant: 18500,
+    statut: 'En cours',
+    avancement: 60,
+    couleur: '#F97316',
+  },
+  {
+    id: '2',
+    nom: 'Extension Martin',
+    client: 'Marie Martin',
+    typeTravaux: 'Extension maison',
+    localisation: 'Versailles',
+    dateDebut: '2026-04-03',
+    dateFin: '2026-04-11',
+    montant: 45000,
+    statut: 'En cours',
+    avancement: 35,
+    couleur: '#3B82F6',
+  },
+  {
+    id: '3',
+    nom: 'Maçonnerie Résidence Les Pins',
+    client: 'SCI Les Pins',
+    typeTravaux: 'Maçonnerie',
+    localisation: 'Boulogne-Billancourt',
+    dateDebut: '2026-04-07',
+    dateFin: '2026-04-18',
+    montant: 92000,
+    statut: 'En cours',
+    avancement: 20,
+    couleur: '#10B981',
+  },
+  {
+    id: '4',
+    nom: 'Plomberie Immeuble Voltaire',
+    client: 'Syndic Voltaire',
+    typeTravaux: 'Plomberie collective',
+    localisation: 'Paris 11e',
+    dateDebut: '2026-04-14',
+    dateFin: '2026-04-17',
+    montant: 28000,
+    statut: 'En cours',
+    avancement: 80,
+    couleur: '#8B5CF6',
+  },
+  {
+    id: '5',
+    nom: 'Ravalement Façade Leblanc',
+    client: 'Pierre Leroy',
+    typeTravaux: 'Ravalement façade',
+    localisation: 'Neuilly-sur-Seine',
+    dateDebut: '2026-04-22',
+    dateFin: '2026-04-30',
+    montant: 12000,
+    statut: 'Planifié',
+    avancement: 0,
+    couleur: '#EF4444',
+  },
+];
+
+function formatMontantEUR(n: number): string {
+  return new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 0 }).format(n) + ' €';
+}
+
+const MOIS_COURTS_FR = [
+  'janv.',
+  'févr.',
+  'mars',
+  'avr.',
+  'mai',
+  'juin',
+  'juil.',
+  'août',
+  'sept.',
+  'oct.',
+  'nov.',
+  'déc.',
+] as const;
+
+function formatPeriodeCourte(debutIso: string, finIso: string): string {
+  const [y1, m1, d1] = debutIso.split('-').map(Number);
+  const [y2, m2, d2] = finIso.split('-').map(Number);
+  if (!y1 || !m1 || !d1 || !y2 || !m2 || !d2) return `${debutIso} → ${finIso}`;
+  return `${d1} ${MOIS_COURTS_FR[m1 - 1]} → ${d2} ${MOIS_COURTS_FR[m2 - 1]}`;
+}
+
+function mockStatutBadgeClass(statut: MockStatutChantier): string {
+  switch (statut) {
+    case 'En cours':
+      return 'bg-[#F97316]/20 text-orange-100 border-[#F97316]/40';
+    case 'Planifié':
+      return 'bg-[#3B82F6]/20 text-blue-100 border-[#3B82F6]/40';
+    case 'Terminé':
+      return 'bg-[#10B981]/20 text-emerald-100 border-[#10B981]/40';
+    default:
+      return 'bg-white/10 text-white/80';
+  }
+}
 
 export default function ProjectsPage() {
   const { chantiers, clients, addChantier, addClient } = useChantiers();
@@ -94,6 +230,13 @@ export default function ProjectsPage() {
       window.history.replaceState({}, '', '/dashboard/projects');
     }
   }, [location]);
+
+  const kpiMock = useMemo(() => {
+    const total = mockChantiers.length;
+    const enCours = mockChantiers.filter((c) => c.statut === 'En cours').length;
+    const planifie = mockChantiers.filter((c) => c.statut === 'Planifié').length;
+    return { total, enCours, planifie };
+  }, []);
 
   return (
     <PageWrapper>
@@ -247,80 +390,159 @@ export default function ProjectsPage() {
         </div>
       </header>
 
-      <main className="flex-1 p-6">
-        {chantiers.length === 0 ? (
-          <div className="flex items-center justify-center h-full">
-            <Card className="w-full max-w-md text-center bg-black/20 backdrop-blur-xl border border-white/10 text-white">
-              <CardHeader className="pb-4">
-                <div className="w-16 h-16 mx-auto rounded-xl bg-black/20 backdrop-blur-md border border-white/10 flex items-center justify-center mb-4">
-                  <Building className="h-8 w-8 text-white/70" />
-                </div>
-                <CardTitle className="text-xl text-white">Aucun chantier</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-white/70 mb-4">
-                  Commencez par ajouter votre premier chantier
-                </p>
-                <Button
-                  onClick={() => setIsDialogOpen(true)}
-                  className="bg-white/20 backdrop-blur-md text-white border border-white/10 hover:bg-white/30"
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Ajouter un chantier
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {chantiers.map((chantier) => (
+      <main className="flex-1 p-6 space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Chantiers</CardTitle>
+              <Building className="h-4 w-4 text-white/70" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{kpiMock.total}</div>
+              <p className="text-xs text-white/70">total (démo)</p>
+            </CardContent>
+          </Card>
+          <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">En cours</CardTitle>
+              <HardHat className="h-4 w-4 text-white/70" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{kpiMock.enCours}</div>
+              <p className="text-xs text-white/70">chantiers actifs</p>
+            </CardContent>
+          </Card>
+          <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Planifiés</CardTitle>
+              <ClipboardList className="h-4 w-4 text-white/70" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{kpiMock.planifie}</div>
+              <p className="text-xs text-white/70">à démarrer</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div>
+          <h2 className="text-sm font-semibold text-white/80 mb-3">Aperçu chantiers (démo)</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {mockChantiers.map((c) => (
               <Card
-                key={chantier.id}
-                className="bg-black/20 backdrop-blur-xl border border-white/10 text-white hover:shadow-lg transition-shadow cursor-pointer"
+                key={c.id}
+                className="bg-black/20 backdrop-blur-xl border border-white/10 text-white overflow-hidden flex flex-col border-l-4 shadow-none"
+                style={{ borderLeftColor: c.couleur }}
               >
-                {chantier.images.length > 0 && (
-                  <div className="relative h-48 overflow-hidden rounded-t-lg">
-                    <img
-                      src={chantier.images[0]}
-                      alt={chantier.nom}
-                      className="w-full h-full object-cover"
-                    />
-                    {chantier.images.length > 1 && (
-                      <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-sm text-white px-2 py-1 rounded text-xs flex items-center gap-1">
-                        <ImageIcon className="h-3 w-3" />
-                        {chantier.images.length}
-                      </div>
-                    )}
-                  </div>
-                )}
-                <CardHeader>
-                  <CardTitle className="text-lg">{chantier.nom}</CardTitle>
-                  <div className="flex items-center gap-2 text-sm text-white/70">
-                    <User className="h-4 w-4" />
-                    {chantier.clientName}
+                <CardHeader className="pb-2 space-y-0">
+                  <div className="flex items-start justify-between gap-2 pr-0">
+                    <CardTitle className="text-base font-bold leading-tight pr-2">{c.nom}</CardTitle>
+                    <Badge variant="outline" className={`shrink-0 border ${mockStatutBadgeClass(c.statut)}`}>
+                      {c.statut}
+                    </Badge>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-2">
-                  <div className="flex items-center gap-2 text-sm text-white/70">
-                    <Calendar className="h-4 w-4" />
-                    {new Date(chantier.dateDebut).toLocaleDateString('fr-FR')}
+                <CardContent className="space-y-3 flex-1 flex flex-col">
+                  <div className="space-y-2 text-sm">
+                    <div className="flex items-center gap-2 text-white/90">
+                      <User className="h-4 w-4 shrink-0 text-white/55" aria-hidden />
+                      <span>{c.client}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-white/90">
+                      <Hammer className="h-4 w-4 shrink-0 text-white/55" aria-hidden />
+                      <span>{c.typeTravaux}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-white/90">
+                      <MapPin className="h-4 w-4 shrink-0 text-white/55" aria-hidden />
+                      <span>{c.localisation}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-white/90">
+                      <Calendar className="h-4 w-4 shrink-0 text-white/55" aria-hidden />
+                      <span>{formatPeriodeCourte(c.dateDebut, c.dateFin)}</span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-white/70">
-                    <Clock className="h-4 w-4" />
-                    {chantier.duree}
+                  <p className="text-lg font-bold text-[#F97316]">{formatMontantEUR(c.montant)}</p>
+                  <div className="space-y-1">
+                    <div className="flex justify-end">
+                      <span className="text-xs text-white/60">{c.avancement}% réalisé</span>
+                    </div>
+                    <div className="h-2 w-full rounded-full bg-white/10 overflow-hidden">
+                      <div
+                        className="h-full rounded-full transition-all"
+                        style={{
+                          width: `${c.avancement}%`,
+                          backgroundColor: c.couleur,
+                        }}
+                      />
+                    </div>
                   </div>
-                  <div className="mt-4">
-                    <span className={`px-2 py-1 rounded text-xs ${
-                      chantier.statut === 'planifié' ? 'bg-blue-500/20 text-blue-300' :
-                      chantier.statut === 'en cours' ? 'bg-green-500/20 text-green-300' :
-                      'bg-gray-500/20 text-gray-300'
-                    }`}>
-                      {chantier.statut}
-                    </span>
+                  <div className="pt-2 mt-auto">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="w-full text-white border-white/20 hover:bg-white/10"
+                    >
+                      Voir le chantier
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
             ))}
+          </div>
+        </div>
+
+        {chantiers.length > 0 && (
+          <div className="space-y-3">
+            <h2 className="text-sm font-semibold text-white/80">Chantiers enregistrés</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {chantiers.map((chantier) => (
+                <Card
+                  key={chantier.id}
+                  className="bg-black/20 backdrop-blur-xl border border-white/10 text-white hover:shadow-lg transition-shadow cursor-pointer"
+                >
+                  {chantier.images.length > 0 && (
+                    <div className="relative h-48 overflow-hidden rounded-t-lg">
+                      <img
+                        src={chantier.images[0]}
+                        alt={chantier.nom}
+                        className="w-full h-full object-cover"
+                      />
+                      {chantier.images.length > 1 && (
+                        <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-sm text-white px-2 py-1 rounded text-xs flex items-center gap-1">
+                          <ImageIcon className="h-3 w-3" />
+                          {chantier.images.length}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  <CardHeader>
+                    <CardTitle className="text-lg">{chantier.nom}</CardTitle>
+                    <div className="flex items-center gap-2 text-sm text-white/70">
+                      <User className="h-4 w-4" />
+                      {chantier.clientName}
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-2">
+                    <div className="flex items-center gap-2 text-sm text-white/70">
+                      <Calendar className="h-4 w-4" />
+                      {new Date(chantier.dateDebut).toLocaleDateString('fr-FR')}
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-white/70">
+                      <Clock className="h-4 w-4" />
+                      {chantier.duree}
+                    </div>
+                    <div className="mt-4">
+                      <span className={`px-2 py-1 rounded text-xs ${
+                        chantier.statut === 'planifié' ? 'bg-blue-500/20 text-blue-300' :
+                        chantier.statut === 'en cours' ? 'bg-green-500/20 text-green-300' :
+                        'bg-gray-500/20 text-gray-300'
+                      }`}>
+                        {chantier.statut}
+                      </span>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
         )}
       </main>
