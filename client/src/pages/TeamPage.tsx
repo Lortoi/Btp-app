@@ -6,10 +6,94 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Dialog
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Users, Plus, User, Mail, Phone, Trash2, Building, Key, Edit2 } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import {
+  Users,
+  Plus,
+  User,
+  Mail,
+  Phone,
+  Trash2,
+  Building,
+  Key,
+  Edit2,
+  HardHat,
+  Check,
+  Copy,
+} from 'lucide-react';
+import { useState, useEffect, useMemo } from 'react';
 import { fetchTeamMembers, createTeamMember, updateTeamMember, deleteTeamMember, type TeamMember } from '@/lib/supabase';
-import { Copy, Check } from 'lucide-react';
+
+type MembreStatut = 'Disponible' | 'En chantier' | 'Absent';
+
+interface MockEquipeMember {
+  id: string;
+  nom: string;
+  role: string;
+  telephone: string;
+  chantiers: string[];
+  statut: MembreStatut;
+  couleurAvatar: string;
+}
+
+const mockEquipe: MockEquipeMember[] = [
+  {
+    id: 'mock-1',
+    nom: 'Thomas Renard',
+    role: 'Chef de Chantier',
+    telephone: '06 11 22 33 44',
+    chantiers: ['Rénovation Dupont', 'Extension Martin'],
+    statut: 'Disponible',
+    couleurAvatar: '#F97316',
+  },
+  {
+    id: 'mock-2',
+    nom: 'Karim Benali',
+    role: 'Maçon',
+    telephone: '06 55 66 77 88',
+    chantiers: ['Maçonnerie Résidence Les Pins'],
+    statut: 'En chantier',
+    couleurAvatar: '#3B82F6',
+  },
+  {
+    id: 'mock-3',
+    nom: 'Sébastien Morel',
+    role: 'Électricien',
+    telephone: '06 33 44 55 66',
+    chantiers: ['Plomberie Immeuble Voltaire'],
+    statut: 'En chantier',
+    couleurAvatar: '#10B981',
+  },
+  {
+    id: 'mock-4',
+    nom: 'Lucas Petit',
+    role: 'Peintre',
+    telephone: '06 77 88 99 00',
+    chantiers: [],
+    statut: 'Disponible',
+    couleurAvatar: '#8B5CF6',
+  },
+];
+
+function initialsFromNom(nom: string): string {
+  const parts = nom.trim().split(/\s+/).filter(Boolean);
+  if (parts.length >= 2) {
+    return `${parts[0]![0] ?? ''}${parts[1]![0] ?? ''}`.toUpperCase();
+  }
+  return nom.slice(0, 2).toUpperCase();
+}
+
+function statutBadgeClass(statut: MembreStatut): string {
+  switch (statut) {
+    case 'Disponible':
+      return 'bg-[#10B981]/20 text-emerald-100 border-[#10B981]/30';
+    case 'En chantier':
+      return 'bg-[#F97316]/20 text-orange-100 border-[#F97316]/30';
+    case 'Absent':
+      return 'bg-[#EF4444]/20 text-red-100 border-[#EF4444]/30';
+    default:
+      return 'bg-white/10 text-white/80';
+  }
+}
 
 export default function TeamPage() {
   const [members, setMembers] = useState<TeamMember[]>([]);
@@ -24,6 +108,16 @@ export default function TeamPage() {
     phone: '',
     login_code: ''
   });
+
+  const kpiStats = useMemo(() => {
+    const enChantier = mockEquipe.filter((m) => m.statut === 'En chantier').length;
+    const disponibles = mockEquipe.filter((m) => m.statut === 'Disponible').length;
+    return {
+      total: mockEquipe.length,
+      enChantier,
+      disponibles,
+    };
+  }, []);
 
   useEffect(() => {
     loadMembers();
@@ -60,7 +154,6 @@ export default function TeamPage() {
     });
 
     if (result) {
-      // Créer l'invitation
       const { createTeamInvitation } = await import('@/lib/supabase');
       const { inviteLink } = await createTeamInvitation(result.id, result.email);
 
@@ -201,7 +294,39 @@ export default function TeamPage() {
       </header>
 
       <main className="flex-1 p-6 space-y-6">
-        {/* Membres de l'Équipe */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Membres</CardTitle>
+              <Users className="h-4 w-4 text-white/70" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{kpiStats.total} membres</div>
+              <p className="text-xs text-white/70">Équipe (démo)</p>
+            </CardContent>
+          </Card>
+          <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">En chantier</CardTitle>
+              <HardHat className="h-4 w-4 text-white/70" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{kpiStats.enChantier} en chantier</div>
+              <p className="text-xs text-white/70">sur le terrain</p>
+            </CardContent>
+          </Card>
+          <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Disponibles</CardTitle>
+              <Check className="h-4 w-4 text-white/70" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{kpiStats.disponibles} disponibles</div>
+              <p className="text-xs text-white/70">prêts à affecter</p>
+            </CardContent>
+          </Card>
+        </div>
+
         <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -209,78 +334,134 @@ export default function TeamPage() {
               Membres de l'Équipe
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            {loading ? (
-              <div className="text-center py-8">
-                <p className="text-white/70">Chargement...</p>
-              </div>
-            ) : members.length === 0 ? (
-              <div className="text-center py-8">
-                <Users className="h-12 w-12 mx-auto mb-4 text-white/50" />
-                <p className="text-white/70">Aucun membre dans l'équipe</p>
-                <p className="text-sm text-white/50 mt-2">Ajoutez votre premier membre pour commencer</p>
-              </div>
-            ) : (
-              <div className="space-y-2">
-                {members.map((member) => (
-                  <div
-                    key={member.id}
-                    className="flex items-center justify-between p-4 bg-black/20 backdrop-blur-md border border-white/10 rounded-lg hover:bg-black/30 transition-colors"
+          <CardContent className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {mockEquipe.map((m) => (
+                <Card
+                  key={m.id}
+                  className="relative bg-black/20 backdrop-blur-md border border-white/10 text-white overflow-hidden flex flex-col"
+                >
+                  <Badge
+                    className={`absolute top-3 right-3 border ${statutBadgeClass(m.statut)}`}
+                    variant="outline"
                   >
-                    <div className="flex items-center gap-4 flex-1">
-                      <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center">
-                        <User className="h-6 w-6 text-white/70" />
+                    {m.statut}
+                  </Badge>
+                  <CardHeader className="pb-2 pr-24">
+                    <div className="flex items-start gap-4">
+                      <div
+                        className="shrink-0 w-14 h-14 rounded-full flex items-center justify-center text-sm font-bold text-white shadow-inner"
+                        style={{ backgroundColor: m.couleurAvatar }}
+                      >
+                        {initialsFromNom(m.nom)}
                       </div>
-                      <div className="flex-1">
-                        <p className="font-medium text-white">{member.name}</p>
-                        <p className="text-sm text-white/70">{member.role}</p>
-                        <div className="flex items-center gap-4 mt-1">
-                          <div className="flex items-center gap-1 text-xs text-white/60">
-                            <Mail className="h-3 w-3" />
-                            {member.email}
-                          </div>
-                          {member.phone && (
+                      <div className="min-w-0 pt-0.5">
+                        <p className="font-bold text-white leading-tight">{m.nom}</p>
+                        <p className="text-sm text-white/60 mt-1">{m.role}</p>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-4 flex-1 flex flex-col">
+                    <div className="flex items-center gap-2 text-sm text-white/90">
+                      <Phone className="h-4 w-4 shrink-0 text-white/60" aria-hidden />
+                      <span>{m.telephone}</span>
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold text-white/50 uppercase tracking-wide mb-2">
+                        Chantiers assignés
+                      </p>
+                      {m.chantiers.length > 0 ? (
+                        <div className="flex flex-wrap gap-2">
+                          {m.chantiers.map((c) => (
+                            <span
+                              key={c}
+                              className="inline-block text-xs px-2 py-1 rounded-md bg-white/10 text-white border border-white/10"
+                            >
+                              {c}
+                            </span>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-sm text-white/50 italic">Aucun chantier assigné</p>
+                      )}
+                    </div>
+                    <div className="pt-2 mt-auto">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="w-full text-white border-white/20 hover:bg-white/10"
+                      >
+                        Voir le profil
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            {!loading && members.length > 0 && (
+              <div className="border-t border-white/10 pt-6 space-y-2">
+                <p className="text-sm font-medium text-white/80">Membres enregistrés</p>
+                <div className="space-y-2">
+                  {members.map((member) => (
+                    <div
+                      key={member.id}
+                      className="flex items-center justify-between p-4 bg-black/20 backdrop-blur-md border border-white/10 rounded-lg hover:bg-black/30 transition-colors"
+                    >
+                      <div className="flex items-center gap-4 flex-1">
+                        <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center">
+                          <User className="h-6 w-6 text-white/70" />
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-medium text-white">{member.name}</p>
+                          <p className="text-sm text-white/70">{member.role}</p>
+                          <div className="flex items-center gap-4 mt-1">
                             <div className="flex items-center gap-1 text-xs text-white/60">
-                              <Phone className="h-3 w-3" />
-                              {member.phone}
+                              <Mail className="h-3 w-3" />
+                              {member.email}
                             </div>
-                          )}
-                          <div className="flex items-center gap-1 text-xs text-white/60">
-                            <Key className="h-3 w-3" />
-                            <span className="font-mono">{member.login_code}</span>
+                            {member.phone && (
+                              <div className="flex items-center gap-1 text-xs text-white/60">
+                                <Phone className="h-3 w-3" />
+                                {member.phone}
+                              </div>
+                            )}
+                            <div className="flex items-center gap-1 text-xs text-white/60">
+                              <Key className="h-3 w-3" />
+                              <span className="font-mono">{member.login_code}</span>
+                            </div>
                           </div>
                         </div>
                       </div>
+                      <div className="flex items-center gap-2">
+                        <Badge className={member.status === 'actif' ? 'bg-green-500/20 text-green-300' : 'bg-gray-500/20 text-gray-300'}>
+                          {member.status === 'actif' ? 'Actif' : 'Inactif'}
+                        </Badge>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleEditMember(member)}
+                          className="text-white/70 hover:bg-white/10 hover:text-white"
+                        >
+                          <Edit2 className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleDeleteMember(member.id)}
+                          className="text-white/70 hover:bg-white/10 hover:text-white"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Badge className={member.status === 'actif' ? 'bg-green-500/20 text-green-300' : 'bg-gray-500/20 text-gray-300'}>
-                        {member.status === 'actif' ? 'Actif' : 'Inactif'}
-                      </Badge>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleEditMember(member)}
-                        className="text-white/70 hover:bg-white/10 hover:text-white"
-                      >
-                        <Edit2 className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleDeleteMember(member.id)}
-                        className="text-white/70 hover:bg-white/10 hover:text-white"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             )}
           </CardContent>
         </Card>
 
-        {/* Dialog d'édition */}
         <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
           <DialogContent className="bg-black/20 backdrop-blur-xl border border-white/10 text-white rounded-2xl">
             <DialogHeader>
@@ -370,7 +551,6 @@ export default function TeamPage() {
           </DialogContent>
         </Dialog>
 
-        {/* Affectation aux Chantiers */}
         <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -387,7 +567,6 @@ export default function TeamPage() {
         </Card>
       </main>
 
-      {/* Modal pour afficher le lien d'invitation */}
       <Dialog open={showInviteModal} onOpenChange={setShowInviteModal}>
         <DialogContent className="bg-black/20 backdrop-blur-xl border border-white/10 text-white rounded-2xl">
           <DialogHeader>

@@ -396,11 +396,27 @@ function QuoteForm({
                 </label>
               </Button>
               {draft.company.logoBase64 && (
-                <img
-                  src={draft.company.logoBase64}
-                  alt="Logo"
-                  className="h-16 w-16 object-contain rounded border border-white/20 bg-white/10"
-                />
+                <div className="flex items-center gap-3 flex-wrap">
+                  <img
+                    src={draft.company.logoBase64}
+                    alt="Logo"
+                    className="h-16 w-16 object-contain rounded border border-white/20 bg-white/10"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="text-white/90 border-white/20 hover:bg-red-500/15 hover:border-red-400/35 hover:text-red-100"
+                    onClick={() =>
+                      setDraft({
+                        ...draft,
+                        company: { ...draft.company, logoBase64: null },
+                      })
+                    }
+                  >
+                    <Trash2 className="h-4 w-4 mr-2" />
+                    Retirer le logo
+                  </Button>
+                </div>
               )}
             </div>
           </div>

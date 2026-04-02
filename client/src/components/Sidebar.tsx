@@ -22,7 +22,7 @@ import AccountDialog from './AccountDialog';
 
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
 
   const menuItems = [
     { icon: Home, label: 'Vue d\'ensemble', path: '/dashboard', active: location === '/dashboard' },
@@ -37,9 +37,9 @@ export default function Sidebar() {
   ];
 
   const quickActions = [
-    { icon: FileText, label: 'Nouveau Devis', action: () => console.log('New quote') },
-    { icon: Wand2, label: 'Visualiser Projet', action: () => console.log('Visualize project') },
-    { icon: Building, label: 'Ajouter Chantier', action: () => console.log('Add project') },
+    { icon: FileText, label: 'Nouveau Devis', path: '/dashboard/quotes' as const },
+    { icon: Wand2, label: 'Visualiser Projet', path: '/dashboard/ai-visualization' as const },
+    { icon: Building, label: 'Ajouter Chantier', path: '/dashboard/projects?openDialog=true' as const },
   ];
 
   return (
@@ -93,7 +93,7 @@ export default function Sidebar() {
                 variant="outline"
                 size="sm"
                 className="w-full justify-start gap-3 h-9 text-white border-white/20 hover:bg-white/10"
-                onClick={action.action}
+                onClick={() => setLocation(action.path)}
                 data-testid={`quick-${action.label.toLowerCase().replace(/\s+/g, '-')}`}
               >
                 <action.icon className="h-4 w-4" />

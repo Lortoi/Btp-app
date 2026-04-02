@@ -1,7 +1,6 @@
 import { PageWrapper } from '@/components/PageWrapper';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Mail, Workflow } from 'lucide-react';
+import { Mail } from 'lucide-react';
 import { CRMPipeline } from '@/components/CRMPipeline';
 
 export default function CRMPipelinePage() {
@@ -23,29 +22,28 @@ export default function CRMPipelinePage() {
       </header>
 
       <main className="flex-1 p-6 space-y-6">
-        {/* Configuration Email */}
-        <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Workflow className="h-5 w-5 text-white/70" />
-              Configuration Email
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-white/70 mb-4">
-              Connectez votre email professionnel pour activer les automatisations et recevoir les prospects directement dans votre pipeline.
+        <div
+          className="flex items-center justify-between gap-3 rounded-xl max-h-12 min-h-[44px] px-4 py-2 bg-white/5 border border-white/10 backdrop-blur-md"
+          role="region"
+          aria-label="Configuration email"
+        >
+          <div className="flex items-center gap-2 min-w-0">
+            <Mail className="h-4 w-4 shrink-0 text-white/70" />
+            <p className="text-sm text-white/85 truncate">
+              Connectez votre email pour activer les automatisations
             </p>
-            <Button variant="outline" className="w-full text-white border-white/20 hover:bg-white/10">
-              <Mail className="h-4 w-4 mr-2" />
-              Connecter Gmail / Outlook
-            </Button>
-          </CardContent>
-        </Card>
+          </div>
+          <Button
+            size="sm"
+            variant="outline"
+            className="shrink-0 text-white border-white/20 hover:bg-white/10 h-8 text-xs"
+          >
+            Connecter
+          </Button>
+        </div>
 
-        {/* CRM Pipeline */}
         <CRMPipeline />
       </main>
     </PageWrapper>
   );
 }
-

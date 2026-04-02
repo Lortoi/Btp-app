@@ -7,6 +7,128 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+
+/** Chantiers fictifs BTP — avril 2026 (données mock, hors composant) */
+interface MockPlanningChantier {
+  id: string
+  nom: string
+  dateDebut: string
+  dateFin: string
+  couleur: string
+  client: string
+  statut: string
+}
+
+const mockChantiers: MockPlanningChantier[] = [
+  {
+    id: "mock-1",
+    nom: "Rénovation Dupont",
+    dateDebut: "2026-04-01",
+    dateFin: "2026-04-08",
+    couleur: "#F97316",
+    client: "SCI Dupont",
+    statut: "En cours",
+  },
+  {
+    id: "mock-2",
+    nom: "Extension Martin",
+    dateDebut: "2026-04-03",
+    dateFin: "2026-04-11",
+    couleur: "#3B82F6",
+    client: "Famille Martin",
+    statut: "En cours",
+  },
+  {
+    id: "mock-3",
+    nom: "Maçonnerie Résidence Les Pins",
+    dateDebut: "2026-04-07",
+    dateFin: "2026-04-18",
+    couleur: "#10B981",
+    client: "Promo Habitat Sud",
+    statut: "Planifié",
+  },
+  {
+    id: "mock-4",
+    nom: "Plomberie Immeuble Voltaire",
+    dateDebut: "2026-04-14",
+    dateFin: "2026-04-17",
+    couleur: "#8B5CF6",
+    client: "Syndic Voltaire 12",
+    statut: "En cours",
+  },
+  {
+    id: "mock-5",
+    nom: "Ravalement facade Leblanc",
+    dateDebut: "2026-04-22",
+    dateFin: "2026-04-30",
+    couleur: "#EF4444",
+    client: "M. Leblanc",
+    statut: "Planifié",
+  },
+]
+
+const MONTH_ABBR_FR = [
+  "janv.",
+  "févr.",
+  "mars",
+  "avr.",
+  "mai",
+  "juin",
+  "juil.",
+  "août",
+  "sept.",
+  "oct.",
+  "nov.",
+  "déc.",
+] as const
+
+function dateToYmd(d: Date): string {
+  const y = d.getFullYear()
+  const m = String(d.getMonth() + 1).padStart(2, "0")
+  const day = String(d.getDate()).padStart(2, "0")
+  return `${y}-${m}-${day}`
+}
+
+function isYmdInRange(dayYmd: string, debut: string, fin: string): boolean {
+  return dayYmd >= debut && dayYmd <= fin
+}
+
+function getMockChantiersForDay(dayYmd: string): MockPlanningChantier[] {
+  return mockChantiers.filter((c) => isYmdInRange(dayYmd, c.dateDebut, c.dateFin))
+}
+
+function formatLegendPeriod(debut: string, fin: string): string {
+  const [y1, m1, d1] = debut.split("-").map(Number)
+  const [y2, m2, d2] = fin.split("-").map(Number)
+  if (!y1 || !m1 || !d1 || !y2 || !m2 || !d2) return `${debut} → ${fin}`
+  const sameMonth = m1 === m2 && y1 === y2
+  if (sameMonth) {
+    return `${d1}–${d2} ${MONTH_ABBR_FR[m1 - 1]}`
+  }
+  return `${d1} ${MONTH_ABBR_FR[m1 - 1]} – ${d2} ${MONTH_ABBR_FR[m2 - 1]}`
+}
+
+function barDisplayName(nom: string, isStart: boolean): string {
+  if (isStart) return nom
+  return nom.length > 20 ? `${nom.slice(0, 20)}...` : nom
+}
+
+function barRoundedClass(isStart: boolean, isEnd: boolean): string {
+  if (isStart && isEnd) return "rounded-full"
+  if (isStart) return "rounded-l-full"
+  if (isEnd) return "rounded-r-full"
+  return "rounded-none"
+}
+
+function formatRangeFr(debut: string, fin: string): string {
+  const [y1, m1, d1] = debut.split("-").map(Number)
+  const [y2, m2, d2] = fin.split("-").map(Number)
+  if (!y1 || !m1 || !d1 || !y2 || !m2 || !d2) return `${debut} → ${fin}`
+  const a = new Date(y1, m1 - 1, d1)
+  const b = new Date(y2, m2 - 1, d2)
+  return `${a.toLocaleDateString("fr-FR")} → ${b.toLocaleDateString("fr-FR")}`
+}
 
 // Fonction pour parser la durée et calculer la date de fin
 function calculateEndDate(dateDebut: string, duree: string): Date {
@@ -95,28 +217,7 @@ export default function PlanningPage() {
   const month = currentDate.getMonth();
   
   const days = useMemo(() => getDaysInMonth(year, month), [year, month]);
-  
-  // Fonction pour obtenir les chantiers d'un jour donné
-  const getChantiersForDay = (date: Date) => {
-    return chantiers.filter(chantier => {
-      const startDate = new Date(chantier.dateDebut);
-      const endDate = calculateEndDate(chantier.dateDebut, chantier.duree);
-      
-      // Normaliser les dates (ignorer l'heure)
-      const dayStart = new Date(date);
-      dayStart.setHours(0, 0, 0, 0);
-      const dayEnd = new Date(date);
-      dayEnd.setHours(23, 59, 59, 999);
-      
-      const chantierStart = new Date(startDate);
-      chantierStart.setHours(0, 0, 0, 0);
-      const chantierEnd = new Date(endDate);
-      chantierEnd.setHours(23, 59, 59, 999);
-      
-      return dayStart >= chantierStart && dayStart <= chantierEnd;
-    });
-  };
-  
+
   const monthNames = [
     'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
     'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'
@@ -179,8 +280,6 @@ export default function PlanningPage() {
     setNewEventTime(next)
   }
 
-  const dateKey = (d: Date) => d.toISOString().slice(0, 10)
-
   const openNewEvent = (d: Date) => {
     setSelectedDate(d)
     setEditingEventId(null)
@@ -195,7 +294,7 @@ export default function PlanningPage() {
       ...prev,
       {
         id: crypto.randomUUID(),
-        dateKey: dateKey(selectedDate),
+        dateKey: dateToYmd(selectedDate),
         time: newEventTime.trim(),
         title: newEventTitle.trim(),
       },
@@ -224,7 +323,7 @@ export default function PlanningPage() {
         ev.id === editingEventId
           ? {
               ...ev,
-              dateKey: dateKey(selectedDate),
+              dateKey: dateToYmd(selectedDate),
               time: newEventTime.trim(),
               title: newEventTitle.trim(),
             }
@@ -323,14 +422,15 @@ export default function PlanningPage() {
             {/* Grille du calendrier */}
             <div className="grid grid-cols-7 gap-2">
               {days.map((day, index) => {
-                const dayChantiers = getChantiersForDay(day.date);
+                const dayYmd = dateToYmd(day.date)
+                const mockForDay = getMockChantiersForDay(dayYmd)
                 const isToday = day.isToday;
-                const dayCustomEvents = customEvents.filter((e) => e.dateKey === dateKey(day.date))
+                const dayCustomEvents = customEvents.filter((e) => e.dateKey === dateToYmd(day.date))
                 
                 return (
                   <div
                     key={index}
-                    className={`min-h-[100px] p-2 rounded-lg border ${
+                    className={`min-h-[120px] p-2 rounded-lg border ${
                       day.isCurrentMonth
                         ? isToday
                           ? 'bg-white/10 border-white/30 border-2'
@@ -380,41 +480,76 @@ export default function PlanningPage() {
                       )}
                     </div>
 
-                    {/* Afficher les chantiers */}
-                    <div className="space-y-1">
-                      {dayChantiers.slice(0, 2).map(chantier => {
-                        const startDate = new Date(chantier.dateDebut);
-                        const isStart = day.date.toDateString() === startDate.toDateString();
-                        const endDate = calculateEndDate(chantier.dateDebut, chantier.duree);
-                        const isEnd = day.date.toDateString() === endDate.toDateString();
-                        
+                    {/* Chantiers mock (barres colorées) */}
+                    <div className="flex flex-col gap-0.5 mt-1">
+                      {mockForDay.map((chantier) => {
+                        const isStart = dayYmd === chantier.dateDebut
+                        const isEnd = dayYmd === chantier.dateFin
+                        const rounded = barRoundedClass(isStart, isEnd)
+                        const label = barDisplayName(chantier.nom, isStart)
                         return (
-                          <div
-                            key={chantier.id}
-                            className={`text-xs p-1 rounded truncate ${
-                              chantier.statut === 'planifié'
-                                ? 'bg-blue-500/30 text-blue-200 border border-blue-500/50'
-                                : chantier.statut === 'en cours'
-                                ? 'bg-yellow-500/30 text-yellow-200 border border-yellow-500/50'
-                                : 'bg-green-500/30 text-green-200 border border-green-500/50'
-                            }`}
-                            title={`${chantier.nom} - ${chantier.clientName}`}
-                          >
-                            {isStart && '▶ '}
-                            {isEnd && '◀ '}
-                            {chantier.nom}
-                          </div>
-                        );
+                          <Popover key={chantier.id}>
+                            <PopoverTrigger asChild>
+                              <button
+                                type="button"
+                                className={`w-full text-left text-xs text-white px-1 py-0.5 min-h-0 truncate ${rounded}`}
+                                style={{ backgroundColor: chantier.couleur }}
+                                onClick={(e) => e.stopPropagation()}
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter" || e.key === " ") e.stopPropagation()
+                                }}
+                              >
+                                {label}
+                              </button>
+                            </PopoverTrigger>
+                            <PopoverContent
+                              className="w-72 bg-black/90 backdrop-blur-xl border border-white/10 text-white shadow-xl"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <div className="space-y-2 text-sm">
+                                <p className="font-semibold leading-tight">{chantier.nom}</p>
+                                <p className="text-white/80">
+                                  <span className="text-white/50">Client : </span>
+                                  {chantier.client}
+                                </p>
+                                <p className="text-white/80 text-xs">
+                                  <span className="text-white/50">Période : </span>
+                                  {formatRangeFr(chantier.dateDebut, chantier.dateFin)}
+                                </p>
+                                <p className="text-xs">
+                                  <span className="text-white/50">Statut : </span>
+                                  {chantier.statut}
+                                </p>
+                              </div>
+                            </PopoverContent>
+                          </Popover>
+                        )
                       })}
-                      {dayChantiers.length > 2 && (
-                        <div className="text-xs text-white/70">
-                          +{dayChantiers.length - 2} autre(s)
-                        </div>
-                      )}
                     </div>
                   </div>
                 );
               })}
+            </div>
+
+            <div className="mt-6 pt-4 border-t border-white/10">
+              <p className="text-xs font-semibold text-white/60 uppercase tracking-wide mb-3">
+                Légende chantiers (démo)
+              </p>
+              <div className="flex flex-wrap gap-3">
+                {mockChantiers.map((c) => (
+                  <div key={c.id} className="flex items-center gap-2 text-sm text-white/90">
+                    <span
+                      className="shrink-0 w-4 h-4 rounded-sm border border-white/20 shadow-inner"
+                      style={{ backgroundColor: c.couleur }}
+                      aria-hidden
+                    />
+                    <span className="font-medium">{c.nom}</span>
+                    <span className="text-white/55 text-xs">
+                      {formatLegendPeriod(c.dateDebut, c.dateFin)}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -533,29 +668,6 @@ export default function PlanningPage() {
             </DialogFooter>
           </DialogContent>
         </Dialog>
-
-        {/* Légende */}
-        <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white">
-          <CardHeader>
-            <CardTitle className="text-lg">Légende</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-wrap gap-4">
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded bg-blue-500/30 border border-blue-500/50"></div>
-                <span className="text-sm">Planifié</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded bg-yellow-500/30 border border-yellow-500/50"></div>
-                <span className="text-sm">En cours</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded bg-green-500/30 border border-green-500/50"></div>
-                <span className="text-sm">Terminé</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
 
         {/* Liste des chantiers du mois */}
         {chantiers.length > 0 && (
