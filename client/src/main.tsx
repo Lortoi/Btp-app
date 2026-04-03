@@ -2,6 +2,9 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
 import { agentDebugLog } from "./lib/agentDebugLog";
+import { applySettingsFromStorage } from "./lib/settingsStorage";
+
+applySettingsFromStorage();
 
 // #region agent log
 if (typeof window !== "undefined") {

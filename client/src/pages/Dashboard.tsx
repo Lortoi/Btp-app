@@ -7,7 +7,6 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Sidebar from '@/components/Sidebar'
-import { CRMPipeline } from '@/components/CRMPipeline'
 import { 
   Building, 
   FileText, 
@@ -62,7 +61,13 @@ export default function Dashboard() {
               <p className="text-sm text-white/70">Construire pour durer</p>
             </div>
             <div className="flex items-center gap-4">
-              <Button variant="outline" size="sm" className="text-white border-white/20 hover:bg-white/10">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="text-white border-white/20 hover:bg-white/10"
+                onClick={() => setLocation("/dashboard/settings")}
+              >
                 <Settings className="h-4 w-4 mr-2" />
                 Paramètres
               </Button>
