@@ -167,18 +167,40 @@ function OverviewTab() {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white">
+        <Card
+          role="button"
+          tabIndex={0}
+          className="bg-black/20 backdrop-blur-xl border border-white/10 text-white cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+          onClick={() => setLocation('/dashboard/quotes')}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              setLocation('/dashboard/quotes');
+            }
+          }}
+        >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Chiffre d'Affaires</CardTitle>
-              <Euro className="h-4 w-4 text-white/70" />
+            <Euro className="h-4 w-4 text-white/70" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">€165,000</div>
-              <p className="text-xs text-white/70">+18.2% ce mois</p>
+            <p className="text-xs text-white/70">+18.2% ce mois</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white">
+        <Card
+          role="button"
+          tabIndex={0}
+          className="bg-black/20 backdrop-blur-xl border border-white/10 text-white cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+          onClick={() => setLocation('/dashboard/projects')}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              setLocation('/dashboard/projects');
+            }
+          }}
+        >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Chantiers Actifs</CardTitle>
             <Building className="h-4 w-4 text-white/70" />
@@ -189,7 +211,18 @@ function OverviewTab() {
           </CardContent>
         </Card>
 
-        <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white">
+        <Card
+          role="button"
+          tabIndex={0}
+          className="bg-black/20 backdrop-blur-xl border border-white/10 text-white cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+          onClick={() => setLocation('/dashboard/quotes')}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              setLocation('/dashboard/quotes');
+            }
+          }}
+        >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Devis En Attente</CardTitle>
             <FileText className="h-4 w-4 text-white/70" />
@@ -200,7 +233,18 @@ function OverviewTab() {
           </CardContent>
         </Card>
 
-        <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white">
+        <Card
+          role="button"
+          tabIndex={0}
+          className="bg-black/20 backdrop-blur-xl border border-white/10 text-white cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+          onClick={() => setLocation('/dashboard/crm')}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              setLocation('/dashboard/crm');
+            }
+          }}
+        >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Taux de Conversion</CardTitle>
             <TrendingUp className="h-4 w-4 text-white/70" />
@@ -237,11 +281,19 @@ function OverviewTab() {
               <Plus className="h-4 w-4 mr-2" />
               Nouveau Chantier
             </Button>
-            <Button className="w-full justify-start" variant="outline">
+            <Button
+              className="w-full justify-start"
+              variant="outline"
+              onClick={() => setLocation('/dashboard/quotes')}
+            >
               <FileText className="h-4 w-4 mr-2" />
               Créer un Devis
             </Button>
-            <Button className="w-full justify-start" variant="outline">
+            <Button
+              className="w-full justify-start"
+              variant="outline"
+              onClick={() => setLocation('/dashboard/estimation')}
+            >
               <Wand2 className="h-4 w-4 mr-2" />
               Estimation IA
             </Button>
