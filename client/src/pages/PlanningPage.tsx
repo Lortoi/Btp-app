@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 
-/** Chantiers fictifs BTP — avril 2026 (données mock, hors composant) */
+/** Chantiers fictifs BTP — avril / mai 2026 (données mock, hors composant) */
 interface MockPlanningChantier {
   id: string
   nom: string
@@ -64,6 +64,60 @@ const mockChantiers: MockPlanningChantier[] = [
     dateFin: "2026-04-30",
     couleur: "#EF4444",
     client: "M. Leblanc",
+    statut: "Planifié",
+  },
+  {
+    id: "mock-6",
+    nom: "Couverture Zinguerie Les Oliviers",
+    dateDebut: "2026-05-02",
+    dateFin: "2026-05-10",
+    couleur: "#F97316",
+    client: "Copropriété Les Oliviers",
+    statut: "En cours",
+  },
+  {
+    id: "mock-7",
+    nom: "Gros œuvre Local commercial Rivoli",
+    dateDebut: "2026-05-05",
+    dateFin: "2026-05-19",
+    couleur: "#3B82F6",
+    client: "SARL Rivoli Commerce",
+    statut: "Planifié",
+  },
+  {
+    id: "mock-8",
+    nom: "Isolation ITE Bâtiment C",
+    dateDebut: "2026-05-08",
+    dateFin: "2026-05-16",
+    couleur: "#10B981",
+    client: "Habitat Méditerranée",
+    statut: "En cours",
+  },
+  {
+    id: "mock-9",
+    nom: "VMC et désenfumage Gymnase",
+    dateDebut: "2026-05-14",
+    dateFin: "2026-05-21",
+    couleur: "#8B5CF6",
+    client: "Mairie — secteur sport",
+    statut: "Planifié",
+  },
+  {
+    id: "mock-10",
+    nom: "Terrassement parking souterrain",
+    dateDebut: "2026-05-18",
+    dateFin: "2026-05-27",
+    couleur: "#EAB308",
+    client: "Promoteur Atlas",
+    statut: "En cours",
+  },
+  {
+    id: "mock-11",
+    nom: "Finitions peinture Hall A",
+    dateDebut: "2026-05-22",
+    dateFin: "2026-05-28",
+    couleur: "#EC4899",
+    client: "Résidence Horizon",
     statut: "Planifié",
   },
 ]
