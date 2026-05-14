@@ -146,11 +146,14 @@ export default function QuotesPage() {
 
   useEffect(() => {
     if (!draft) return
-    try {
-      localStorage.setItem(QUOTE_STORAGE_KEY, JSON.stringify(draft))
-    } catch {
-      /* ignore quota */
-    }
+    const timeoutId = setTimeout(() => {
+      try {
+        localStorage.setItem(QUOTE_STORAGE_KEY, JSON.stringify(draft))
+      } catch {
+        /* ignore quota */
+      }
+    }, 500)
+    return () => clearTimeout(timeoutId)
   }, [draft])
 
   const totals = useMemo(() => (draft ? computeTotals(draft) : null), [draft])
