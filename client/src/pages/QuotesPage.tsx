@@ -323,12 +323,11 @@ export default function QuotesPage() {
         <header className="shrink-0 bg-black/20 backdrop-blur-xl border-b border-white/10 px-6 py-4">
           <h1 className="text-2xl font-bold text-white">Générateur de Devis</h1>
           <p className="text-sm text-white/70">
-            Saisie à gauche, aperçu en temps réel à droite (enregistrement automatique)
+            Onglets Formulaire et Aperçu — enregistrement automatique
           </p>
         </header>
 
-        {/* Mobile: tabs */}
-        <div className="flex-1 min-h-0 flex flex-col md:hidden">
+        <div className="flex-1 min-h-0 flex flex-col">
           <Tabs
             defaultValue="form"
             className="flex flex-col flex-1 min-h-0"
@@ -336,7 +335,7 @@ export default function QuotesPage() {
               // #region agent log
               agentDebugLog(
                 "QuotesPage.tsx:Tabs",
-                "mobile tab changed",
+                "tab changed",
                 { value: v },
                 "H2-radix-tabs",
               )
@@ -374,39 +373,6 @@ export default function QuotesPage() {
               {previewBlock}
             </TabsContent>
           </Tabs>
-        </div>
-
-        {/* Desktop: 50/50 */}
-        <div className="hidden md:flex flex-1 min-h-0 flex-row">
-          <div className="w-1/2 overflow-y-auto p-6 border-r border-white/10">
-            <div className="mb-6">
-              {savedQuotesBlock}
-            </div>
-            <QuoteForm
-              draft={draft}
-              setDraft={setDraft}
-              addLigne={addLigne}
-              removeLigne={removeLigne}
-              updateLigne={updateLigne}
-              onLogoChange={onLogoChange}
-            />
-          </div>
-          <div className="w-1/2 flex flex-col min-h-0 bg-black/10">
-            <div className="sticky top-0 z-20 shrink-0 p-4 border-b border-white/10 bg-black/40 backdrop-blur-xl flex justify-end">
-              <Button
-                type="button"
-                onClick={handleDownloadPdf}
-                disabled={pdfLoading}
-                className="bg-[#1e3a5f] hover:bg-[#152a45] text-white"
-              >
-                <Download className="h-4 w-4 mr-2" />
-                {pdfLoading ? "Génération…" : "Télécharger le PDF"}
-              </Button>
-            </div>
-            <div className="flex-1 overflow-y-auto p-6">
-              <QuotePreview draft={draft} totals={totals} />
-            </div>
-          </div>
         </div>
       </div>
     </PageWrapper>
