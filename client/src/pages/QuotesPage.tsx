@@ -33,8 +33,60 @@ import {
   sanitizeFilenamePart,
   uniteLabel,
 } from "@/components/quotes/quoteTypes"
-import { Building2, Download, Plus, Trash2, Upload } from "lucide-react"
+import { Building2, Download, Plus, Trash2, Upload, Wand2 } from "lucide-react"
 import { agentDebugLog } from "@/lib/agentDebugLog"
+
+const UNITS_IA: readonly UnitePrestation[] = ["m2", "ml", "h", "forfait", "u"]
+
+function parseClaudePrestationsJson(raw: string): LignePrestation[] {
+  const trimmed = raw.trim()
+  let jsonStr = trimmed
+  const fence = trimmed.match(/```(?:json)?\s*([\s\S]*?)\s*```/)
+  if (fence) jsonStr = fence[1].trim()
+  const first = jsonStr.indexOf("[")
+  const last = jsonStr.lastIndexOf("]")
+  if (first >= 0 && last > first) {
+    jsonStr = jsonStr.slice(first, last + 1)
+  }
+  const parsed: unknown = JSON.parse(jsonStr)
+  if (!Array.isArray(parsed)) {
+    throw new Error("La réponse n'est pas un tableau JSON.")
+  }
+  const lignes: LignePrestation[] = []
+  for (const row of parsed) {
+    if (!row || typeof row !== "object") continue
+    const r = row as Record<string, unknown>
+    const desc = String(r.description ?? "").trim()
+    if (!desc) continue
+    const q = r.quantity
+    const quantity =
+      typeof q === "number" && !Number.isNaN(q)
+        ? q
+        : typeof q === "string"
+          ? parseFloat(q) || 0
+          : 0
+    const p = r.puHT
+    const puHT =
+      typeof p === "number" && !Number.isNaN(p)
+        ? p
+        : typeof p === "string"
+          ? parseFloat(p) || 0
+          : 0
+    const uRaw = String(r.unite ?? "u").toLowerCase()
+    const unite = (UNITS_IA.includes(uRaw as UnitePrestation) ? uRaw : "u") as UnitePrestation
+    lignes.push({
+      id: crypto.randomUUID(),
+      description: desc,
+      quantity,
+      unite,
+      puHT: round2(puHT),
+    })
+  }
+  if (lignes.length === 0) {
+    throw new Error("Aucune ligne de prestation exploitable dans la réponse.")
+  }
+  return lignes
+}
 
 export default function QuotesPage() {
   const [draft, setDraft] = useState<QuoteDraft | null>(null)
@@ -374,6 +426,46 @@ function QuoteForm({
   onLogoChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }) {
   const showCapital = isSociete(draft.company.formeJuridique)
+  const [iaChantierDesc, setIaChantierDesc] = useState("")
+  const [iaLoading, setIaLoading] = useState(false)
+  const [iaError, setIaError] = useState<string | null>(null)
+
+  const handleGenerateIaPrestations = async () => {
+    const description = iaChantierDesc.trim()
+    if (!description) {
+      setIaError("Décrivez le chantier avant de générer.")
+      return
+    }
+    setIaError(null)
+    setIaLoading(true)
+    try {
+      const prompt = `Tu es un expert BTP. Génère des lignes de devis en JSON pour ce chantier : ${description}. Réponds UNIQUEMENT avec un tableau JSON valide, sans texte autour, au format : [{\"description\":\"...\",\"quantity\":1,\"unite\":\"u\",\"puHT\":0}]. Les unités possibles sont : m2, ml, h, forfait, u.`
+      const res = await fetch("/api/claude", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt }),
+      })
+      const data = (await res.json()) as { text?: string; message?: string; detail?: string }
+      if (!res.ok) {
+        const msg = data.message ?? `Erreur ${res.status}`
+        const detail = data.detail ? ` — ${data.detail}` : ""
+        throw new Error(`${msg}${detail}`)
+      }
+      const text = data.text
+      if (typeof text !== "string" || !text.trim()) {
+        throw new Error("Réponse vide du serveur.")
+      }
+      const nouvellesLignes = parseClaudePrestationsJson(text)
+      setDraft((prev) => {
+        if (!prev) return prev
+        return { ...prev, lignes: nouvellesLignes }
+      })
+    } catch (e) {
+      setIaError(e instanceof Error ? e.message : "Échec de la génération.")
+    } finally {
+      setIaLoading(false)
+    }
+  }
 
   return (
     <div className="space-y-6 pb-8">
@@ -681,6 +773,43 @@ function QuoteForm({
               />
             </div>
           </div>
+        </CardContent>
+      </Card>
+
+      <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Wand2 className="h-5 w-5 shrink-0" />
+            Générer les prestations avec l&apos;IA
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="ia-chantier-desc" className="text-white">
+              Description du chantier
+            </Label>
+            <Textarea
+              id="ia-chantier-desc"
+              value={iaChantierDesc}
+              onChange={(e) => {
+                setIaChantierDesc(e.target.value)
+                if (iaError) setIaError(null)
+              }}
+              disabled={iaLoading}
+              placeholder="Décrivez le chantier... ex: pose de carrelage 30m² salle de bain, fourniture comprise"
+              rows={4}
+              className="bg-black/20 border-white/10 text-white placeholder:text-white/40 resize-y min-h-[100px]"
+            />
+          </div>
+          <Button
+            type="button"
+            disabled={iaLoading}
+            onClick={handleGenerateIaPrestations}
+            className="bg-white/20 text-white border border-white/10 hover:bg-white/30 disabled:opacity-60"
+          >
+            {iaLoading ? "Génération en cours…" : "Générer avec l'IA"}
+          </Button>
+          {iaError ? <p className="text-sm text-red-400">{iaError}</p> : null}
         </CardContent>
       </Card>
 
