@@ -5,12 +5,14 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
-import { Bell, Moon, Shield, UserCircle } from "lucide-react"
+import { Bell, Moon, Shield, Upload, UserCircle, Wand2 } from "lucide-react"
+import { useLocation } from "wouter"
 import { type AppSettings, loadSettings, saveSettings } from "@/lib/settingsStorage"
 import { useToast } from "@/hooks/use-toast"
 
 export default function SettingsPage() {
   const { toast } = useToast()
+  const [, setLocation] = useLocation()
   const [draft, setDraft] = useState<AppSettings>(() => loadSettings())
 
   useEffect(() => {
@@ -84,6 +86,28 @@ export default function SettingsPage() {
                 className="bg-black/20 border-white/10 text-white placeholder:text-white/40"
               />
             </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-black/20 backdrop-blur-xl border border-violet-500/25 text-white">
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <Wand2 className="h-5 w-5 text-violet-300" />
+              <CardTitle className="text-lg">Import de mes données</CardTitle>
+            </div>
+            <CardDescription className="text-white/60">
+              Importez vos factures PDF : l&apos;IA extrait clients, chantiers et montants (stockage UE Supabase).
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button
+              type="button"
+              className="w-full sm:w-auto bg-violet-600 hover:bg-violet-500 text-white border border-white/10"
+              onClick={() => setLocation("/dashboard/import")}
+            >
+              <Upload className="h-4 w-4 mr-2" />
+              Commencer l&apos;import
+            </Button>
           </CardContent>
         </Card>
 

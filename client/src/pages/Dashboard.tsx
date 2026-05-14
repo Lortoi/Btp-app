@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Sidebar from '@/components/Sidebar'
+import { MobileMenuButton } from '@/components/MobileMenuButton'
 import { 
   Building, 
   FileText, 
@@ -21,7 +22,8 @@ import {
   Calendar,
   Camera,
   Mail,
-  Settings
+  Settings,
+  Sparkles
 } from 'lucide-react'
 import { Link, useLocation } from 'wouter'
 import { useToast } from "@/hooks/use-toast"
@@ -50,9 +52,15 @@ export default function Dashboard() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -20, scale: 0.98 }}
           transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          className="flex-1 flex flex-col relative z-10 ml-64 rounded-l-3xl overflow-hidden"
+          className="flex-1 flex flex-col relative z-10 lg:ml-64 lg:rounded-l-3xl overflow-hidden"
         >
-        <header className="bg-black/20 backdrop-blur-xl border-b border-white/10 px-6 py-4 rounded-tl-3xl">
+        {/* Top bar mobile (visible uniquement < lg) — hamburger + nom */}
+        <div className="lg:hidden sticky top-0 z-30 flex items-center gap-3 px-4 py-3 bg-black/40 backdrop-blur-xl border-b border-white/10">
+          <MobileMenuButton />
+          <span className="font-semibold text-white">PLANCHAIS</span>
+        </div>
+
+        <header className="bg-black/20 backdrop-blur-xl border-b border-white/10 px-6 py-4 lg:rounded-tl-3xl">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold text-white">
@@ -76,7 +84,7 @@ export default function Dashboard() {
         </header>
 
         {/* Tabs Navigation */}
-        <div className="bg-black/20 backdrop-blur-xl border-b border-white/10 px-6 rounded-tl-3xl">
+        <div className="bg-black/20 backdrop-blur-xl border-b border-white/10 px-6 lg:rounded-tl-3xl">
           <div className="flex gap-2 overflow-x-auto">
             <Link href="/dashboard">
               <Button
@@ -89,6 +97,20 @@ export default function Dashboard() {
                 }
               >
                 Vue d'ensemble
+              </Button>
+            </Link>
+            <Link href="/dashboard/import">
+              <Button
+                variant="ghost"
+                size="sm"
+                className={
+                  location === "/dashboard/import"
+                    ? "bg-white/20 backdrop-blur-md border border-white/10 text-white hover:bg-white/30"
+                    : "text-white hover:bg-white/10"
+                }
+              >
+                <Upload className="h-4 w-4 mr-2" />
+                Import
               </Button>
             </Link>
             <Link href="/dashboard/quotes">
@@ -256,6 +278,33 @@ function OverviewTab() {
         </Card>
       </div>
 
+      <Card className="relative overflow-hidden bg-black/20 backdrop-blur-xl border border-violet-500/30 text-white shadow-lg shadow-violet-950/20">
+        <div
+          className="pointer-events-none absolute inset-0 bg-gradient-to-br from-violet-600/20 via-transparent to-primary/10"
+          aria-hidden
+        />
+        <CardHeader className="relative flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-violet-300" />
+              <CardTitle className="text-lg">Importer vos anciennes factures (IA)</CardTitle>
+            </div>
+            <p className="text-sm text-white/70 max-w-2xl">
+              Déposez vos PDF — extraction des clients, chantiers et montants. Données stockées dans votre espace
+              Supabase (UE). Activez l&apos;Edge Function <code className="text-xs text-white/90">analyze-invoice</code> pour lancer l&apos;analyse.
+            </p>
+          </div>
+          <Button
+            type="button"
+            className="relative shrink-0 bg-violet-600 hover:bg-violet-500 text-white border border-white/10"
+            onClick={() => setLocation("/dashboard/import")}
+          >
+            <Upload className="h-4 w-4 mr-2" />
+            Commencer l&apos;import
+          </Button>
+        </CardHeader>
+      </Card>
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white">
           <CardHeader>
@@ -296,6 +345,14 @@ function OverviewTab() {
             >
               <Wand2 className="h-4 w-4 mr-2" />
               Estimation IA
+            </Button>
+            <Button
+              className="w-full justify-start"
+              variant="outline"
+              onClick={() => setLocation('/dashboard/import')}
+            >
+              <Upload className="h-4 w-4 mr-2" />
+              Importer factures PDF
             </Button>
           </CardContent>
         </Card>

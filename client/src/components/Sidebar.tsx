@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useMobileNavStore } from '@/stores/mobileNavStore';
 import { 
   Hammer, 
   Home, 
@@ -16,16 +17,37 @@ import {
   Building,
   Calculator,
   Workflow,
-  UserCircle
+  UserCircle,
+  X
 } from 'lucide-react';
 import AccountDialog from './AccountDialog';
 
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const [location, setLocation] = useLocation();
+  // Responsive: drawer mobile contrôlé par le store global.
+  // Sur lg+ (≥1024 px), la sidebar reste visible en permanence — isOpen est ignoré par les classes `lg:translate-x-0`.
+  const isMobileOpen = useMobileNavStore((s) => s.isOpen);
+  const closeMobile = useMobileNavStore((s) => s.close);
+
+  // Auto-close du drawer à chaque changement de route.
+  useEffect(() => {
+    closeMobile();
+  }, [location, closeMobile]);
+
+  // ESC ferme le drawer sur mobile.
+  useEffect(() => {
+    if (!isMobileOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeMobile();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isMobileOpen, closeMobile]);
 
   const menuItems = [
     { icon: Home, label: 'Vue d\'ensemble', path: '/dashboard', active: location === '/dashboard' },
+    { icon: Upload, label: 'Import factures', path: '/dashboard/import', active: location === '/dashboard/import' },
     { icon: Calculator, label: 'Estimation automatique', path: '/dashboard/estimation', active: location === '/dashboard/estimation' },
     { icon: Building, label: 'Mes Chantiers', path: '/dashboard/projects', active: location === '/dashboard/projects' },
     { icon: Calendar, label: 'Planning', path: '/dashboard/planning', active: location === '/dashboard/planning' },
@@ -43,16 +65,41 @@ export default function Sidebar() {
   ];
 
   return (
-    <div className={cn(
-      "fixed left-0 top-0 h-screen bg-black/20 backdrop-blur-xl border-r border-white/10 transition-all duration-300 flex flex-col z-50 rounded-r-3xl",
-      collapsed ? "w-16" : "w-64"
-    )}>
+    <>
+      {/* Overlay (mobile uniquement) — caché sur lg+ */}
+      {isMobileOpen && (
+        <div
+          aria-hidden
+          onClick={closeMobile}
+          className="lg:hidden fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
+        />
+      )}
+
+      <div
+        className={cn(
+          "fixed left-0 top-0 h-screen bg-black/20 backdrop-blur-xl border-r border-white/10 transition-all duration-300 ease-in-out flex flex-col z-50 rounded-r-3xl",
+          collapsed ? "w-16" : "w-64 max-w-[80vw]",
+          // Drawer mobile : caché par défaut sous lg, visible quand isMobileOpen.
+          // Sur lg+ : toujours visible (translate-x-0).
+          isMobileOpen ? "translate-x-0" : "-translate-x-full",
+          "lg:translate-x-0",
+        )}
+      >
       {/* Header */}
-      <div className="p-4 border-b border-white/10">
+      <div className="p-4 border-b border-white/10 flex items-start justify-between gap-2">
         <div className="flex flex-col">
           <span className="font-semibold text-white">PLANCHAIS</span>
           <span className="text-xs text-white/70 italic">Construire pour durer</span>
         </div>
+        {/* Bouton de fermeture du drawer (mobile uniquement) */}
+        <button
+          type="button"
+          onClick={closeMobile}
+          aria-label="Fermer le menu"
+          className="lg:hidden inline-flex items-center justify-center h-9 w-9 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition-colors shrink-0"
+        >
+          <X className="h-5 w-5" />
+        </button>
       </div>
 
       {/* Navigation */}
@@ -120,6 +167,7 @@ export default function Sidebar() {
           </Button>
         </AccountDialog>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

@@ -1,16 +1,33 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useMobileNavStore } from '@/stores/mobileNavStore';
 import { 
   Home, 
   Building,
   Calendar,
+  X,
 } from 'lucide-react';
 
 export default function TeamSidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const [location] = useLocation();
+  const isMobileOpen = useMobileNavStore((s) => s.isOpen);
+  const closeMobile = useMobileNavStore((s) => s.close);
+
+  useEffect(() => {
+    closeMobile();
+  }, [location, closeMobile]);
+
+  useEffect(() => {
+    if (!isMobileOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeMobile();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isMobileOpen, closeMobile]);
 
   const menuItems = [
     { icon: Home, label: 'Vue d\'ensemble', path: '/team-dashboard', active: location === '/team-dashboard' },
@@ -19,10 +36,24 @@ export default function TeamSidebar() {
   ];
 
   return (
-    <div className={cn(
-      "fixed left-0 top-0 h-screen bg-black/20 backdrop-blur-xl border-r border-white/10 transition-all duration-300 flex flex-col z-50 rounded-r-3xl",
-      collapsed ? "w-16" : "w-64"
-    )}>
+    <>
+      {/* Overlay (mobile uniquement) — caché sur lg+ */}
+      {isMobileOpen && (
+        <div
+          aria-hidden
+          onClick={closeMobile}
+          className="lg:hidden fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
+        />
+      )}
+
+      <div
+        className={cn(
+          "fixed left-0 top-0 h-screen bg-black/20 backdrop-blur-xl border-r border-white/10 transition-all duration-300 ease-in-out flex flex-col z-50 rounded-r-3xl",
+          collapsed ? "w-16" : "w-64 max-w-[80vw]",
+          isMobileOpen ? "translate-x-0" : "-translate-x-full",
+          "lg:translate-x-0",
+        )}
+      >
       {/* Header */}
       <div className="p-4 border-b border-white/10">
         <div className="flex flex-col">
@@ -56,7 +87,8 @@ export default function TeamSidebar() {
           </Link>
         ))}
       </nav>
-    </div>
+      </div>
+    </>
   );
 }
 

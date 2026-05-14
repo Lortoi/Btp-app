@@ -9,6 +9,7 @@ import { GlobalBackground } from "@/components/GlobalBackground";
 import { ChantiersProvider } from "@/context/ChantiersContext";
 import { AuthProvider } from "@/context/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { useMobileNavSideEffects } from "@/stores/mobileNavStore";
 import { AnimatePresence, motion } from "framer-motion";
 import Home from "@/pages/Home";
 import AuthPage from "@/pages/AuthPage";
@@ -26,6 +27,7 @@ import ClientsPage from "@/pages/ClientsPage";
 import CRMPipelinePage from "@/pages/CRMPipelinePage";
 import TeamPage from "@/pages/TeamPage";
 import SettingsPage from "@/pages/SettingsPage";
+import ImportPage from "@/pages/ImportPage";
 import NotFound from "@/pages/not-found";
 
 const pageVariants = {
@@ -105,6 +107,8 @@ function Router() {
         return <ProtectedRoute><TeamPage /></ProtectedRoute>;
       case "/dashboard/settings":
         return <ProtectedRoute><SettingsPage /></ProtectedRoute>;
+      case "/dashboard/import":
+        return <ProtectedRoute><ImportPage /></ProtectedRoute>;
       default:
         return <NotFound />;
     }
@@ -134,6 +138,11 @@ function Router() {
   return <>{getComponent()}</>;
 }
 
+function MobileNavSideEffects() {
+  useMobileNavSideEffects();
+  return null;
+}
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
@@ -142,6 +151,7 @@ function App() {
           <TooltipProvider>
             <GlobalBackground />
             <Toaster />
+            <MobileNavSideEffects />
             <Router />
           </TooltipProvider>
         </ChantiersProvider>

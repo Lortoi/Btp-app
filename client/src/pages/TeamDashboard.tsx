@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import TeamSidebar from '@/components/TeamSidebar'
+import { MobileMenuButton } from '@/components/MobileMenuButton'
 import { 
   Building, 
   Calendar,
@@ -53,9 +54,15 @@ export default function TeamDashboard() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.98 }}
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="flex-1 flex flex-col relative z-10 ml-64 rounded-l-3xl overflow-hidden"
+            className="flex-1 flex flex-col relative z-10 lg:ml-64 lg:rounded-l-3xl overflow-hidden"
           >
-            <header className="bg-black/20 backdrop-blur-xl border-b border-white/10 px-6 py-4 rounded-tl-3xl">
+            {/* Top bar mobile (visible uniquement < lg) — hamburger + nom */}
+            <div className="lg:hidden sticky top-0 z-30 flex items-center gap-3 px-4 py-3 bg-black/40 backdrop-blur-xl border-b border-white/10">
+              <MobileMenuButton />
+              <span className="font-semibold text-white">PLANCHAIS</span>
+            </div>
+
+            <header className="bg-black/20 backdrop-blur-xl border-b border-white/10 px-6 py-4 lg:rounded-tl-3xl">
               <div className="flex items-center justify-between">
                 <div>
                   <h1 className="text-2xl font-bold text-white">
@@ -69,7 +76,7 @@ export default function TeamDashboard() {
             </header>
 
             {/* Tabs Navigation */}
-            <div className="bg-black/20 backdrop-blur-xl border-b border-white/10 px-6 rounded-tl-3xl">
+            <div className="bg-black/20 backdrop-blur-xl border-b border-white/10 px-6 lg:rounded-tl-3xl">
               <div className="flex gap-2 overflow-x-auto">
                 <Button
                   variant="ghost"
