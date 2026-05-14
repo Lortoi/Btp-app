@@ -1,3 +1,6 @@
+import { config } from "dotenv";
+config({ path: ".env" });
+
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
@@ -47,40 +50,25 @@ app.use((req, res, next) => {
     throw err;
   });
 
-  // importantly only setup vite in development and after
-  // setting up all the other routes so the catch-all route
-  // doesn't interfere with the other routes
   if (process.env.NODE_ENV === "development" || !process.env.NODE_ENV) {
     await setupVite(app, server);
   } else {
     serveStatic(app);
   }
 
-  // ALWAYS serve the app on the port specified in the environment variable PORT
-  // Other ports are firewalled. Default to 5000 if not specified.
-  // this serves both the API and the client.
-  // It is the only port that is not firewalled.
   const port = parseInt(process.env.PORT || '5000', 10);
-  
-  // Ensure port is 5000 if not explicitly set or if invalid
   const finalPort = (isNaN(port) || port <= 0) ? 5000 : port;
-
-  // On Windows, use localhost instead of 0.0.0.0 to avoid ENOTSUP errors
-  // On Linux, use 0.0.0.0 for network access
   const host = process.platform === "win32" ? "127.0.0.1" : "0.0.0.0";
 
-  // Build listen options
   const listenOptions: any = {
     port: finalPort,
     host: host,
   };
 
-  // Only enable reusePort on Linux where it's supported
   if (process.platform === "linux") {
     listenOptions.reusePort = true;
   }
 
-  // Handle server errors gracefully
   server.on("error", (err: any) => {
     if (err.code === "EADDRINUSE") {
       log(`Port ${finalPort} is already in use`, "server");
