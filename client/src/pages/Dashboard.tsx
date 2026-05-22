@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Sidebar from '@/components/Sidebar'
-import { MobileMenuButton } from '@/components/MobileMenuButton'
+import { AppTopBar } from '@/components/AppTopBar'
 import { 
   Building, 
   FileText, 
@@ -54,26 +54,22 @@ export default function Dashboard() {
           transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
           className="flex-1 flex flex-col relative z-10 lg:ml-64 lg:rounded-l-3xl overflow-hidden"
         >
-        {/* Top bar mobile (visible uniquement < lg) — hamburger + nom */}
-        <div className="lg:hidden sticky top-0 z-30 flex items-center gap-3 px-4 py-3 bg-black/40 backdrop-blur-xl border-b border-white/10">
-          <MobileMenuButton />
-          <span className="font-semibold text-white">PLANCHAIS</span>
-        </div>
+        <AppTopBar />
 
-        <header className="bg-black/20 backdrop-blur-xl border-b border-white/10 px-6 py-4 lg:rounded-tl-3xl">
+        <header className="bg-white/80 dark:bg-black/20 backdrop-blur-xl border-b border-border dark:border-white/10 px-6 py-4 lg:rounded-tl-3xl">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-white">
+              <h1 className="text-2xl font-bold text-foreground dark:text-white">
                 Dashboard PLANCHAIS
               </h1>
-              <p className="text-sm text-white/70">Construire pour durer</p>
+              <p className="text-sm text-muted-foreground dark:text-white/70">Construire pour durer</p>
             </div>
             <div className="flex items-center gap-4">
               <Button
                 type="button"
                 variant="outline"
                 size="sm"
-                className="text-white border-white/20 hover:bg-white/10"
+                className="text-foreground dark:text-white border-border dark:border-white/20 hover:bg-muted dark:hover:bg-white/10"
                 onClick={() => setLocation("/dashboard/settings")}
               >
                 <Settings className="h-4 w-4 mr-2" />

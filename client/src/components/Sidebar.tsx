@@ -77,7 +77,7 @@ export default function Sidebar() {
 
       <div
         className={cn(
-          "fixed left-0 top-0 h-screen bg-black/20 backdrop-blur-xl border-r border-white/10 transition-all duration-300 ease-in-out flex flex-col z-50 rounded-r-3xl",
+          "fixed left-0 top-0 h-screen bg-white/90 dark:bg-black/20 backdrop-blur-xl border-r border-border dark:border-white/10 transition-all duration-300 ease-in-out flex flex-col z-50 rounded-r-3xl",
           collapsed ? "w-16" : "w-64 max-w-[80vw]",
           // Drawer mobile : caché par défaut sous lg, visible quand isMobileOpen.
           // Sur lg+ : toujours visible (translate-x-0).
@@ -86,10 +86,10 @@ export default function Sidebar() {
         )}
       >
       {/* Header */}
-      <div className="p-4 border-b border-white/10 flex items-start justify-between gap-2">
+      <div className="p-4 border-b border-border dark:border-white/10 flex items-start justify-between gap-2">
         <div className="flex flex-col">
-          <span className="font-semibold text-white">PLANCHAIS</span>
-          <span className="text-xs text-white/70 italic">Construire pour durer</span>
+          <span className="font-semibold text-foreground dark:text-white">PLANCHAIS</span>
+          <span className="text-xs text-muted-foreground dark:text-white/70 italic">Construire pour durer</span>
         </div>
         {/* Bouton de fermeture du drawer (mobile uniquement) */}
         <button

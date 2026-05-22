@@ -3,7 +3,7 @@ import { useLocation } from 'wouter'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect } from 'react'
 import { agentDebugLog } from '@/lib/agentDebugLog'
-import { MobileMenuButton } from '@/components/MobileMenuButton'
+import { AppTopBar } from '@/components/AppTopBar'
 
 interface PageWrapperProps {
   children: React.ReactNode
@@ -72,11 +72,8 @@ export function PageWrapper({ children }: PageWrapperProps) {
           variants={contentVariants}
           className="flex-1 flex flex-col relative z-10 lg:ml-64 lg:rounded-l-3xl overflow-hidden"
         >
-          {/* Top bar mobile (visible uniquement < lg) — hamburger + nom */}
-          <div className="lg:hidden sticky top-0 z-30 flex items-center gap-3 px-4 py-3 bg-black/40 backdrop-blur-xl border-b border-white/10">
-            <MobileMenuButton />
-            <span className="font-semibold text-white">PLANCHAIS</span>
-          </div>
+          {/* Top bar — menu mobile + toggle thème */}
+          <AppTopBar />
 
           {children}
         </motion.div>
