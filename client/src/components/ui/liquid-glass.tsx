@@ -41,7 +41,7 @@ export function LiquidGlassCard({
       className={cn(
         "relative",
         "bg-gradient-to-br from-white/10 via-white/5 to-white/0",
-        "border border-white/20",
+        "border border-gray-300 dark:border-white/20",
         blurClasses[blurIntensity],
         glowClasses[glowIntensity],
         shadowClasses[shadowIntensity],

@@ -35,7 +35,7 @@ export default function ContactSection() {
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-bold mb-4">
             <span className="text-foreground">Prêt à</span>{' '}
-            <span className="text-white">
+            <span className="text-gray-900 dark:text-white">
               Commencer ?
             </span>
           </h2>
@@ -120,7 +120,7 @@ export default function ContactSection() {
 
                 <Button 
                   type="submit" 
-                  className="w-full bg-white/20 backdrop-blur-md border border-white/10 text-white hover:bg-white/30"
+                  className="w-full bg-white/20 backdrop-blur-md border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover:bg-white/30"
                   data-testid="button-submit-contact"
                 >
                   Demander une Démo
@@ -145,7 +145,7 @@ export default function ContactSection() {
                     <span className="text-muted-foreground">Configuration et formation incluses</span>
                   </li>
                   <li className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-white/50 rounded-full"></div>
+                    <div className="w-2 h-2 bg-gray-50 dark:bg-white/50 rounded-full"></div>
                     <span className="text-muted-foreground">Support prioritaire 7j/7</span>
                   </li>
                   <li className="flex items-center gap-3">

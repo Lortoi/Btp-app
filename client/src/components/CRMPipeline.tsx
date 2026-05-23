@@ -139,13 +139,13 @@ export function CRMPipeline() {
               key={id}
               className="w-full shrink-0 md:min-w-[280px] md:w-[280px]"
             >
-              <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white h-full flex flex-col">
+              <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white h-full flex flex-col">
                 <CardHeader className="pb-2 space-y-0">
                   <div className="flex items-center justify-between gap-2">
                     <CardTitle className="text-sm font-semibold leading-snug">{titre}</CardTitle>
                     <Badge
                       variant="secondary"
-                      className="shrink-0 bg-white/10 text-white border border-white/10"
+                      className="shrink-0 bg-gray-100 dark:bg-white/10 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600"
                     >
                       {items.length}
                     </Badge>
@@ -156,32 +156,32 @@ export function CRMPipeline() {
                     {items.map((p) => (
                       <div
                         key={p.id}
-                        className={`rounded-lg border border-white/10 bg-black/25 backdrop-blur-sm p-3 text-white ${
+                        className={`rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-black/25 backdrop-blur-sm p-3 text-gray-900 dark:text-white ${
                           p.priorite === "haute" ? "border-l-[3px] border-l-[#F97316]" : ""
                         }`}
                       >
                         <div className="space-y-2">
                           <div>
-                            <p className="font-bold text-sm leading-tight">{p.nom}</p>
-                            <p className="text-xs text-white/65 mt-0.5">{p.entreprise}</p>
+                            <p className="font-bold text-sm leading-tight text-gray-900 dark:text-white">{p.nom}</p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{p.entreprise}</p>
                           </div>
                           <Badge
                             variant="secondary"
-                            className="bg-white/10 text-white/95 text-xs font-normal border-0"
+                            className="bg-gray-100 dark:bg-white/10 text-gray-700 dark:text-gray-200 text-xs font-normal border border-gray-200 dark:border-transparent"
                           >
                             {p.typeTravaux}
                           </Badge>
                           <p className="text-sm font-bold text-[#F97316]">{formatMontantEUR(p.montantEstime)}</p>
-                          <div className="flex items-center gap-1.5 text-xs text-white/80">
-                            <Phone className="h-3.5 w-3.5 shrink-0 text-white/55" aria-hidden />
+                          <div className="flex items-center gap-1.5 text-xs text-gray-600 dark:text-gray-300">
+                            <Phone className="h-3.5 w-3.5 shrink-0 text-gray-500 dark:text-gray-400" aria-hidden />
                             <span>{p.telephone}</span>
                           </div>
-                          <p className="text-xs text-white/50">{formatContactLabel(p.dateContact)}</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">{formatContactLabel(p.dateContact)}</p>
                         </div>
                       </div>
                     ))}
                     {items.length === 0 && (
-                      <p className="text-xs text-white/45 text-center py-6">Aucun prospect</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 text-center py-6">Aucun prospect</p>
                     )}
                   </div>
                 </CardContent>

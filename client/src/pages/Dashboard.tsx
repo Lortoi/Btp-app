@@ -56,13 +56,13 @@ export default function Dashboard() {
         >
         <AppTopBar />
 
-        <header className="bg-white/80 dark:bg-black/20 backdrop-blur-xl border-b border-border dark:border-white/10 px-6 py-4 lg:rounded-tl-3xl">
+        <header className="bg-white/80 dark:bg-black/20 backdrop-blur-xl border-b border-border dark:border-gray-600 px-6 py-4 lg:rounded-tl-3xl">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold text-foreground dark:text-white">
                 Dashboard PLANCHAIS
               </h1>
-              <p className="text-sm text-muted-foreground dark:text-white/70">Construire pour durer</p>
+              <p className="text-sm text-muted-foreground dark:text-gray-600 dark:text-gray-300">Construire pour durer</p>
             </div>
             <div className="flex items-center gap-4">
               <Button
@@ -80,7 +80,7 @@ export default function Dashboard() {
         </header>
 
         {/* Tabs Navigation */}
-        <div className="bg-black/20 backdrop-blur-xl border-b border-white/10 px-6 lg:rounded-tl-3xl">
+        <div className="bg-white/80 dark:bg-black/20 backdrop-blur-xl border-b border-gray-200 dark:border-gray-600 px-6 lg:rounded-tl-3xl">
           <div className="flex gap-2 overflow-x-auto">
             <Link href="/dashboard">
               <Button
@@ -88,8 +88,8 @@ export default function Dashboard() {
                 size="sm"
                 className={
                   location === "/dashboard"
-                    ? "bg-white/20 backdrop-blur-md border border-white/10 text-white hover:bg-white/30"
-                    : "text-white hover:bg-white/10"
+                    ? "bg-white/20 backdrop-blur-md border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover:bg-white/30"
+                    : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/10"
                 }
               >
                 Vue d'ensemble
@@ -101,8 +101,8 @@ export default function Dashboard() {
                 size="sm"
                 className={
                   location === "/dashboard/import"
-                    ? "bg-white/20 backdrop-blur-md border border-white/10 text-white hover:bg-white/30"
-                    : "text-white hover:bg-white/10"
+                    ? "bg-white/20 backdrop-blur-md border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover:bg-white/30"
+                    : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/10"
                 }
               >
                 <Upload className="h-4 w-4 mr-2" />
@@ -115,8 +115,8 @@ export default function Dashboard() {
                 size="sm"
                 className={
                   location === "/dashboard/quotes"
-                    ? "bg-white/20 backdrop-blur-md border border-white/10 text-white hover:bg-white/30"
-                    : "text-white hover:bg-white/10"
+                    ? "bg-white/20 backdrop-blur-md border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover:bg-white/30"
+                    : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/10"
                 }
               >
                 <FileText className="h-4 w-4 mr-2" />
@@ -129,8 +129,8 @@ export default function Dashboard() {
                 size="sm"
                 className={
                   location === "/dashboard/projects"
-                    ? "bg-white/20 backdrop-blur-md border border-white/10 text-white hover:bg-white/30"
-                    : "text-white hover:bg-white/10"
+                    ? "bg-white/20 backdrop-blur-md border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover:bg-white/30"
+                    : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/10"
                 }
               >
                 <Building className="h-4 w-4 mr-2" />
@@ -143,8 +143,8 @@ export default function Dashboard() {
                 size="sm"
                 className={
                   location === "/dashboard/crm"
-                    ? "bg-white/20 backdrop-blur-md border border-white/10 text-white hover:bg-white/30"
-                    : "text-white hover:bg-white/10"
+                    ? "bg-white/20 backdrop-blur-md border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover:bg-white/30"
+                    : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/10"
                 }
               >
                 <Users className="h-4 w-4 mr-2" />
@@ -157,8 +157,8 @@ export default function Dashboard() {
                 size="sm"
                 className={
                   location === "/dashboard/planning"
-                    ? "bg-white/20 backdrop-blur-md border border-white/10 text-white hover:bg-white/30"
-                    : "text-white hover:bg-white/10"
+                    ? "bg-white/20 backdrop-blur-md border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover:bg-white/30"
+                    : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/10"
                 }
               >
                 <Calendar className="h-4 w-4 mr-2" />
@@ -188,7 +188,7 @@ function OverviewTab() {
         <Card
           role="button"
           tabIndex={0}
-          className="bg-black/20 backdrop-blur-xl border border-white/10 text-white cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+          className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
           onClick={() => setLocation('/dashboard/quotes')}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
@@ -199,18 +199,18 @@ function OverviewTab() {
         >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Chiffre d'Affaires</CardTitle>
-            <Euro className="h-4 w-4 text-white/70" />
+            <Euro className="h-4 w-4 text-gray-600 dark:text-gray-300" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">€165,000</div>
-            <p className="text-xs text-white/70">+18.2% ce mois</p>
+            <p className="text-xs text-gray-600 dark:text-gray-300">+18.2% ce mois</p>
           </CardContent>
         </Card>
 
         <Card
           role="button"
           tabIndex={0}
-          className="bg-black/20 backdrop-blur-xl border border-white/10 text-white cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+          className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
           onClick={() => setLocation('/dashboard/projects')}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
@@ -221,18 +221,18 @@ function OverviewTab() {
         >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Chantiers Actifs</CardTitle>
-            <Building className="h-4 w-4 text-white/70" />
+            <Building className="h-4 w-4 text-gray-600 dark:text-gray-300" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">12</div>
-            <p className="text-xs text-white/70">+3 en cours</p>
+            <p className="text-xs text-gray-600 dark:text-gray-300">+3 en cours</p>
           </CardContent>
         </Card>
 
         <Card
           role="button"
           tabIndex={0}
-          className="bg-black/20 backdrop-blur-xl border border-white/10 text-white cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+          className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
           onClick={() => setLocation('/dashboard/quotes')}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
@@ -243,18 +243,18 @@ function OverviewTab() {
         >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Devis En Attente</CardTitle>
-            <FileText className="h-4 w-4 text-white/70" />
+            <FileText className="h-4 w-4 text-gray-600 dark:text-gray-300" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">8</div>
-            <p className="text-xs text-white/70">Réponses attendues</p>
+            <p className="text-xs text-gray-600 dark:text-gray-300">Réponses attendues</p>
           </CardContent>
         </Card>
 
         <Card
           role="button"
           tabIndex={0}
-          className="bg-black/20 backdrop-blur-xl border border-white/10 text-white cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+          className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
           onClick={() => setLocation('/dashboard/crm')}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
@@ -265,16 +265,16 @@ function OverviewTab() {
         >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Taux de Conversion</CardTitle>
-            <TrendingUp className="h-4 w-4 text-white/70" />
+            <TrendingUp className="h-4 w-4 text-gray-600 dark:text-gray-300" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">73%</div>
-            <p className="text-xs text-white/70">+5.2% devis → chantiers</p>
+            <p className="text-xs text-gray-600 dark:text-gray-300">+5.2% devis → chantiers</p>
           </CardContent>
         </Card>
       </div>
 
-      <Card className="relative overflow-hidden bg-black/20 backdrop-blur-xl border border-violet-500/30 text-white shadow-lg shadow-violet-950/20">
+      <Card className="relative overflow-hidden bg-black/20 backdrop-blur-xl border border-violet-500/30 text-gray-900 dark:text-white shadow-lg shadow-violet-950/20">
         <div
           className="pointer-events-none absolute inset-0 bg-gradient-to-br from-violet-600/20 via-transparent to-primary/10"
           aria-hidden
@@ -285,14 +285,14 @@ function OverviewTab() {
               <Sparkles className="h-5 w-5 text-violet-300" />
               <CardTitle className="text-lg">Importer vos anciennes factures (IA)</CardTitle>
             </div>
-            <p className="text-sm text-white/70 max-w-2xl">
+            <p className="text-sm text-gray-600 dark:text-gray-300 max-w-2xl">
               Déposez vos PDF — extraction des clients, chantiers et montants. Données stockées dans votre espace
-              Supabase (UE). Activez l&apos;Edge Function <code className="text-xs text-white/90">analyze-invoice</code> pour lancer l&apos;analyse.
+              Supabase (UE). Activez l&apos;Edge Function <code className="text-xs text-gray-900 dark:text-white">analyze-invoice</code> pour lancer l&apos;analyse.
             </p>
           </div>
           <Button
             type="button"
-            className="relative shrink-0 bg-violet-600 hover:bg-violet-500 text-white border border-white/10"
+            className="relative shrink-0 bg-violet-600 hover:bg-violet-500 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600"
             onClick={() => setLocation("/dashboard/import")}
           >
             <Upload className="h-4 w-4 mr-2" />
@@ -302,16 +302,16 @@ function OverviewTab() {
       </Card>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white">
+        <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
           <CardHeader>
             <CardTitle>Activité Récente</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-white/70">Aucune activité récente</p>
+            <p className="text-sm text-gray-600 dark:text-gray-300">Aucune activité récente</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white">
+        <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
           <CardHeader>
             <CardTitle>Actions Rapides</CardTitle>
           </CardHeader>

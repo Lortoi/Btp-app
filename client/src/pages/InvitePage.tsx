@@ -82,27 +82,27 @@ export default function InvitePage() {
   return (
     <section className="relative w-full min-h-screen overflow-hidden bg-transparent flex items-center justify-center">
       <div className="relative z-10 max-w-md mx-auto px-6 w-full">
-        <Card className="bg-white/10 dark:bg-black/20 backdrop-blur-lg rounded-2xl border border-white/20 p-8 shadow-2xl">
+        <Card className="bg-gray-100 dark:bg-white/10 dark:bg-black/20 backdrop-blur-lg rounded-2xl border border-gray-300 dark:border-white/20 p-8 shadow-2xl">
           {loading ? (
             <div className="text-center py-8">
-              <Loader2 className="h-8 w-8 animate-spin text-white mx-auto mb-4" />
-              <p className="text-white">Chargement de l'invitation...</p>
+              <Loader2 className="h-8 w-8 animate-spin text-gray-900 dark:text-white mx-auto mb-4" />
+              <p className="text-gray-900 dark:text-white">Chargement de l'invitation...</p>
             </div>
           ) : !invitation ? (
             <div className="text-center py-8">
               <XCircle className="h-12 w-12 text-red-400 mx-auto mb-4" />
-              <CardTitle className="text-white mb-2">Invitation invalide</CardTitle>
-              <p className="text-white/70 text-sm">
+              <CardTitle className="text-gray-900 dark:text-white mb-2">Invitation invalide</CardTitle>
+              <p className="text-gray-600 dark:text-gray-300 text-sm">
                 {error || "Cette invitation n'existe pas, a expiré ou a déjà été utilisée."}
               </p>
             </div>
           ) : (
             <>
               <CardHeader className="text-center mb-6">
-                <CardTitle className="text-2xl font-bold text-white mb-2">
+                <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
                   Rejoindre l'équipe
                 </CardTitle>
-                <p className="text-white/80 text-sm">
+                <p className="text-gray-600 dark:text-gray-300 text-sm">
                   Entrez votre code de connexion pour accéder à votre dashboard
                 </p>
               </CardHeader>
@@ -116,13 +116,13 @@ export default function InvitePage() {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
                   <div className="relative">
-                    <Key className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-white/50" />
+                    <Key className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500 dark:text-gray-400" />
                     <Input
                       type="text"
                       value={code}
                       onChange={(e) => setCode(e.target.value)}
                       placeholder="Entrez votre code de connexion"
-                      className="w-full bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-white/40 focus:ring-white/20 h-12 pl-10 text-center text-lg tracking-widest font-mono"
+                      className="w-full bg-gray-100 dark:bg-white/10 border-gray-300 dark:border-white/20 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/50 focus:border-white/40 focus:ring-white/20 h-12 pl-10 text-center text-lg tracking-widest font-mono"
                       maxLength={10}
                       required
                       disabled={verifying}
@@ -133,7 +133,7 @@ export default function InvitePage() {
                 <Button
                   type="submit"
                   disabled={verifying}
-                  className="w-full bg-[rgba(63,63,63,1)] border-4 border-card text-white hover:bg-[rgba(63,63,63,0.9)] transition-colors h-12 text-base font-semibold disabled:opacity-50"
+                  className="w-full bg-[rgba(63,63,63,1)] border-4 border-card text-gray-900 dark:text-white hover:bg-[rgba(63,63,63,0.9)] transition-colors h-12 text-base font-semibold disabled:opacity-50"
                 >
                   {verifying ? (
                     <>

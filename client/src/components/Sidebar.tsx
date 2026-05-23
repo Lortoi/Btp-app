@@ -77,7 +77,7 @@ export default function Sidebar() {
 
       <div
         className={cn(
-          "fixed left-0 top-0 h-screen bg-white/90 dark:bg-black/20 backdrop-blur-xl border-r border-border dark:border-white/10 transition-all duration-300 ease-in-out flex flex-col z-50 rounded-r-3xl",
+          "fixed left-0 top-0 h-screen bg-white/90 dark:bg-black/20 backdrop-blur-xl border-r border-border dark:border-gray-600 transition-all duration-300 ease-in-out flex flex-col z-50 rounded-r-3xl",
           collapsed ? "w-16" : "w-64 max-w-[80vw]",
           // Drawer mobile : caché par défaut sous lg, visible quand isMobileOpen.
           // Sur lg+ : toujours visible (translate-x-0).
@@ -86,17 +86,17 @@ export default function Sidebar() {
         )}
       >
       {/* Header */}
-      <div className="p-4 border-b border-border dark:border-white/10 flex items-start justify-between gap-2">
+      <div className="p-4 border-b border-border dark:border-gray-600 flex items-start justify-between gap-2">
         <div className="flex flex-col">
           <span className="font-semibold text-foreground dark:text-white">PLANCHAIS</span>
-          <span className="text-xs text-muted-foreground dark:text-white/70 italic">Construire pour durer</span>
+          <span className="text-xs text-muted-foreground dark:text-gray-600 dark:text-gray-300 italic">Construire pour durer</span>
         </div>
         {/* Bouton de fermeture du drawer (mobile uniquement) */}
         <button
           type="button"
           onClick={closeMobile}
           aria-label="Fermer le menu"
-          className="lg:hidden inline-flex items-center justify-center h-9 w-9 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition-colors shrink-0"
+          className="lg:hidden inline-flex items-center justify-center h-9 w-9 rounded-lg text-gray-600 dark:text-gray-300 hover:text-white hover:bg-gray-100 dark:bg-white/10 transition-colors shrink-0"
         >
           <X className="h-5 w-5" />
         </button>
@@ -105,7 +105,7 @@ export default function Sidebar() {
       {/* Navigation */}
       <nav className="flex-1 p-4 space-y-2">
         {!collapsed && (
-          <div className="text-xs font-medium text-white/60 uppercase tracking-wide mb-4">
+          <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-4">
             Navigation
           </div>
         )}
@@ -117,8 +117,8 @@ export default function Sidebar() {
               className={cn(
                 "w-full justify-start gap-3 h-10 text-white",
                 collapsed && "justify-center",
-                item.active && "bg-white/20 backdrop-blur-md border border-white/10 text-white hover:bg-white/30",
-                !item.active && "hover:bg-white/10"
+                item.active && "bg-white/20 backdrop-blur-md border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover:bg-white/30",
+                !item.active && "hover:bg-gray-100 dark:bg-white/10"
               )}
               data-testid={`nav-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
             >
@@ -130,7 +130,7 @@ export default function Sidebar() {
 
         {!collapsed && (
           <>
-            <div className="text-xs font-medium text-white/60 uppercase tracking-wide mt-8 mb-4">
+            <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mt-8 mb-4">
               Actions Rapides
             </div>
             
@@ -139,7 +139,7 @@ export default function Sidebar() {
                 key={index}
                 variant="outline"
                 size="sm"
-                className="w-full justify-start gap-3 h-9 text-white border-white/20 hover:bg-white/10"
+                className="w-full justify-start gap-3 h-9 text-gray-900 dark:text-white border-gray-300 dark:border-white/20 hover:bg-gray-100 dark:hover:bg-white/10"
                 onClick={() => setLocation(action.path)}
                 data-testid={`quick-${action.label.toLowerCase().replace(/\s+/g, '-')}`}
               >
@@ -152,14 +152,29 @@ export default function Sidebar() {
       </nav>
 
       {/* Account Button at the bottom */}
-      <div className="p-4 border-t border-white/10 mt-auto">
+      <div className="p-4 border-t border-gray-200 dark:border-gray-600 mt-auto space-y-2">
+        <Link href="/dashboard/settings">
+          <Button
+            variant="ghost"
+            className={cn(
+              "w-full justify-start gap-3 h-10",
+              collapsed && "justify-center",
+              location === "/dashboard/settings"
+                ? "bg-white/20 backdrop-blur-md border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover:bg-white/30"
+                : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/10",
+            )}
+          >
+            <Settings className="h-4 w-4" />
+            {!collapsed && <span>Paramètres</span>}
+          </Button>
+        </Link>
         <AccountDialog>
           <Button
             variant="ghost"
             className={cn(
               "w-full justify-start gap-3 h-10 text-white",
               collapsed && "justify-center",
-              "hover:bg-white/10"
+              "hover:bg-gray-100 dark:bg-white/10"
             )}
           >
             <UserCircle className="h-4 w-4" />

@@ -175,22 +175,22 @@ export default function ImportPage() {
 
   return (
     <PageWrapper>
-      <header className="bg-black/20 backdrop-blur-xl border-b border-white/10 px-6 py-4 rounded-tl-3xl">
+      <header className="bg-white/80 dark:bg-black/20 backdrop-blur-xl border-b border-gray-200 dark:border-gray-600 px-6 py-4 rounded-tl-3xl">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-start gap-3">
             <Button
               type="button"
               variant="ghost"
               size="icon"
-              className="text-white shrink-0 hover:bg-white/10"
+              className="text-gray-900 dark:text-white shrink-0 hover:bg-gray-100 dark:hover:bg-white/10"
               onClick={() => setLocation("/dashboard")}
               aria-label="Retour au dashboard"
             >
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <div>
-              <h1 className="text-2xl font-bold text-white">Importer mes factures (IA)</h1>
-              <p className="text-sm text-white/70">
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Importer mes factures (IA)</h1>
+              <p className="text-sm text-gray-600 dark:text-gray-300">
                 Déposez vos PDF — analyse par Claude, stockage sécurisé sur Supabase (région EU).
               </p>
             </div>
@@ -199,25 +199,25 @@ export default function ImportPage() {
       </header>
 
       <main className="flex-1 p-6 space-y-6 max-w-3xl">
-        <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white">
+        <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
           <CardHeader>
             <div className="flex items-center gap-2">
-              <Wand2 className="h-5 w-5 text-white/70" />
+              <Wand2 className="h-5 w-5 text-gray-600 dark:text-gray-300" />
               <CardTitle className="text-lg">Factures PDF</CardTitle>
             </div>
-            <CardDescription className="text-white/60">
+            <CardDescription className="text-gray-500 dark:text-gray-400">
               Jusqu&apos;à {MAX_FILES} fichiers, {MAX_BYTES / (1024 * 1024)} Mo chacun. L&apos; Edge Function{" "}
-              <code className="text-xs text-white/80">analyze-invoice</code> doit être déployée et{" "}
-              <code className="text-xs text-white/80">ANTHROPIC_API_KEY</code> configurée côté Supabase.
+              <code className="text-xs text-gray-600 dark:text-gray-300">analyze-invoice</code> doit être déployée et{" "}
+              <code className="text-xs text-gray-600 dark:text-gray-300">ANTHROPIC_API_KEY</code> configurée côté Supabase.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div
               {...dropHandlers}
-              className="rounded-xl border border-dashed border-white/20 bg-black/20 px-6 py-10 text-center cursor-pointer hover:border-white/40 transition-colors"
+              className="rounded-xl border border-dashed border-gray-300 dark:border-white/20 bg-black/20 px-6 py-10 text-center cursor-pointer hover:border-white/40 transition-colors"
             >
-              <Upload className="h-10 w-10 mx-auto text-white/50 mb-3" />
-              <p className="text-sm text-white/80 mb-2">Glissez-déposez vos PDF ici ou cliquez pour parcourir</p>
+              <Upload className="h-10 w-10 mx-auto text-gray-500 dark:text-gray-400 mb-3" />
+              <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">Glissez-déposez vos PDF ici ou cliquez pour parcourir</p>
               <input
                 ref={fileInputRef}
                 type="file"
@@ -241,21 +241,21 @@ export default function ImportPage() {
 
             {jobs.length > 0 && (
               <div className="space-y-2">
-                <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-white/70">
+                <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-gray-600 dark:text-gray-300">
                   <span>
                     {jobs.length} fichier{jobs.length > 1 ? "s" : ""} — {(totalBytes / (1024 * 1024)).toFixed(1)} Mo
                   </span>
                   {importId && <span className="font-mono text-xs truncate max-w-[200px]">Import {importId}</span>}
                 </div>
                 {analyzing && <Progress value={progressPct} className="h-2" />}
-                <ul className="max-h-48 overflow-y-auto space-y-1 rounded-lg border border-white/10 divide-y divide-white/5">
+                <ul className="max-h-48 overflow-y-auto space-y-1 rounded-lg border border-gray-300 dark:border-gray-600 divide-y divide-white/5">
                   {jobs.map((j, i) => (
                     <li key={i} className="flex items-center justify-between gap-2 px-3 py-2 text-sm">
                       <span className="truncate flex items-center gap-2 min-w-0">
-                        <FileText className="h-4 w-4 shrink-0 text-white/50" />
-                        <span className="truncate text-white">{j.file.name}</span>
+                        <FileText className="h-4 w-4 shrink-0 text-gray-500 dark:text-gray-400" />
+                        <span className="truncate text-gray-900 dark:text-white">{j.file.name}</span>
                       </span>
-                      {j.status === "uploading" && <Loader2 className="h-4 w-4 animate-spin text-white/70 shrink-0" />}
+                      {j.status === "uploading" && <Loader2 className="h-4 w-4 animate-spin text-gray-600 dark:text-gray-300 shrink-0" />}
                       {j.status === "pending" && (
                         <Badge variant="secondary" className="shrink-0">
                           en attente
@@ -276,7 +276,7 @@ export default function ImportPage() {
                   type="button"
                   disabled={analyzing || jobs.length === 0}
                   onClick={runAnalysis}
-                  className="w-full bg-white/20 backdrop-blur-md text-white border border-white/10 hover:bg-white/30"
+                  className="w-full bg-gray-100 dark:bg-white/20 backdrop-blur-md text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-white/30"
                 >
                   {analyzing ? (
                     <>
@@ -295,10 +295,10 @@ export default function ImportPage() {
           </CardContent>
         </Card>
 
-        <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white opacity-80">
+        <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white opacity-80">
           <CardHeader>
             <CardTitle className="text-base">Autres méthodes</CardTitle>
-            <CardDescription className="text-white/60">
+            <CardDescription className="text-gray-500 dark:text-gray-400">
               Import CSV et saisie manuelle arrivent dans une prochaine version.
             </CardDescription>
           </CardHeader>
@@ -306,7 +306,7 @@ export default function ImportPage() {
 
         <div className="pb-8">
           <Link href="/dashboard">
-            <Button type="button" variant="ghost" className="text-white/80 hover:text-white hover:bg-white/10">
+            <Button type="button" variant="ghost" className="text-gray-600 dark:text-gray-300 hover:text-white hover:bg-gray-100 dark:bg-white/10">
               ← Retour au dashboard
             </Button>
           </Link>

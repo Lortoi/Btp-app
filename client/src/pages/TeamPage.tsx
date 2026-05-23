@@ -91,7 +91,7 @@ function statutBadgeClass(statut: MembreStatut): string {
     case 'Absent':
       return 'bg-[#EF4444]/20 text-red-100 border-[#EF4444]/30';
     default:
-      return 'bg-white/10 text-white/80';
+      return 'bg-gray-100 dark:bg-white/10 text-gray-600 dark:text-gray-300';
   }
 }
 
@@ -203,43 +203,43 @@ export default function TeamPage() {
 
   return (
     <PageWrapper>
-      <header className="bg-black/20 backdrop-blur-xl border-b border-white/10 px-6 py-4 rounded-tl-3xl">
+      <header className="bg-white/80 dark:bg-black/20 backdrop-blur-xl border-b border-gray-200 dark:border-gray-600 px-6 py-4 rounded-tl-3xl">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-white">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
               Gestion de l'Équipe
             </h1>
-            <p className="text-sm text-white/70">Gérez les membres de votre équipe et leurs codes de connexion</p>
+            <p className="text-sm text-gray-600 dark:text-gray-300">Gérez les membres de votre équipe et leurs codes de connexion</p>
           </div>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-white/20 backdrop-blur-md text-white border border-white/10 hover:bg-white/30">
+              <Button className="bg-gray-100 dark:bg-white/20 backdrop-blur-md text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-white/30">
                 <Plus className="h-4 w-4 mr-2" />
                 Ajouter un Membre
               </Button>
             </DialogTrigger>
-            <DialogContent className="bg-black/20 backdrop-blur-xl border border-white/10 text-white rounded-2xl">
+            <DialogContent className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-2xl">
               <DialogHeader>
-                <DialogTitle className="text-white">Ajouter un Nouveau Membre</DialogTitle>
+                <DialogTitle className="text-gray-900 dark:text-white">Ajouter un Nouveau Membre</DialogTitle>
               </DialogHeader>
               <div className="grid gap-4 py-4">
                 <div className="space-y-2">
-                  <Label htmlFor="name" className="text-white">Nom complet</Label>
+                  <Label htmlFor="name" className="text-gray-900 dark:text-white">Nom complet</Label>
                   <Input
                     id="name"
                     value={newMember.name}
                     onChange={(e) => setNewMember(prev => ({ ...prev, name: e.target.value }))}
-                    className="bg-black/20 border-white/10 text-white"
+                    className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
                     placeholder="Jean Dupont"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="role" className="text-white">Rôle</Label>
+                  <Label htmlFor="role" className="text-gray-900 dark:text-white">Rôle</Label>
                   <Select value={newMember.role} onValueChange={(value) => setNewMember(prev => ({ ...prev, role: value }))}>
-                    <SelectTrigger className="w-full bg-black/20 border-white/10 text-white">
+                    <SelectTrigger className="w-full bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
                       <SelectValue placeholder="Sélectionner un rôle" />
                     </SelectTrigger>
-                    <SelectContent className="bg-black/30 backdrop-blur-lg border-white/10 text-white">
+                    <SelectContent className="bg-white dark:bg-black/30 backdrop-blur-lg border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white">
                       <SelectItem value="Chef de chantier">Chef de chantier</SelectItem>
                       <SelectItem value="Ouvrier">Ouvrier</SelectItem>
                       <SelectItem value="Commercial">Commercial</SelectItem>
@@ -249,33 +249,33 @@ export default function TeamPage() {
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-white">Email</Label>
+                  <Label htmlFor="email" className="text-gray-900 dark:text-white">Email</Label>
                   <Input
                     id="email"
                     type="email"
                     value={newMember.email}
                     onChange={(e) => setNewMember(prev => ({ ...prev, email: e.target.value }))}
-                    className="bg-black/20 border-white/10 text-white"
+                    className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
                     placeholder="jean.dupont@planchais.fr"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="phone" className="text-white">Téléphone</Label>
+                  <Label htmlFor="phone" className="text-gray-900 dark:text-white">Téléphone</Label>
                   <Input
                     id="phone"
                     value={newMember.phone}
                     onChange={(e) => setNewMember(prev => ({ ...prev, phone: e.target.value }))}
-                    className="bg-black/20 border-white/10 text-white"
+                    className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
                     placeholder="06 12 34 56 78"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="login_code" className="text-white">Code de connexion *</Label>
+                  <Label htmlFor="login_code" className="text-gray-900 dark:text-white">Code de connexion *</Label>
                   <Input
                     id="login_code"
                     value={newMember.login_code}
                     onChange={(e) => setNewMember(prev => ({ ...prev, login_code: e.target.value }))}
-                    className="bg-black/20 border-white/10 text-white font-mono"
+                    className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white font-mono"
                     placeholder="Entrez le code de connexion"
                     maxLength={10}
                     required
@@ -283,7 +283,7 @@ export default function TeamPage() {
                 </div>
               </div>
               <DialogFooter>
-                <Button variant="outline" onClick={() => setIsDialogOpen(false)} className="text-white border-white/20 hover:bg-white/10">
+                <Button variant="outline" onClick={() => setIsDialogOpen(false)} className="text-gray-900 dark:text-white border-gray-300 dark:border-white/20 hover:bg-gray-100 dark:hover:bg-white/10">
                   Annuler
                 </Button>
                 <Button onClick={handleAddMember}>Ajouter le Membre</Button>
@@ -295,42 +295,42 @@ export default function TeamPage() {
 
       <main className="flex-1 p-6 space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white">
+          <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Membres</CardTitle>
-              <Users className="h-4 w-4 text-white/70" />
+              <Users className="h-4 w-4 text-gray-600 dark:text-gray-300" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{kpiStats.total} membres</div>
-              <p className="text-xs text-white/70">Équipe (démo)</p>
+              <p className="text-xs text-gray-600 dark:text-gray-300">Équipe (démo)</p>
             </CardContent>
           </Card>
-          <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white">
+          <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">En chantier</CardTitle>
-              <HardHat className="h-4 w-4 text-white/70" />
+              <HardHat className="h-4 w-4 text-gray-600 dark:text-gray-300" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{kpiStats.enChantier} en chantier</div>
-              <p className="text-xs text-white/70">sur le terrain</p>
+              <p className="text-xs text-gray-600 dark:text-gray-300">sur le terrain</p>
             </CardContent>
           </Card>
-          <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white">
+          <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Disponibles</CardTitle>
-              <Check className="h-4 w-4 text-white/70" />
+              <Check className="h-4 w-4 text-gray-600 dark:text-gray-300" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{kpiStats.disponibles} disponibles</div>
-              <p className="text-xs text-white/70">prêts à affecter</p>
+              <p className="text-xs text-gray-600 dark:text-gray-300">prêts à affecter</p>
             </CardContent>
           </Card>
         </div>
 
-        <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white">
+        <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Users className="h-5 w-5 text-white/70" />
+              <Users className="h-5 w-5 text-gray-600 dark:text-gray-300" />
               Membres de l'Équipe
             </CardTitle>
           </CardHeader>
@@ -339,7 +339,7 @@ export default function TeamPage() {
               {mockEquipe.map((m) => (
                 <Card
                   key={m.id}
-                  className="relative bg-black/20 backdrop-blur-md border border-white/10 text-white overflow-hidden flex flex-col"
+                  className="relative bg-gray-50 dark:bg-gray-800/50 backdrop-blur-md border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white overflow-hidden flex flex-col"
                 >
                   <Badge
                     className={`absolute top-3 right-3 border ${statutBadgeClass(m.statut)}`}
@@ -350,24 +350,24 @@ export default function TeamPage() {
                   <CardHeader className="pb-2 pr-24">
                     <div className="flex items-start gap-4">
                       <div
-                        className="shrink-0 w-14 h-14 rounded-full flex items-center justify-center text-sm font-bold text-white shadow-inner"
+                        className="shrink-0 w-14 h-14 rounded-full flex items-center justify-center text-sm font-bold text-gray-900 dark:text-white shadow-inner"
                         style={{ backgroundColor: m.couleurAvatar }}
                       >
                         {initialsFromNom(m.nom)}
                       </div>
                       <div className="min-w-0 pt-0.5">
-                        <p className="font-bold text-white leading-tight">{m.nom}</p>
-                        <p className="text-sm text-white/60 mt-1">{m.role}</p>
+                        <p className="font-bold text-gray-900 dark:text-white leading-tight">{m.nom}</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{m.role}</p>
                       </div>
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-4 flex-1 flex flex-col">
-                    <div className="flex items-center gap-2 text-sm text-white/90">
-                      <Phone className="h-4 w-4 shrink-0 text-white/60" aria-hidden />
+                    <div className="flex items-center gap-2 text-sm text-gray-900 dark:text-white">
+                      <Phone className="h-4 w-4 shrink-0 text-gray-500 dark:text-gray-400" aria-hidden />
                       <span>{m.telephone}</span>
                     </div>
                     <div>
-                      <p className="text-xs font-semibold text-white/50 uppercase tracking-wide mb-2">
+                      <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">
                         Chantiers assignés
                       </p>
                       {m.chantiers.length > 0 ? (
@@ -375,21 +375,21 @@ export default function TeamPage() {
                           {m.chantiers.map((c) => (
                             <span
                               key={c}
-                              className="inline-block text-xs px-2 py-1 rounded-md bg-white/10 text-white border border-white/10"
+                              className="inline-block text-xs px-2 py-1 rounded-md bg-gray-100 dark:bg-white/10 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600"
                             >
                               {c}
                             </span>
                           ))}
                         </div>
                       ) : (
-                        <p className="text-sm text-white/50 italic">Aucun chantier assigné</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 italic">Aucun chantier assigné</p>
                       )}
                     </div>
                     <div className="pt-2 mt-auto">
                       <Button
                         type="button"
                         variant="outline"
-                        className="w-full text-white border-white/20 hover:bg-white/10"
+                        className="w-full text-gray-900 dark:text-white border-gray-300 dark:border-white/20 hover:bg-gray-100 dark:hover:bg-white/10"
                       >
                         Voir le profil
                       </Button>
@@ -400,33 +400,33 @@ export default function TeamPage() {
             </div>
 
             {!loading && members.length > 0 && (
-              <div className="border-t border-white/10 pt-6 space-y-2">
-                <p className="text-sm font-medium text-white/80">Membres enregistrés</p>
+              <div className="border-t border-gray-200 dark:border-gray-600 pt-6 space-y-2">
+                <p className="text-sm font-medium text-gray-900 dark:text-gray-600 dark:text-gray-300">Membres enregistrés</p>
                 <div className="space-y-2">
                   {members.map((member) => (
                     <div
                       key={member.id}
-                      className="flex items-center justify-between p-4 bg-black/20 backdrop-blur-md border border-white/10 rounded-lg hover:bg-black/30 transition-colors"
+                      className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800/50 backdrop-blur-md border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-black/30 transition-colors"
                     >
                       <div className="flex items-center gap-4 flex-1">
-                        <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center">
-                          <User className="h-6 w-6 text-white/70" />
+                        <div className="w-12 h-12 rounded-full bg-gray-100 dark:bg-white/10 backdrop-blur-md flex items-center justify-center">
+                          <User className="h-6 w-6 text-gray-600 dark:text-gray-300" />
                         </div>
                         <div className="flex-1">
-                          <p className="font-medium text-white">{member.name}</p>
-                          <p className="text-sm text-white/70">{member.role}</p>
+                          <p className="font-medium text-gray-900 dark:text-white">{member.name}</p>
+                          <p className="text-sm text-gray-600 dark:text-gray-300">{member.role}</p>
                           <div className="flex items-center gap-4 mt-1">
-                            <div className="flex items-center gap-1 text-xs text-white/60">
+                            <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
                               <Mail className="h-3 w-3" />
                               {member.email}
                             </div>
                             {member.phone && (
-                              <div className="flex items-center gap-1 text-xs text-white/60">
+                              <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
                                 <Phone className="h-3 w-3" />
                                 {member.phone}
                               </div>
                             )}
-                            <div className="flex items-center gap-1 text-xs text-white/60">
+                            <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
                               <Key className="h-3 w-3" />
                               <span className="font-mono">{member.login_code}</span>
                             </div>
@@ -441,7 +441,7 @@ export default function TeamPage() {
                           variant="ghost"
                           size="sm"
                           onClick={() => handleEditMember(member)}
-                          className="text-white/70 hover:bg-white/10 hover:text-white"
+                          className="text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:bg-white/10 hover:text-gray-900 dark:hover:text-gray-900 dark:hover:text-white"
                         >
                           <Edit2 className="h-4 w-4" />
                         </Button>
@@ -449,7 +449,7 @@ export default function TeamPage() {
                           variant="ghost"
                           size="sm"
                           onClick={() => handleDeleteMember(member.id)}
-                          className="text-white/70 hover:bg-white/10 hover:text-white"
+                          className="text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:bg-white/10 hover:text-gray-900 dark:hover:text-gray-900 dark:hover:text-white"
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
@@ -463,31 +463,31 @@ export default function TeamPage() {
         </Card>
 
         <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-          <DialogContent className="bg-black/20 backdrop-blur-xl border border-white/10 text-white rounded-2xl">
+          <DialogContent className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-2xl">
             <DialogHeader>
-              <DialogTitle className="text-white">Modifier le Membre</DialogTitle>
+              <DialogTitle className="text-gray-900 dark:text-white">Modifier le Membre</DialogTitle>
             </DialogHeader>
             {editingMember && (
               <div className="grid gap-4 py-4">
                 <div className="space-y-2">
-                  <Label htmlFor="edit-name" className="text-white">Nom complet</Label>
+                  <Label htmlFor="edit-name" className="text-gray-900 dark:text-white">Nom complet</Label>
                   <Input
                     id="edit-name"
                     value={editingMember.name}
                     onChange={(e) => setEditingMember(prev => prev ? { ...prev, name: e.target.value } : null)}
-                    className="bg-black/20 border-white/10 text-white"
+                    className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="edit-role" className="text-white">Rôle</Label>
+                  <Label htmlFor="edit-role" className="text-gray-900 dark:text-white">Rôle</Label>
                   <Select 
                     value={editingMember.role} 
                     onValueChange={(value) => setEditingMember(prev => prev ? { ...prev, role: value } : null)}
                   >
-                    <SelectTrigger className="w-full bg-black/20 border-white/10 text-white">
+                    <SelectTrigger className="w-full bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-black/30 backdrop-blur-lg border-white/10 text-white">
+                    <SelectContent className="bg-white dark:bg-black/30 backdrop-blur-lg border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white">
                       <SelectItem value="Chef de chantier">Chef de chantier</SelectItem>
                       <SelectItem value="Ouvrier">Ouvrier</SelectItem>
                       <SelectItem value="Commercial">Commercial</SelectItem>
@@ -497,44 +497,44 @@ export default function TeamPage() {
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="edit-email" className="text-white">Email</Label>
+                  <Label htmlFor="edit-email" className="text-gray-900 dark:text-white">Email</Label>
                   <Input
                     id="edit-email"
                     type="email"
                     value={editingMember.email}
                     onChange={(e) => setEditingMember(prev => prev ? { ...prev, email: e.target.value } : null)}
-                    className="bg-black/20 border-white/10 text-white"
+                    className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="edit-phone" className="text-white">Téléphone</Label>
+                  <Label htmlFor="edit-phone" className="text-gray-900 dark:text-white">Téléphone</Label>
                   <Input
                     id="edit-phone"
                     value={editingMember.phone || ''}
                     onChange={(e) => setEditingMember(prev => prev ? { ...prev, phone: e.target.value } : null)}
-                    className="bg-black/20 border-white/10 text-white"
+                    className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="edit-login_code" className="text-white">Code de connexion</Label>
+                  <Label htmlFor="edit-login_code" className="text-gray-900 dark:text-white">Code de connexion</Label>
                   <Input
                     id="edit-login_code"
                     value={editingMember.login_code}
                     onChange={(e) => setEditingMember(prev => prev ? { ...prev, login_code: e.target.value } : null)}
-                    className="bg-black/20 border-white/10 text-white font-mono"
+                    className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white font-mono"
                     maxLength={10}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="edit-status" className="text-white">Statut</Label>
+                  <Label htmlFor="edit-status" className="text-gray-900 dark:text-white">Statut</Label>
                   <Select 
                     value={editingMember.status} 
                     onValueChange={(value) => setEditingMember(prev => prev ? { ...prev, status: value as 'actif' | 'inactif' } : null)}
                   >
-                    <SelectTrigger className="w-full bg-black/20 border-white/10 text-white">
+                    <SelectTrigger className="w-full bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-black/30 backdrop-blur-lg border-white/10 text-white">
+                    <SelectContent className="bg-white dark:bg-black/30 backdrop-blur-lg border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white">
                       <SelectItem value="actif">Actif</SelectItem>
                       <SelectItem value="inactif">Inactif</SelectItem>
                     </SelectContent>
@@ -543,7 +543,7 @@ export default function TeamPage() {
               </div>
             )}
             <DialogFooter>
-              <Button variant="outline" onClick={() => setIsEditDialogOpen(false)} className="text-white border-white/20 hover:bg-white/10">
+              <Button variant="outline" onClick={() => setIsEditDialogOpen(false)} className="text-gray-900 dark:text-white border-gray-300 dark:border-white/20 hover:bg-gray-100 dark:hover:bg-white/10">
                 Annuler
               </Button>
               <Button onClick={handleUpdateMember}>Enregistrer</Button>
@@ -551,15 +551,15 @@ export default function TeamPage() {
           </DialogContent>
         </Dialog>
 
-        <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white">
+        <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Building className="h-5 w-5 text-white/70" />
+              <Building className="h-5 w-5 text-gray-600 dark:text-gray-300" />
               Affectation aux Chantiers
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-white/70">
+            <p className="text-sm text-gray-600 dark:text-gray-300">
               Affectez les membres de l'équipe aux chantiers depuis la fiche chantier ou depuis le planning.
               Cette fonctionnalité vous permet de suivre qui travaille sur quel projet.
             </p>
@@ -568,19 +568,19 @@ export default function TeamPage() {
       </main>
 
       <Dialog open={showInviteModal} onOpenChange={setShowInviteModal}>
-        <DialogContent className="bg-black/20 backdrop-blur-xl border border-white/10 text-white rounded-2xl">
+        <DialogContent className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-2xl">
           <DialogHeader>
-            <DialogTitle className="text-white">Lien d'invitation créé</DialogTitle>
+            <DialogTitle className="text-gray-900 dark:text-white">Lien d'invitation créé</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
-            <p className="text-white/70 text-sm">
+            <p className="text-gray-600 dark:text-gray-300 text-sm">
               Partagez ce lien avec le membre d'équipe pour qu'il puisse se connecter :
             </p>
             <div className="flex gap-2">
               <Input
                 value={inviteLink || ''}
                 readOnly
-                className="bg-black/20 border-white/10 text-white font-mono text-sm"
+                className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white font-mono text-sm"
               />
               <Button
                 onClick={() => {
@@ -589,12 +589,12 @@ export default function TeamPage() {
                     alert('Lien copié dans le presse-papier !');
                   }
                 }}
-                className="bg-white/20 backdrop-blur-md text-white border border-white/10 hover:bg-white/30"
+                className="bg-gray-100 dark:bg-white/20 backdrop-blur-md text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-white/30"
               >
                 <Copy className="h-4 w-4" />
               </Button>
             </div>
-            <p className="text-xs text-white/50">
+            <p className="text-xs text-gray-500 dark:text-gray-400">
               Le membre devra entrer son code de connexion sur la page d'invitation.
             </p>
           </div>

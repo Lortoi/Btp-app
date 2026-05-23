@@ -252,13 +252,13 @@ export default function QuotesPage() {
   )
 
   const savedQuotesBlock = (
-    <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white">
+    <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
       <CardHeader>
         <CardTitle>Devis générés</CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
         {savedQuotes.length === 0 ? (
-          <div className="text-sm text-white/60">Aucun devis généré pour le moment.</div>
+          <div className="text-sm text-gray-500 dark:text-gray-400">Aucun devis généré pour le moment.</div>
         ) : (
           <div className="space-y-2">
             {savedQuotes
@@ -268,13 +268,13 @@ export default function QuotesPage() {
               .map((q) => (
                 <div
                   key={q.id}
-                  className="flex items-center justify-between gap-3 rounded-lg border border-white/10 bg-black/20 px-3 py-2"
+                  className="flex items-center justify-between gap-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-black/20 px-3 py-2"
                 >
                   <div className="min-w-0">
-                    <div className="text-sm font-medium text-white truncate">
+                    <div className="text-sm font-medium text-gray-900 dark:text-white truncate">
                       {q.numero || "DEV-—"} — {q.clientNom || "Client"}
                     </div>
-                    <div className="text-xs text-white/50">
+                    <div className="text-xs text-gray-500 dark:text-gray-400">
                       {new Date(q.createdAt).toLocaleString("fr-FR")}
                     </div>
                   </div>
@@ -283,7 +283,7 @@ export default function QuotesPage() {
                       type="button"
                       size="sm"
                       variant="outline"
-                      className="text-white border-white/20 hover:bg-white/10"
+                      className="text-gray-900 dark:text-white border-gray-300 dark:border-white/20 hover:bg-gray-100 dark:hover:bg-white/10"
                       onClick={() => setDraft(q.draft)}
                     >
                       Ouvrir
@@ -312,7 +312,7 @@ export default function QuotesPage() {
   if (!draft || !totals) {
     return (
       <PageWrapper>
-        <div className="p-6 text-white">Chargement…</div>
+        <div className="p-6 text-gray-900 dark:text-white">Chargement…</div>
       </PageWrapper>
     )
   }
@@ -320,9 +320,9 @@ export default function QuotesPage() {
   return (
     <PageWrapper>
       <div className="flex flex-col flex-1 min-h-0 h-full">
-        <header className="shrink-0 bg-black/20 backdrop-blur-xl border-b border-white/10 px-6 py-4">
-          <h1 className="text-2xl font-bold text-white">Générateur de Devis</h1>
-          <p className="text-sm text-white/70">
+        <header className="shrink-0 bg-white/80 dark:bg-black/20 backdrop-blur-xl border-b border-gray-200 dark:border-gray-600 px-6 py-4">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Générateur de Devis</h1>
+          <p className="text-sm text-gray-600 dark:text-gray-300">
             Onglets Formulaire et Aperçu — enregistrement automatique
           </p>
         </header>
@@ -342,11 +342,11 @@ export default function QuotesPage() {
               // #endregion
             }}
           >
-            <TabsList className="mx-4 mt-4 shrink-0 bg-black/30 border border-white/10">
-              <TabsTrigger value="form" className="data-[state=active]:bg-white/20 text-white">
+            <TabsList className="mx-4 mt-4 shrink-0 bg-gray-100 dark:bg-black/30 border border-gray-300 dark:border-gray-600">
+              <TabsTrigger value="form" className="data-[state=active]:bg-white/20 text-gray-900 dark:text-white">
                 Formulaire
               </TabsTrigger>
-              <TabsTrigger value="preview" className="data-[state=active]:bg-white/20 text-white">
+              <TabsTrigger value="preview" className="data-[state=active]:bg-white/20 text-gray-900 dark:text-white">
                 Aperçu
               </TabsTrigger>
             </TabsList>
@@ -438,7 +438,7 @@ function QuoteForm({
 
   return (
     <div className="space-y-6 pb-8">
-      <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white">
+      <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Building2 className="h-5 w-5" />
@@ -447,9 +447,9 @@ function QuoteForm({
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label className="text-white">Logo (PNG / JPG)</Label>
+            <Label className="text-gray-900 dark:text-white">Logo (PNG / JPG)</Label>
             <div className="flex items-center gap-4 flex-wrap">
-              <Button type="button" variant="outline" className="text-white border-white/20" asChild>
+              <Button type="button" variant="outline" className="text-gray-900 dark:text-white border-gray-300 dark:border-white/20" asChild>
                 <label className="cursor-pointer">
                   <Upload className="h-4 w-4 mr-2 inline" />
                   Téléverser
@@ -461,12 +461,12 @@ function QuoteForm({
                   <img
                     src={draft.company.logoBase64}
                     alt="Logo"
-                    className="h-16 w-16 object-contain rounded border border-white/20 bg-white/10"
+                    className="h-16 w-16 object-contain rounded border border-gray-300 dark:border-white/20 bg-gray-100 dark:bg-white/10"
                   />
                   <Button
                     type="button"
                     variant="outline"
-                    className="text-white/90 border-white/20 hover:bg-red-500/15 hover:border-red-400/35 hover:text-red-100"
+                    className="text-gray-900 dark:text-white border-gray-300 dark:border-white/20 hover:bg-red-500/15 hover:border-red-400/35 hover:text-red-100"
                     onClick={() =>
                       setDraft({
                         ...draft,
@@ -482,7 +482,7 @@ function QuoteForm({
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="rs" className="text-white">Raison sociale</Label>
+            <Label htmlFor="rs" className="text-gray-900 dark:text-white">Raison sociale</Label>
             <Input
               id="rs"
               value={draft.company.raisonSociale}
@@ -492,11 +492,11 @@ function QuoteForm({
                   company: { ...draft.company, raisonSociale: e.target.value },
                 })
               }
-              className="bg-black/20 border-white/10 text-white"
+              className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
             />
           </div>
           <div className="space-y-2">
-            <Label className="text-white">Forme juridique</Label>
+            <Label className="text-gray-900 dark:text-white">Forme juridique</Label>
             <Select
               value={draft.company.formeJuridique}
               onValueChange={(v: FormeJuridique) =>
@@ -506,7 +506,7 @@ function QuoteForm({
                 })
               }
             >
-              <SelectTrigger className="bg-black/20 border-white/10 text-white">
+              <SelectTrigger className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -520,7 +520,7 @@ function QuoteForm({
             </Select>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="adresse-ent" className="text-white">Adresse complète</Label>
+            <Label htmlFor="adresse-ent" className="text-gray-900 dark:text-white">Adresse complète</Label>
             <Textarea
               id="adresse-ent"
               value={draft.company.adresse}
@@ -531,12 +531,12 @@ function QuoteForm({
                 })
               }
               rows={3}
-              className="bg-black/20 border-white/10 text-white"
+              className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
             />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="siret" className="text-white">SIRET</Label>
+              <Label htmlFor="siret" className="text-gray-900 dark:text-white">SIRET</Label>
               <Input
                 id="siret"
                 value={draft.company.siret}
@@ -546,11 +546,11 @@ function QuoteForm({
                     company: { ...draft.company, siret: e.target.value },
                   })
                 }
-                className="bg-black/20 border-white/10 text-white"
+                className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="tva-intra" className="text-white">N° TVA intracommunautaire</Label>
+              <Label htmlFor="tva-intra" className="text-gray-900 dark:text-white">N° TVA intracommunautaire</Label>
               <Input
                 id="tva-intra"
                 value={draft.company.tvaIntra}
@@ -560,13 +560,13 @@ function QuoteForm({
                     company: { ...draft.company, tvaIntra: e.target.value },
                   })
                 }
-                className="bg-black/20 border-white/10 text-white"
+                className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
               />
             </div>
           </div>
           {showCapital && (
             <div className="space-y-2">
-              <Label htmlFor="capital" className="text-white">Capital social</Label>
+              <Label htmlFor="capital" className="text-gray-900 dark:text-white">Capital social</Label>
               <Input
                 id="capital"
                 value={draft.company.capitalSocial}
@@ -576,13 +576,13 @@ function QuoteForm({
                     company: { ...draft.company, capitalSocial: e.target.value },
                   })
                 }
-                className="bg-black/20 border-white/10 text-white"
+                className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
               />
             </div>
           )}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-2">
-              <Label className="text-white">Assurance décennale — Assureur</Label>
+              <Label className="text-gray-900 dark:text-white">Assurance décennale — Assureur</Label>
               <Input
                 value={draft.company.decennale.assureur}
                 onChange={(e) =>
@@ -594,11 +594,11 @@ function QuoteForm({
                     },
                   })
                 }
-                className="bg-black/20 border-white/10 text-white"
+                className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
               />
             </div>
             <div className="space-y-2">
-              <Label className="text-white">N° contrat</Label>
+              <Label className="text-gray-900 dark:text-white">N° contrat</Label>
               <Input
                 value={draft.company.decennale.contrat}
                 onChange={(e) =>
@@ -610,11 +610,11 @@ function QuoteForm({
                     },
                   })
                 }
-                className="bg-black/20 border-white/10 text-white"
+                className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
               />
             </div>
             <div className="space-y-2">
-              <Label className="text-white">Zone couverte</Label>
+              <Label className="text-gray-900 dark:text-white">Zone couverte</Label>
               <Input
                 value={draft.company.decennale.zone}
                 onChange={(e) =>
@@ -626,20 +626,20 @@ function QuoteForm({
                     },
                   })
                 }
-                className="bg-black/20 border-white/10 text-white"
+                className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
               />
             </div>
           </div>
         </CardContent>
       </Card>
 
-      <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white">
+      <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
         <CardHeader>
           <CardTitle>Devis</CardTitle>
         </CardHeader>
         <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="numero" className="text-white">Numéro de devis</Label>
+            <Label htmlFor="numero" className="text-gray-900 dark:text-white">Numéro de devis</Label>
             <Input
               id="numero"
               value={draft.devis.numero}
@@ -649,11 +649,11 @@ function QuoteForm({
                   devis: { ...draft.devis, numero: e.target.value },
                 })
               }
-              className="bg-black/20 border-white/10 text-white font-mono"
+              className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white font-mono"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="date-em" className="text-white">Date d&apos;émission</Label>
+            <Label htmlFor="date-em" className="text-gray-900 dark:text-white">Date d&apos;émission</Label>
             <Input
               id="date-em"
               type="date"
@@ -664,11 +664,11 @@ function QuoteForm({
                   devis: { ...draft.devis, dateEmission: e.target.value },
                 })
               }
-              className="bg-black/20 border-white/10 text-white"
+              className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="validite" className="text-white">Durée de validité (jours)</Label>
+            <Label htmlFor="validite" className="text-gray-900 dark:text-white">Durée de validité (jours)</Label>
             <Input
               id="validite"
               type="number"
@@ -683,30 +683,30 @@ function QuoteForm({
                   },
                 })
               }
-              className="bg-black/20 border-white/10 text-white"
+              className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
             />
           </div>
         </CardContent>
       </Card>
 
-      <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white">
+      <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
         <CardHeader>
           <CardTitle>Client</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="client-nom" className="text-white">Nom / Raison sociale</Label>
+            <Label htmlFor="client-nom" className="text-gray-900 dark:text-white">Nom / Raison sociale</Label>
             <Input
               id="client-nom"
               value={draft.client.nom}
               onChange={(e) =>
                 setDraft({ ...draft, client: { ...draft.client, nom: e.target.value } })
               }
-              className="bg-black/20 border-white/10 text-white"
+              className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="client-adr" className="text-white">Adresse complète</Label>
+            <Label htmlFor="client-adr" className="text-gray-900 dark:text-white">Adresse complète</Label>
             <Textarea
               id="client-adr"
               value={draft.client.adresse}
@@ -714,12 +714,12 @@ function QuoteForm({
                 setDraft({ ...draft, client: { ...draft.client, adresse: e.target.value } })
               }
               rows={3}
-              className="bg-black/20 border-white/10 text-white"
+              className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
             />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="client-email" className="text-white">Email</Label>
+              <Label htmlFor="client-email" className="text-gray-900 dark:text-white">Email</Label>
               <Input
                 id="client-email"
                 type="email"
@@ -727,25 +727,25 @@ function QuoteForm({
                 onChange={(e) =>
                   setDraft({ ...draft, client: { ...draft.client, email: e.target.value } })
                 }
-                className="bg-black/20 border-white/10 text-white"
+                className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="client-tel" className="text-white">Téléphone</Label>
+              <Label htmlFor="client-tel" className="text-gray-900 dark:text-white">Téléphone</Label>
               <Input
                 id="client-tel"
                 value={draft.client.phone}
                 onChange={(e) =>
                   setDraft({ ...draft, client: { ...draft.client, phone: e.target.value } })
                 }
-                className="bg-black/20 border-white/10 text-white"
+                className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
               />
             </div>
           </div>
         </CardContent>
       </Card>
 
-      <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white">
+      <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Wand2 className="h-5 w-5 shrink-0" />
@@ -754,7 +754,7 @@ function QuoteForm({
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="ia-chantier-desc" className="text-white">
+            <Label htmlFor="ia-chantier-desc" className="text-gray-900 dark:text-white">
               Description du chantier
             </Label>
             <Textarea
@@ -767,14 +767,14 @@ function QuoteForm({
               disabled={iaLoading}
               placeholder="Décrivez le chantier... ex: pose de carrelage 30m² salle de bain, fourniture comprise"
               rows={4}
-              className="bg-black/20 border-white/10 text-white placeholder:text-white/40 resize-y min-h-[100px]"
+              className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/50 resize-y min-h-[100px]"
             />
           </div>
           <Button
             type="button"
             disabled={iaLoading}
             onClick={handleGenerateIaPrestations}
-            className="bg-white/20 text-white border border-white/10 hover:bg-white/30 disabled:opacity-60"
+            className="bg-white/20 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 hover:bg-white/30 disabled:opacity-60"
           >
             {iaLoading ? "Génération en cours…" : "Générer avec l'IA"}
           </Button>
@@ -782,7 +782,7 @@ function QuoteForm({
         </CardContent>
       </Card>
 
-      <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white">
+      <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
         <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-x-6 gap-y-3 space-y-0 p-6 pb-5">
           <CardTitle className="text-xl md:text-2xl tracking-tight">
             Prestations
@@ -791,7 +791,7 @@ function QuoteForm({
             type="button"
             size="sm"
             onClick={addLigne}
-            className="shrink-0 bg-white/20 text-white border-white/20 px-4 h-9"
+            className="shrink-0 bg-white/20 text-gray-900 dark:text-white border-gray-300 dark:border-white/20 px-4 h-9"
           >
             <Plus className="h-4 w-4 mr-2" />
             Ajouter une ligne
@@ -803,18 +803,18 @@ function QuoteForm({
             return (
               <div
                 key={ligne.id}
-                className="grid grid-cols-1 lg:grid-cols-12 gap-x-4 gap-y-4 p-5 rounded-xl bg-black/20 border border-white/10"
+                className="grid grid-cols-1 lg:grid-cols-12 gap-x-4 gap-y-4 p-5 rounded-xl bg-black/20 border border-gray-300 dark:border-gray-600"
               >
                 <div className="lg:col-span-4 space-y-2">
-                  <Label className="text-white">Description</Label>
+                  <Label className="text-gray-900 dark:text-white">Description</Label>
                   <Input
                     value={ligne.description}
                     onChange={(e) => updateLigne(ligne.id, { description: e.target.value })}
-                    className="bg-black/20 border-white/10 text-white"
+                    className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
                   />
                 </div>
                 <div className="lg:col-span-2 space-y-2">
-                  <Label className="text-white">Quantité</Label>
+                  <Label className="text-gray-900 dark:text-white">Quantité</Label>
                   <Input
                     type="number"
                     min={0}
@@ -823,16 +823,16 @@ function QuoteForm({
                     onChange={(e) =>
                       updateLigne(ligne.id, { quantity: parseFloat(e.target.value) || 0 })
                     }
-                    className="bg-black/20 border-white/10 text-white"
+                    className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
                   />
                 </div>
                 <div className="lg:col-span-2 space-y-2">
-                  <Label className="text-white">Unité</Label>
+                  <Label className="text-gray-900 dark:text-white">Unité</Label>
                   <Select
                     value={ligne.unite}
                     onValueChange={(v: UnitePrestation) => updateLigne(ligne.id, { unite: v })}
                   >
-                    <SelectTrigger className="bg-black/20 border-white/10 text-white">
+                    <SelectTrigger className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -845,7 +845,7 @@ function QuoteForm({
                   </Select>
                 </div>
                 <div className="lg:col-span-2 space-y-2">
-                  <Label className="text-white">Prix unitaire HT (€)</Label>
+                  <Label className="text-gray-900 dark:text-white">Prix unitaire HT (€)</Label>
                   <Input
                     type="number"
                     min={0}
@@ -854,12 +854,12 @@ function QuoteForm({
                     onChange={(e) =>
                       updateLigne(ligne.id, { puHT: parseFloat(e.target.value) || 0 })
                     }
-                    className="bg-black/20 border-white/10 text-white"
+                    className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
                   />
                 </div>
                 <div className="lg:col-span-1 space-y-2">
-                  <Label className="text-white">Total HT</Label>
-                  <div className="h-10 px-3 flex items-center rounded-md border border-white/10 bg-black/30 text-sm font-medium">
+                  <Label className="text-gray-900 dark:text-white">Total HT</Label>
+                  <div className="h-10 px-3 flex items-center rounded-md border border-gray-300 dark:border-gray-600 bg-black/30 text-sm font-medium">
                     {lineTotal.toFixed(2)} €
                   </div>
                 </div>
@@ -882,7 +882,7 @@ function QuoteForm({
         </CardContent>
       </Card>
 
-      <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white">
+      <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
         <CardHeader>
           <CardTitle>Financier</CardTitle>
         </CardHeader>
@@ -892,11 +892,11 @@ function QuoteForm({
             return (
               <>
                 <div className="flex justify-between text-sm">
-                  <span className="text-white/80">Total HT</span>
+                  <span className="text-gray-600 dark:text-gray-300">Total HT</span>
                   <span className="font-medium">{t.totalHT.toFixed(2)} €</span>
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-white">TVA</Label>
+                  <Label className="text-gray-900 dark:text-white">TVA</Label>
                   <Select
                     value={draft.financier.tvaMode}
                     onValueChange={(v: TvaMode) =>
@@ -906,7 +906,7 @@ function QuoteForm({
                       })
                     }
                   >
-                    <SelectTrigger className="bg-black/20 border-white/10 text-white">
+                    <SelectTrigger className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -919,18 +919,18 @@ function QuoteForm({
                   </Select>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-white/80">Montant TVA</span>
+                  <span className="text-gray-600 dark:text-gray-300">Montant TVA</span>
                   <span className="font-medium">{t.montantTVA.toFixed(2)} €</span>
                 </div>
                 <div className="flex justify-between items-center rounded-lg border-2 border-[#1e3a5f] bg-[#1e3a5f]/20 px-4 py-3">
-                  <span className="font-bold text-lg text-white">Total TTC</span>
-                  <span className="font-bold text-2xl text-white">{t.totalTTC.toFixed(2)} €</span>
+                  <span className="font-bold text-lg text-gray-900 dark:text-white">Total TTC</span>
+                  <span className="font-bold text-2xl text-gray-900 dark:text-white">{t.totalTTC.toFixed(2)} €</span>
                 </div>
               </>
             )
           })()}
           <div className="space-y-2">
-            <Label htmlFor="modalites" className="text-white">Modalités de paiement</Label>
+            <Label htmlFor="modalites" className="text-gray-900 dark:text-white">Modalités de paiement</Label>
             <Textarea
               id="modalites"
               value={draft.financier.modalitesPaiement}
@@ -941,11 +941,11 @@ function QuoteForm({
                 })
               }
               rows={3}
-              className="bg-black/20 border-white/10 text-white"
+              className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="penalites" className="text-white">Pénalités de retard</Label>
+            <Label htmlFor="penalites" className="text-gray-900 dark:text-white">Pénalités de retard</Label>
             <Textarea
               id="penalites"
               value={draft.financier.penalitesRetard}
@@ -956,13 +956,13 @@ function QuoteForm({
                 })
               }
               rows={2}
-              className="bg-black/20 border-white/10 text-white"
+              className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
             />
           </div>
         </CardContent>
       </Card>
 
-      <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white">
+      <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
         <CardHeader>
           <CardTitle>Notes</CardTitle>
         </CardHeader>
@@ -972,7 +972,7 @@ function QuoteForm({
             onChange={(e) => setDraft({ ...draft, notes: e.target.value })}
             rows={5}
             placeholder="Conditions générales, remarques…"
-            className="bg-black/20 border-white/10 text-white"
+            className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
           />
         </CardContent>
       </Card>

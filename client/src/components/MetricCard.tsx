@@ -55,7 +55,7 @@ export default function MetricCard({
               "p-3 rounded-lg bg-gradient-to-r",
               gradient
             )}>
-              <div className="text-white">
+              <div className="text-gray-900 dark:text-white">
                 {icon}
               </div>
             </div>

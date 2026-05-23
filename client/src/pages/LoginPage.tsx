@@ -95,11 +95,11 @@ export default function LoginPage() {
   return (
     <section className="relative w-full min-h-screen overflow-hidden bg-transparent flex items-center justify-center">
       <div className="relative z-10 max-w-md mx-auto px-6 w-full">
-        <div className="bg-white/10 dark:bg-black/20 backdrop-blur-lg rounded-2xl border border-white/20 p-8 shadow-2xl">
+        <div className="bg-gray-100 dark:bg-white/10 dark:bg-black/20 backdrop-blur-lg rounded-2xl border border-gray-300 dark:border-white/20 p-8 shadow-2xl">
           <div className="mb-8">
             <div className="flex items-center justify-between mb-2 relative">
               <div className="flex-1"></div>
-              <h1 className="text-3xl font-bold text-white flex-1 text-center absolute left-0 right-0">
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white flex-1 text-center absolute left-0 right-0">
                 Connexion
               </h1>
               {loginMode === 'admin' && (
@@ -108,35 +108,35 @@ export default function LoginPage() {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="text-white/70 hover:text-white hover:bg-white/10 p-2 h-8 w-8 ml-auto"
+                      className="text-gray-600 dark:text-gray-300 hover:text-white hover:bg-gray-100 dark:bg-white/10 p-2 h-8 w-8 ml-auto"
                       title="Gérer le code admin"
                     >
                       <Settings className="h-4 w-4" />
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="bg-black/20 backdrop-blur-xl border border-white/10 text-white rounded-2xl">
+                  <DialogContent className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-2xl">
                     <DialogHeader>
-                      <DialogTitle className="text-white">Gérer le Code Admin</DialogTitle>
+                      <DialogTitle className="text-gray-900 dark:text-white">Gérer le Code Admin</DialogTitle>
                     </DialogHeader>
                     <div className="grid gap-4 py-4">
                       <div className="space-y-2">
-                        <Label htmlFor="admin-code" className="text-white">Nouveau Code Admin</Label>
+                        <Label htmlFor="admin-code" className="text-gray-900 dark:text-white">Nouveau Code Admin</Label>
                         <Input
                           id="admin-code"
                           type="text"
                           value={newAdminCode}
                           onChange={(e) => setNewAdminCode(e.target.value)}
                           placeholder="Entrez le nouveau code"
-                          className="bg-black/20 border-white/10 text-white font-mono"
+                          className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white font-mono"
                           maxLength={20}
                         />
-                        <p className="text-xs text-white/60">
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
                           Ce code sera utilisé pour se connecter en tant qu'administrateur
                         </p>
                       </div>
                     </div>
                     <DialogFooter>
-                      <Button variant="outline" onClick={() => setIsAdminCodeDialogOpen(false)} className="text-white border-white/20 hover:bg-white/10">
+                      <Button variant="outline" onClick={() => setIsAdminCodeDialogOpen(false)} className="text-gray-900 dark:text-white border-gray-300 dark:border-white/20 hover:bg-gray-100 dark:hover:bg-white/10">
                         Annuler
                       </Button>
                       <Button onClick={handleUpdateAdminCode}>
@@ -147,7 +147,7 @@ export default function LoginPage() {
                 </Dialog>
               )}
             </div>
-            <p className="text-white/80 text-sm text-center">
+            <p className="text-gray-600 dark:text-gray-300 text-sm text-center">
               {loginMode === 'admin' 
                 ? "Entrer votre code de connection à votre application"
                 : "Sélectionnez un membre d'équipe ou entrez votre code"}
@@ -159,23 +159,23 @@ export default function LoginPage() {
             <div className="space-y-4">
               {/* Liste des membres */}
               {loadingMembers ? (
-                <div className="text-center py-8 text-white/70">Chargement...</div>
+                <div className="text-center py-8 text-gray-600 dark:text-gray-300">Chargement...</div>
               ) : teamMembers.length > 0 ? (
                 <div className="space-y-2 max-h-64 overflow-y-auto">
                   {teamMembers.map((member) => (
                     <Card
                       key={member.id}
-                      className="bg-white/10 border-white/20 text-white cursor-pointer hover:bg-white/20 transition-colors"
+                      className="bg-gray-100 dark:bg-white/10 border-gray-300 dark:border-white/20 text-gray-900 dark:text-white cursor-pointer hover:bg-white/20 transition-colors"
                       onClick={() => setCode(member.login_code)}
                     >
                       <CardContent className="p-4">
                         <div className="flex items-center justify-between">
                           <div>
                             <p className="font-medium">{member.name}</p>
-                            <p className="text-sm text-white/70">{member.role}</p>
+                            <p className="text-sm text-gray-600 dark:text-gray-300">{member.role}</p>
                           </div>
                           <div className="flex items-center gap-2">
-                            <Key className="h-4 w-4 text-white/70" />
+                            <Key className="h-4 w-4 text-gray-600 dark:text-gray-300" />
                             <span className="font-mono text-sm">{member.login_code}</span>
                           </div>
                         </div>
@@ -184,7 +184,7 @@ export default function LoginPage() {
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-8 text-white/70">
+                <div className="text-center py-8 text-gray-600 dark:text-gray-300">
                   Aucun membre d'équipe disponible
                 </div>
               )}
@@ -197,14 +197,14 @@ export default function LoginPage() {
                     value={code}
                     onChange={(e) => setCode(e.target.value)}
                     placeholder="Ou entrez votre code"
-                    className="w-full bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-white/40 focus:ring-white/20 h-12 text-center text-lg tracking-widest font-mono"
+                    className="w-full bg-gray-100 dark:bg-white/10 border-gray-300 dark:border-white/20 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/50 focus:border-white/40 focus:ring-white/20 h-12 text-center text-lg tracking-widest font-mono"
                     maxLength={10}
                   />
                 </div>
 
                 <Button
                   type="submit"
-                  className="w-full bg-[rgba(63,63,63,1)] border-4 border-card text-white hover:bg-[rgba(63,63,63,0.9)] transition-colors h-12 text-base font-semibold"
+                  className="w-full bg-[rgba(63,63,63,1)] border-4 border-card text-gray-900 dark:text-white hover:bg-[rgba(63,63,63,0.9)] transition-colors h-12 text-base font-semibold"
                 >
                   Se connecter
                 </Button>
@@ -218,14 +218,14 @@ export default function LoginPage() {
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
                   placeholder="Entrez votre code"
-                  className="w-full bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-white/40 focus:ring-white/20 h-12 text-center text-lg tracking-widest font-mono"
+                  className="w-full bg-gray-100 dark:bg-white/10 border-gray-300 dark:border-white/20 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/50 focus:border-white/40 focus:ring-white/20 h-12 text-center text-lg tracking-widest font-mono"
                   maxLength={10}
                 />
               </div>
 
               <Button
                 type="submit"
-                className="w-full bg-[rgba(63,63,63,1)] border-4 border-card text-white hover:bg-[rgba(63,63,63,0.9)] transition-colors h-12 text-base font-semibold"
+                className="w-full bg-[rgba(63,63,63,1)] border-4 border-card text-gray-900 dark:text-white hover:bg-[rgba(63,63,63,0.9)] transition-colors h-12 text-base font-semibold"
               >
                 Se connecter
               </Button>

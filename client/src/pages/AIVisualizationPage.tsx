@@ -83,13 +83,13 @@ export default function AIVisualizationPage() {
 
   return (
     <PageWrapper>
-      <header className="bg-black/20 backdrop-blur-xl border-b border-white/10 px-6 py-4">
+      <header className="bg-white/80 dark:bg-black/20 backdrop-blur-xl border-b border-gray-200 dark:border-gray-600 px-6 py-4">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-white">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
               Visualisation IA
             </h1>
-            <p className="text-sm text-white/70">Générez des rendus professionnels de vos projets</p>
+            <p className="text-sm text-gray-600 dark:text-gray-300">Générez des rendus professionnels de vos projets</p>
           </div>
           
           {/* Step indicator */}
@@ -106,25 +106,25 @@ export default function AIVisualizationPage() {
           {/* Step 1: Upload */}
           {step === 'upload' && (
             <div className="max-w-2xl mx-auto space-y-6">
-              <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white hover-elevate">
+              <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover-elevate">
                 <CardHeader className="text-center">
-                  <div className="w-16 h-16 mx-auto rounded-xl bg-black/20 backdrop-blur-md border border-white/10 flex items-center justify-center mb-4">
-                    <ImageIcon className="h-8 w-8 text-white" />
+                  <div className="w-16 h-16 mx-auto rounded-xl bg-black/20 backdrop-blur-md border border-gray-300 dark:border-gray-600 flex items-center justify-center mb-4">
+                    <ImageIcon className="h-8 w-8 text-gray-600 dark:text-gray-300" />
                   </div>
                   <CardTitle>Uploadez votre photo de terrain</CardTitle>
-                  <p className="text-white/70">
+                  <p className="text-gray-600 dark:text-gray-300">
                     Sélectionnez une photo claire de l'espace à aménager pour obtenir le meilleur rendu
                   </p>
                 </CardHeader>
                 <CardContent>
                   <div 
-                    className="border-2 border-dashed border-white/20 rounded-lg p-8 text-center hover:border-white/40 transition-colors cursor-pointer bg-black/10"
+                    className="border-2 border-dashed border-gray-300 dark:border-white/20 rounded-lg p-8 text-center hover:border-white/40 transition-colors cursor-pointer bg-black/10"
                     onClick={() => fileInputRef.current?.click()}
                     data-testid="upload-zone"
                   >
-                    <Upload className="h-12 w-12 mx-auto text-white/70 mb-4" />
-                    <p className="text-lg font-medium mb-2 text-white">Cliquez pour sélectionner une photo</p>
-                    <p className="text-sm text-white/70">
+                    <Upload className="h-12 w-12 mx-auto text-gray-600 dark:text-gray-300 mb-4" />
+                    <p className="text-lg font-medium mb-2 text-gray-900 dark:text-white">Cliquez pour sélectionner une photo</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">
                       Formats supportés: JPG, PNG, WEBP • Max 10MB
                     </p>
                   </div>
@@ -146,7 +146,7 @@ export default function AIVisualizationPage() {
             <div className="max-w-4xl mx-auto space-y-6">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Image Preview */}
-                <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white hover-elevate">
+                <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover-elevate">
                   <CardHeader>
                     <CardTitle>Image téléchargée</CardTitle>
                   </CardHeader>
@@ -172,7 +172,7 @@ export default function AIVisualizationPage() {
                 {/* Configuration */}
                 <div className="space-y-6">
                   {/* Project Type */}
-                  <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white hover-elevate">
+                  <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover-elevate">
                     <CardHeader>
                       <CardTitle>Type de projet</CardTitle>
                       <p className="text-sm text-muted-foreground">Sélectionnez le type d'aménagement souhaité</p>
@@ -181,10 +181,10 @@ export default function AIVisualizationPage() {
                       {projectTypes.map((type) => (
                         <div
                           key={type.id}
-                          className={`p-3 rounded-lg border cursor-pointer transition-all text-white ${
+                          className={`p-3 rounded-lg border cursor-pointer transition-all text-gray-900 dark:text-white ${
                             selectedProjectType === type.id 
-                              ? 'border-white/10 bg-black/20' 
-                              : 'border-white/20 hover:border-white/40 bg-black/10'
+                              ? 'border-gray-300 dark:border-gray-600 bg-black/20' 
+                              : 'border-gray-300 dark:border-white/20 hover:border-white/40 bg-black/10'
                           }`}
                           onClick={() => setSelectedProjectType(type.id)}
                           data-testid={`project-type-${type.id}`}
@@ -193,7 +193,7 @@ export default function AIVisualizationPage() {
                             <span className="text-2xl">{type.icon}</span>
                             <div>
                               <h4 className="font-medium">{type.name}</h4>
-                              <p className="text-sm text-white/70">{type.description}</p>
+                              <p className="text-sm text-gray-600 dark:text-gray-300">{type.description}</p>
                             </div>
                           </div>
                         </div>
@@ -203,7 +203,7 @@ export default function AIVisualizationPage() {
 
                   {/* Style */}
                   {selectedProjectType && (
-                    <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white hover-elevate">
+                    <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover-elevate">
                       <CardHeader>
                         <CardTitle>Style de rendu</CardTitle>
                         <p className="text-sm text-muted-foreground">Choisissez l'ambiance désirée</p>
@@ -212,10 +212,10 @@ export default function AIVisualizationPage() {
                         {styles.map((style) => (
                           <div
                             key={style.id}
-                            className={`p-3 rounded-lg border cursor-pointer transition-all text-white ${
+                            className={`p-3 rounded-lg border cursor-pointer transition-all text-gray-900 dark:text-white ${
                               selectedStyle === style.id 
-                                ? 'border-white/10 bg-black/20' 
-                                : 'border-white/20 hover:border-white/40 bg-black/10'
+                                ? 'border-gray-300 dark:border-gray-600 bg-black/20' 
+                                : 'border-gray-300 dark:border-white/20 hover:border-white/40 bg-black/10'
                             }`}
                             onClick={() => setSelectedStyle(style.id)}
                             data-testid={`style-${style.id}`}
@@ -248,11 +248,11 @@ export default function AIVisualizationPage() {
             <div className="max-w-2xl mx-auto space-y-6">
               <Card className="hover-elevate text-center">
                 <CardHeader>
-                  <div className="w-16 h-16 mx-auto rounded-xl bg-black/20 backdrop-blur-md border border-white/10 flex items-center justify-center mb-4">
-                    <RefreshCw className="h-8 w-8 text-white animate-spin" />
+                  <div className="w-16 h-16 mx-auto rounded-xl bg-black/20 backdrop-blur-md border border-gray-300 dark:border-gray-600 flex items-center justify-center mb-4">
+                    <RefreshCw className="h-8 w-8 text-gray-900 dark:text-white animate-spin" />
                   </div>
                   <CardTitle>Génération en cours...</CardTitle>
-                  <p className="text-white/70">
+                  <p className="text-gray-600 dark:text-gray-300">
                     Notre IA analyse votre terrain et génère le rendu professionnel
                   </p>
                 </CardHeader>
@@ -272,7 +272,7 @@ export default function AIVisualizationPage() {
           {/* Step 4: Result */}
           {step === 'result' && uploadedImage && (
             <div className="max-w-6xl mx-auto space-y-6">
-              <Card className="bg-black/20 backdrop-blur-xl border border-white/10 text-white hover-elevate">
+              <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover-elevate">
                 <CardHeader className="flex flex-row items-center justify-between">
                   <div className="flex items-center gap-3">
                     <CheckCircle className="h-6 w-6 text-green-500" />
@@ -305,9 +305,9 @@ export default function AIVisualizationPage() {
                     {/* After */}
                     <div className="space-y-3">
                       <h3 className="text-lg font-semibold">Après - Rendu IA</h3>
-                      <div className="w-full h-80 bg-black/20 backdrop-blur-xl border border-white/10 rounded-lg flex items-center justify-center">
+                      <div className="w-full h-80 bg-black/20 backdrop-blur-xl border border-gray-300 dark:border-gray-600 rounded-lg flex items-center justify-center">
                         <div className="text-center space-y-2">
-                          <Sparkles className="h-12 w-12 mx-auto text-white" />
+                          <Sparkles className="h-12 w-12 mx-auto text-gray-600 dark:text-gray-300" />
                           <p className="text-lg font-medium">Rendu IA généré</p>
                           <p className="text-sm text-muted-foreground">
                             Ici apparaîtrait le rendu professionnel<br />
@@ -315,23 +315,23 @@ export default function AIVisualizationPage() {
                           </p>
                         </div>
                       </div>
-                      <Badge className="bg-black/20 backdrop-blur-md border border-white/10 text-white">
+                      <Badge className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-md border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
                         Généré par IA
                       </Badge>
                     </div>
                   </div>
 
                   {/* Project Details */}
-                  <div className="mt-6 p-4 bg-black/20 backdrop-blur-md border border-white/10 rounded-lg">
-                    <h4 className="font-semibold mb-2 text-white">Détails du projet</h4>
+                  <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-800/50 backdrop-blur-md border border-gray-300 dark:border-gray-600 rounded-lg">
+                    <h4 className="font-semibold mb-2 text-gray-900 dark:text-white">Détails du projet</h4>
                     <div className="grid grid-cols-2 gap-4 text-sm">
                       <div>
-                        <span className="text-white/70">Type de projet:</span>
-                        <span className="ml-2 font-medium text-white">{projectTypes.find(p => p.id === selectedProjectType)?.name}</span>
+                        <span className="text-gray-600 dark:text-gray-300">Type de projet:</span>
+                        <span className="ml-2 font-medium text-gray-900 dark:text-white">{projectTypes.find(p => p.id === selectedProjectType)?.name}</span>
                       </div>
                       <div>
-                        <span className="text-white/70">Style appliqué:</span>
-                        <span className="ml-2 font-medium text-white">{styles.find(s => s.id === selectedStyle)?.name}</span>
+                        <span className="text-gray-600 dark:text-gray-300">Style appliqué:</span>
+                        <span className="ml-2 font-medium text-gray-900 dark:text-white">{styles.find(s => s.id === selectedStyle)?.name}</span>
                       </div>
                     </div>
                   </div>

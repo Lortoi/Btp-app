@@ -44,7 +44,7 @@ export function AnimatedTooltip({ items }: AnimatedTooltipProps) {
               >
                 <div className="absolute inset-x-10 z-30 w-[20%] -bottom-px bg-gradient-to-r from-transparent via-emerald-500 to-transparent h-px " />
                 <div className="absolute left-10 w-[40%] z-30 -bottom-px bg-gradient-to-r from-transparent via-sky-500 to-transparent h-px " />
-                <div className="font-bold text-white relative z-30 text-base">
+                <div className="font-bold text-gray-900 dark:text-white relative z-30 text-base">
                   {item.name}
                 </div>
                 <div className="text-white text-xs">{item.designation}</div>
