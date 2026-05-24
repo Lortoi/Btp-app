@@ -5,10 +5,26 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 import { useAuth } from "@/context/AuthContext"
 import { supabase } from "@/lib/supabaseClient"
+import {
+  clearStoredImports,
+  formatEuro,
+  loadStoredImports,
+  removeStoredImport,
+  saveStoredImport,
+  type ExtractedInvoice,
+  type StoredInvoiceImport,
+} from "@/lib/invoiceImportStorage"
 import { useToast } from "@/hooks/use-toast"
-import { ArrowLeft, FileText, Loader2, Upload, Wand2 } from "lucide-react"
+import { ArrowLeft, CheckCircle2, FileText, Loader2, Upload, Wand2, X } from "lucide-react"
 
 const MAX_FILES = 100
 const MAX_BYTES = 10 * 1024 * 1024
@@ -17,6 +33,7 @@ type FileJob = {
   file: File
   status: "pending" | "uploading" | "done" | "error"
   message?: string
+  extraction?: ExtractedInvoice
 }
 
 function fileToPdfBase64(file: File): Promise<string> {
@@ -39,6 +56,8 @@ export default function ImportPage() {
   const [jobs, setJobs] = useState<FileJob[]>([])
   const [analyzing, setAnalyzing] = useState(false)
   const [importId, setImportId] = useState<string | null>(null)
+  const [recentImports, setRecentImports] = useState<StoredInvoiceImport[]>(() => loadStoredImports())
+  const [detailView, setDetailView] = useState<{ filename: string; extraction: ExtractedInvoice } | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -90,82 +109,162 @@ export default function ImportPage() {
     },
   }
 
+  const analyzeWithLocalApi = async (file: File): Promise<ExtractedInvoice> => {
+    const pdfBase64 = await fileToPdfBase64(file)
+    const res = await fetch("/api/analyze-invoice", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ pdf_base64: pdfBase64, filename: file.name }),
+    })
+    const data = (await res.json()) as {
+      ok?: boolean
+      extraction?: ExtractedInvoice
+      message?: string
+    }
+    if (!res.ok || !data.ok || !data.extraction) {
+      throw new Error(data.message ?? `Erreur ${res.status}`)
+    }
+    return data.extraction
+  }
+
+  const analyzeWithSupabase = async (
+    file: File,
+    impId: string,
+  ): Promise<ExtractedInvoice> => {
+    const pdfBase64 = await fileToPdfBase64(file)
+    const { data, error: fnErr } = await supabase.functions.invoke("analyze-invoice", {
+      body: {
+        import_id: impId,
+        pdf_base64: pdfBase64,
+        filename: file.name,
+      },
+    })
+
+    if (fnErr) throw new Error(fnErr.message)
+
+    const body = data as { ok?: boolean; error?: string; extraction?: ExtractedInvoice }
+    if (body?.ok === false) throw new Error(body.error ?? "Erreur Supabase")
+    if (!body?.extraction) throw new Error("Extraction Supabase vide")
+    return body.extraction
+  }
+
   const runAnalysis = async () => {
-    if (!user?.id || jobs.length === 0) return
-    setAnalyzing(true)
-    setImportId(null)
-
-    const { data: imp, error: impErr } = await supabase
-      .from("imports")
-      .insert({
-        user_id: user.id,
-        type: "factures_pdf",
-        status: "analyzing",
-        total_files: jobs.length,
-        total_processed: 0,
-      })
-      .select("id")
-      .single()
-
-    if (impErr || !imp) {
-      setAnalyzing(false)
+    if (jobs.length === 0) {
       toast({
-        title: "Impossible de démarrer l'import",
-        description: impErr?.message ?? "Vérifiez que la migration SQL a bien été appliquée sur Supabase.",
+        title: "Aucun fichier",
+        description: "Ajoutez au moins un PDF avant de lancer l'analyse.",
         variant: "destructive",
       })
       return
     }
 
-    setImportId(imp.id)
+    setAnalyzing(true)
+    setImportId(null)
+
+    let supabaseImportId: string | null = null
+    if (user?.id) {
+      const { data: imp, error: impErr } = await supabase
+        .from("imports")
+        .insert({
+          user_id: user.id,
+          type: "factures_pdf",
+          status: "analyzing",
+          total_files: jobs.length,
+          total_processed: 0,
+        })
+        .select("id")
+        .single()
+
+      if (!impErr && imp) {
+        supabaseImportId = imp.id
+        setImportId(imp.id)
+      }
+    }
 
     let ok = 0
     for (let i = 0; i < jobs.length; i++) {
       const job = jobs[i]
-      setJobs((prev) => prev.map((j, idx) => (idx === i ? { ...j, status: "uploading" } : j)))
+      setJobs((prev) => prev.map((j, idx) => (idx === i ? { ...j, status: "uploading", message: undefined } : j)))
 
       try {
-        const pdfBase64 = await fileToPdfBase64(job.file)
-        const { data, error: fnErr } = await supabase.functions.invoke("analyze-invoice", {
-          body: {
-            import_id: imp.id,
-            pdf_base64: pdfBase64,
-            filename: job.file.name,
-          },
-        })
-
-        if (fnErr) {
-          setJobs((prev) =>
-            prev.map((j, idx) => (idx === i ? { ...j, status: "error", message: fnErr.message } : j)),
-          )
-          continue
+        let extraction: ExtractedInvoice
+        try {
+          if (supabaseImportId) {
+            extraction = await analyzeWithSupabase(job.file, supabaseImportId)
+          } else {
+            throw new Error("Pas de session Supabase")
+          }
+        } catch {
+          extraction = await analyzeWithLocalApi(job.file)
         }
 
-        const body = data as { ok?: boolean; error?: string }
-        if (body && body.ok === false) {
-          setJobs((prev) =>
-            prev.map((j, idx) => (idx === i ? { ...j, status: "error", message: body.error ?? "Erreur" } : j)),
-          )
-          continue
+        const stored: StoredInvoiceImport = {
+          id: crypto.randomUUID(),
+          filename: job.file.name,
+          analyzedAt: new Date().toISOString(),
+          extraction,
         }
+        saveStoredImport(stored)
 
         ok++
-        setJobs((prev) => prev.map((j, idx) => (idx === i ? { ...j, status: "done" } : j)))
+        setJobs((prev) =>
+          prev.map((j, idx) =>
+            idx === i ? { ...j, status: "done", extraction, message: undefined } : j,
+          ),
+        )
       } catch (e) {
         setJobs((prev) =>
           prev.map((j, idx) =>
-            idx === i ? { ...j, status: "error", message: (e as Error).message } : j,
+            idx === i
+              ? { ...j, status: "error", message: (e as Error).message }
+              : j,
           ),
         )
       }
     }
 
-    await supabase.from("imports").update({ status: "awaiting_validation" }).eq("id", imp.id)
+    if (supabaseImportId) {
+      await supabase
+        .from("imports")
+        .update({ status: "awaiting_validation", total_processed: ok })
+        .eq("id", supabaseImportId)
+    }
 
+    setRecentImports(loadStoredImports())
     setAnalyzing(false)
+
+    if (ok === 0) {
+      toast({
+        title: "Analyse échouée",
+        description: "Vérifiez ANTHROPIC_API_KEY dans .env et que le PDF est une facture lisible.",
+        variant: "destructive",
+      })
+      return
+    }
+
     toast({
       title: "Analyse terminée",
-      description: `${ok} / ${jobs.length} facture(s) extraites. Prochaine étape : écran de validation (à venir).`,
+      description: `${ok} / ${jobs.length} document(s) analysé(s) par Claude.`,
+    })
+  }
+
+  const removeJob = (index: number) => {
+    if (analyzing) return
+    setJobs((prev) => prev.filter((_, idx) => idx !== index))
+  }
+
+  const removeRecentImport = (id: string) => {
+    removeStoredImport(id)
+    setRecentImports(loadStoredImports())
+    toast({ title: "Extraction supprimée" })
+  }
+
+  const clearRecentImports = () => {
+    clearStoredImports()
+    setRecentImports([])
+    toast({
+      title: "Historique effacé",
+      description: "Toutes les extractions enregistrées ont été supprimées.",
     })
   }
 
@@ -206,9 +305,10 @@ export default function ImportPage() {
               <CardTitle className="text-lg">Factures PDF</CardTitle>
             </div>
             <CardDescription className="text-gray-500 dark:text-gray-400">
-              Jusqu&apos;à {MAX_FILES} fichiers, {MAX_BYTES / (1024 * 1024)} Mo chacun. L&apos; Edge Function{" "}
-              <code className="text-xs text-gray-600 dark:text-gray-300">analyze-invoice</code> doit être déployée et{" "}
-              <code className="text-xs text-gray-600 dark:text-gray-300">ANTHROPIC_API_KEY</code> configurée côté Supabase.
+              Jusqu&apos;à {MAX_FILES} fichiers, {MAX_BYTES / (1024 * 1024)} Mo chacun. L&apos;analyse utilise Claude
+              intégré via <code className="text-xs text-gray-600 dark:text-gray-300">/api/analyze-invoice</code>{" "}
+              (configurez <code className="text-xs text-gray-600 dark:text-gray-300">ANTHROPIC_API_KEY</code> dans{" "}
+              <code className="text-xs text-gray-600 dark:text-gray-300">.env</code>).
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -250,24 +350,87 @@ export default function ImportPage() {
                 {analyzing && <Progress value={progressPct} className="h-2" />}
                 <ul className="max-h-48 overflow-y-auto space-y-1 rounded-lg border border-gray-300 dark:border-gray-600 divide-y divide-white/5">
                   {jobs.map((j, i) => (
-                    <li key={i} className="flex items-center justify-between gap-2 px-3 py-2 text-sm">
-                      <span className="truncate flex items-center gap-2 min-w-0">
-                        <FileText className="h-4 w-4 shrink-0 text-gray-500 dark:text-gray-400" />
-                        <span className="truncate text-gray-900 dark:text-white">{j.file.name}</span>
-                      </span>
-                      {j.status === "uploading" && <Loader2 className="h-4 w-4 animate-spin text-gray-600 dark:text-gray-300 shrink-0" />}
-                      {j.status === "pending" && (
-                        <Badge variant="secondary" className="shrink-0">
-                          en attente
-                        </Badge>
+                    <li key={i} className="px-3 py-2 text-sm space-y-2">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="truncate flex items-center gap-2 min-w-0">
+                          <button
+                            type="button"
+                            disabled={analyzing || j.status === "uploading"}
+                            onClick={() => removeJob(i)}
+                            className="shrink-0 inline-flex h-6 w-6 items-center justify-center rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 disabled:opacity-40 disabled:pointer-events-none"
+                            aria-label={`Retirer ${j.file.name}`}
+                          >
+                            <X className="h-4 w-4" />
+                          </button>
+                          <FileText className="h-4 w-4 shrink-0 text-gray-500 dark:text-gray-400" />
+                          <span className="truncate text-gray-900 dark:text-white">{j.file.name}</span>
+                        </span>
+                        {j.status === "uploading" && (
+                          <Loader2 className="h-4 w-4 animate-spin text-gray-600 dark:text-gray-300 shrink-0" />
+                        )}
+                        {j.status === "pending" && (
+                          <Badge variant="secondary" className="shrink-0">
+                            en attente
+                          </Badge>
+                        )}
+                        {j.status === "done" && j.extraction && (
+                          <Badge
+                            role="button"
+                            tabIndex={0}
+                            title="Voir le détail de l'extraction"
+                            className="shrink-0 bg-emerald-600/80 hover:bg-emerald-600 text-white cursor-pointer"
+                            onClick={() =>
+                              setDetailView({ filename: j.file.name, extraction: j.extraction! })
+                            }
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" || e.key === " ") {
+                                e.preventDefault()
+                                setDetailView({ filename: j.file.name, extraction: j.extraction! })
+                              }
+                            }}
+                          >
+                            OK
+                          </Badge>
+                        )}
+                        {j.status === "done" && !j.extraction && (
+                          <Badge className="shrink-0 bg-emerald-600/80 hover:bg-emerald-600 text-white">
+                            OK
+                          </Badge>
+                        )}
+                        {j.status === "error" && (
+                          <Badge
+                            role="button"
+                            tabIndex={0}
+                            variant="destructive"
+                            title={j.message ?? "Erreur"}
+                            className="shrink-0 truncate max-w-[140px] cursor-pointer"
+                            onClick={() =>
+                              toast({
+                                title: "Erreur d'analyse",
+                                description: j.message ?? "Erreur inconnue",
+                                variant: "destructive",
+                              })
+                            }
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" || e.key === " ") {
+                                e.preventDefault()
+                                toast({
+                                  title: "Erreur d'analyse",
+                                  description: j.message ?? "Erreur inconnue",
+                                  variant: "destructive",
+                                })
+                              }
+                            }}
+                          >
+                            erreur
+                          </Badge>
+                        )}
+                      </div>
+                      {j.status === "error" && j.message && (
+                        <p className="text-xs text-red-400 pl-6">{j.message}</p>
                       )}
-                      {j.status === "done" && (
-                        <Badge className="shrink-0 bg-emerald-600/80 hover:bg-emerald-600">OK</Badge>
-                      )}
-                      {j.status === "error" && (
-                        <Badge variant="destructive" className="shrink-0 truncate max-w-[140px]" title={j.message}>
-                          erreur
-                        </Badge>
+                      {j.extraction && (
+                        <ExtractionSummary extraction={j.extraction} />
                       )}
                     </li>
                   ))}
@@ -295,6 +458,59 @@ export default function ImportPage() {
           </CardContent>
         </Card>
 
+        {recentImports.length > 0 && (
+          <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+            <CardHeader>
+              <div className="flex items-start justify-between gap-3">
+                <div className="space-y-1.5">
+                  <CardTitle className="text-base flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                    Dernières extractions
+                  </CardTitle>
+                  <CardDescription className="text-gray-500 dark:text-gray-400">
+                    Résultats enregistrés localement sur cet appareil.
+                  </CardDescription>
+                </div>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={clearRecentImports}
+                  className="shrink-0 text-gray-500 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400"
+                >
+                  Tout effacer
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {recentImports.slice(0, 5).map((item) => (
+                <div
+                  key={item.id}
+                  className="rounded-lg border border-gray-300 dark:border-gray-600 bg-white/50 dark:bg-black/20 p-3 space-y-2"
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 min-w-0 flex-1">
+                      <button
+                        type="button"
+                        onClick={() => removeRecentImport(item.id)}
+                        className="shrink-0 inline-flex h-6 w-6 items-center justify-center rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10"
+                        aria-label={`Supprimer ${item.filename}`}
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                      <p className="font-medium text-sm truncate">{item.filename}</p>
+                    </div>
+                    <span className="text-xs text-gray-500 dark:text-gray-400 shrink-0">
+                      {new Date(item.analyzedAt).toLocaleString("fr-FR")}
+                    </span>
+                  </div>
+                  <ExtractionSummary extraction={item.extraction} />
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        )}
+
         <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white opacity-80">
           <CardHeader>
             <CardTitle className="text-base">Autres méthodes</CardTitle>
@@ -312,6 +528,115 @@ export default function ImportPage() {
           </Link>
         </div>
       </main>
+
+      <ExtractionDetailDialog detail={detailView} onClose={() => setDetailView(null)} />
     </PageWrapper>
+  )
+}
+
+function ExtractionSummary({ extraction }: { extraction: ExtractedInvoice }) {
+  const client = extraction.client?.nom ?? "Client non identifié"
+  const numero = extraction.facture?.numero ?? "—"
+  const ttc = formatEuro(extraction.facture?.montant_ttc)
+  const confidence = Math.round((extraction.confidence ?? 0) * 100)
+
+  return (
+    <div className="pl-6 space-y-1 text-xs text-gray-600 dark:text-gray-300">
+      <p>
+        <span className="text-gray-500 dark:text-gray-400">Client :</span>{" "}
+        <span className="text-gray-900 dark:text-white">{client}</span>
+      </p>
+      <p>
+        <span className="text-gray-500 dark:text-gray-400">N° facture :</span> {numero}
+        {" · "}
+        <span className="text-gray-500 dark:text-gray-400">TTC :</span>{" "}
+        <span className="font-semibold text-[#F97316]">{ttc}</span>
+      </p>
+      <p>
+        <span className="text-gray-500 dark:text-gray-400">Confiance IA :</span> {confidence}%
+        {extraction.remarques ? ` — ${extraction.remarques}` : ""}
+      </p>
+    </div>
+  )
+}
+
+function ExtractionDetailDialog({
+  detail,
+  onClose,
+}: {
+  detail: { filename: string; extraction: ExtractedInvoice } | null
+  onClose: () => void
+}) {
+  if (!detail) return null
+
+  const { filename, extraction: e } = detail
+  const confidence = Math.round((e.confidence ?? 0) * 100)
+
+  return (
+    <Dialog open onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white max-w-lg max-h-[85vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <CheckCircle2 className="h-5 w-5 text-emerald-500 shrink-0" />
+            Extraction réussie
+          </DialogTitle>
+          <DialogDescription className="text-gray-500 dark:text-gray-400 truncate">
+            {filename}
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="space-y-4 text-sm">
+          <section className="space-y-1">
+            <h3 className="font-semibold text-gray-900 dark:text-white">Client</h3>
+            <p>{e.client?.nom ?? "—"}</p>
+            {e.client?.email && <p className="text-gray-600 dark:text-gray-300">{e.client.email}</p>}
+            {e.client?.telephone && <p className="text-gray-600 dark:text-gray-300">{e.client.telephone}</p>}
+            {(e.client?.adresse || e.client?.ville) && (
+              <p className="text-gray-600 dark:text-gray-300">
+                {[e.client.adresse, e.client.code_postal, e.client.ville].filter(Boolean).join(", ")}
+              </p>
+            )}
+          </section>
+
+          <section className="space-y-1">
+            <h3 className="font-semibold text-gray-900 dark:text-white">Facture</h3>
+            <p>N° {e.facture?.numero ?? "—"}</p>
+            <p className="text-gray-600 dark:text-gray-300">
+              Émission : {e.facture?.date_emission ?? "—"}
+              {e.facture?.date_prestation ? ` · Prestation : ${e.facture.date_prestation}` : ""}
+            </p>
+            <div className="flex flex-wrap gap-3 pt-1">
+              <span>HT : {formatEuro(e.facture?.montant_ht)}</span>
+              <span>TVA : {formatEuro(e.facture?.montant_tva)}</span>
+              <span className="font-bold text-[#F97316]">TTC : {formatEuro(e.facture?.montant_ttc)}</span>
+            </div>
+          </section>
+
+          {e.lignes.length > 0 && (
+            <section className="space-y-2">
+              <h3 className="font-semibold text-gray-900 dark:text-white">
+                Lignes ({e.lignes.length})
+              </h3>
+              <ul className="max-h-40 overflow-y-auto space-y-1 rounded-lg border border-gray-300 dark:border-gray-600 divide-y divide-gray-200 dark:divide-gray-600">
+                {e.lignes.map((l, idx) => (
+                  <li key={idx} className="px-3 py-2 text-xs flex justify-between gap-2">
+                    <span className="truncate">{l.designation}</span>
+                    <span className="shrink-0 tabular-nums">{formatEuro(l.montant_ht)}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          <p className="text-xs text-gray-500 dark:text-gray-400">
+            Confiance IA : {confidence}%
+            {e.champs_incertains?.length
+              ? ` · Champs incertains : ${e.champs_incertains.join(", ")}`
+              : ""}
+            {e.remarques ? ` · ${e.remarques}` : ""}
+          </p>
+        </div>
+      </DialogContent>
+    </Dialog>
   )
 }

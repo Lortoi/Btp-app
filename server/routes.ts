@@ -1,5 +1,7 @@
 import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
+import { analyzeInvoicePdf } from "./invoiceAnalysis";
+import { analyzeChantierVision } from "./chantierVisionAnalysis";
 
 const CLAUDE_MODEL = "claude-sonnet-4-6";
 
@@ -56,6 +58,60 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (e) {
       const message = e instanceof Error ? e.message : "Erreur serveur";
       return res.status(500).json({ message });
+    }
+  });
+
+  app.post("/api/analyze-invoice", async (req: Request, res: Response) => {
+    try {
+      const pdfBase64 = req.body?.pdf_base64
+      const filename = req.body?.filename
+
+      if (typeof pdfBase64 !== "string" || pdfBase64.length < 100) {
+        return res.status(400).json({ ok: false, message: "Le champ « pdf_base64 » est requis." })
+      }
+      if (typeof filename !== "string" || !filename.trim()) {
+        return res.status(400).json({ ok: false, message: "Le champ « filename » est requis." })
+      }
+
+      const extraction = await analyzeInvoicePdf(pdfBase64)
+      return res.json({ ok: true, extraction, filename: filename.trim() })
+    } catch (e) {
+      const message = e instanceof Error ? e.message : "Erreur serveur"
+      return res.status(502).json({ ok: false, message })
+    }
+  });
+
+  app.post("/api/analyze-chantier-vision", async (req: Request, res: Response) => {
+    try {
+      const imageBase64 = req.body?.image_base64
+      const mediaType = req.body?.media_type
+      const workTypeLabel = req.body?.work_type_label
+      const goalDescription = req.body?.goal_description
+
+      if (typeof imageBase64 !== "string" || imageBase64.length < 100) {
+        return res.status(400).json({ ok: false, message: "image_base64 requis." })
+      }
+      if (mediaType !== "image/jpeg" && mediaType !== "image/png" && mediaType !== "image/webp") {
+        return res.status(400).json({ ok: false, message: "media_type invalide (jpeg, png, webp)." })
+      }
+      if (typeof workTypeLabel !== "string" || !workTypeLabel.trim()) {
+        return res.status(400).json({ ok: false, message: "work_type_label requis." })
+      }
+      if (typeof goalDescription !== "string" || !goalDescription.trim()) {
+        return res.status(400).json({ ok: false, message: "goal_description requis." })
+      }
+
+      const report = await analyzeChantierVision({
+        imageBase64,
+        mediaType,
+        workTypeLabel: workTypeLabel.trim(),
+        goalDescription: goalDescription.trim(),
+      })
+
+      return res.json({ ok: true, report })
+    } catch (e) {
+      const message = e instanceof Error ? e.message : "Erreur serveur"
+      return res.status(502).json({ ok: false, message })
     }
   });
 
