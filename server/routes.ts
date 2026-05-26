@@ -2,6 +2,7 @@ import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
 import { analyzeInvoicePdf } from "./invoiceAnalysis";
 import { analyzeChantierVision } from "./chantierVisionAnalysis";
+import { chatWithAssistant, type AssistantChatMessage } from "./assistantChat";
 
 const CLAUDE_MODEL = "claude-sonnet-4-6";
 
@@ -109,6 +110,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
       })
 
       return res.json({ ok: true, report })
+    } catch (e) {
+      const message = e instanceof Error ? e.message : "Erreur serveur"
+      return res.status(502).json({ ok: false, message })
+    }
+  });
+
+  app.post("/api/assistant-chat", async (req: Request, res: Response) => {
+    try {
+      const messages = req.body?.messages
+      const context = req.body?.context
+
+      if (!Array.isArray(messages) || messages.length === 0) {
+        return res.status(400).json({ ok: false, message: "messages requis (tableau non vide)." })
+      }
+      if (typeof context !== "string" || !context.trim()) {
+        return res.status(400).json({ ok: false, message: "context requis." })
+      }
+
+      const parsed: AssistantChatMessage[] = []
+      for (const m of messages) {
+        if (
+          m &&
+          typeof m === "object" &&
+          (m.role === "user" || m.role === "assistant") &&
+          typeof m.content === "string" &&
+          m.content.trim()
+        ) {
+          parsed.push({ role: m.role, content: m.content.trim() })
+        }
+      }
+
+      if (parsed.length === 0 || parsed[parsed.length - 1].role !== "user") {
+        return res.status(400).json({ ok: false, message: "Le dernier message doit être utilisateur." })
+      }
+
+      const reply = await chatWithAssistant({ messages: parsed, context: context.trim() })
+      return res.json({ ok: true, reply })
     } catch (e) {
       const message = e instanceof Error ? e.message : "Erreur serveur"
       return res.status(502).json({ ok: false, message })

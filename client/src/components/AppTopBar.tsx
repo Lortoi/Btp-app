@@ -1,6 +1,8 @@
 import { MobileMenuButton } from "@/components/MobileMenuButton"
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler"
 import { Button } from "@/components/ui/button"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
+import { AIAssistantButton } from "@/components/AIAssistantPanel"
 import { Settings } from "lucide-react"
 import { useLocation } from "wouter"
 
@@ -23,6 +25,14 @@ export function AppTopBar({ showMobileMenu = true, title = "PLANCHAIS" }: AppTop
         <span className="font-semibold text-foreground dark:text-white lg:hidden">{title}</span>
       ) : null}
       <div className="ml-auto flex items-center gap-2">
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <span className="inline-flex">
+              <AIAssistantButton />
+            </span>
+          </TooltipTrigger>
+          <TooltipContent side="bottom">Assistant IA</TooltipContent>
+        </Tooltip>
         <Button
           type="button"
           variant="outline"
@@ -41,10 +51,25 @@ export function AppTopBar({ showMobileMenu = true, title = "PLANCHAIS" }: AppTop
 }
 
 export function FullPageTopBar() {
+  const [location] = useLocation()
+  const showAssistant = location !== "/login" && location !== "/auth" && location !== "/"
+
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-end px-4 py-3 pointer-events-none">
-      <div className="pointer-events-auto rounded-lg bg-white/70 dark:bg-black/30 backdrop-blur-md border border-border dark:border-gray-600">
-        <AnimatedThemeToggler />
+    <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-end gap-2 px-4 py-3 pointer-events-none">
+      <div className="pointer-events-auto flex items-center gap-2">
+        {showAssistant && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span className="inline-flex">
+                <AIAssistantButton />
+              </span>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">Assistant IA</TooltipContent>
+          </Tooltip>
+        )}
+        <div className="rounded-lg bg-white/70 dark:bg-black/30 backdrop-blur-md border border-border dark:border-gray-600">
+          <AnimatedThemeToggler />
+        </div>
       </div>
     </div>
   )

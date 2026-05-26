@@ -8,6 +8,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { GlobalBackground } from "@/components/GlobalBackground";
 import { FullPageTopBar } from "@/components/AppTopBar";
 import { ChantiersProvider } from "@/context/ChantiersContext";
+import { AIAssistantProvider } from "@/context/AIAssistantContext";
+import { AIAssistantPanel } from "@/components/AIAssistantPanel";
 import { AuthProvider } from "@/context/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { useMobileNavSideEffects } from "@/stores/mobileNavStore";
@@ -152,12 +154,15 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <ChantiersProvider>
-          <TooltipProvider>
-            <GlobalBackground />
-            <Toaster />
-            <MobileNavSideEffects />
-            <Router />
-          </TooltipProvider>
+          <AIAssistantProvider>
+            <TooltipProvider>
+              <GlobalBackground />
+              <Toaster />
+              <MobileNavSideEffects />
+              <Router />
+              <AIAssistantPanel />
+            </TooltipProvider>
+          </AIAssistantProvider>
         </ChantiersProvider>
       </AuthProvider>
     </QueryClientProvider>
