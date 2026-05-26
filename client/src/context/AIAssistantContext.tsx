@@ -11,6 +11,8 @@ import {
 import { useLocation } from "wouter"
 import { useChantiers } from "@/context/ChantiersContext"
 import { serializeAssistantContext } from "@/lib/buildAssistantContext"
+import { prepareAssistantChatPayload, postAssistantChat } from "@/lib/assistantApi"
+import { createId } from "@/lib/createId"
 
 export type ChatMessage = {
   id: string
@@ -45,6 +47,9 @@ export function AIAssistantProvider({ children }: { children: ReactNode }) {
   const [messages, setMessages] = useState<ChatMessage[]>([WELCOME])
   const [loading, setLoading] = useState(false)
   const sendingRef = useRef(false)
+  const messagesRef = useRef(messages)
+
+  messagesRef.current = messages
 
   const contextJson = useMemo(
     () => serializeAssistantContext(clients, chantiers),
@@ -71,7 +76,7 @@ export function AIAssistantProvider({ children }: { children: ReactNode }) {
       if (!trimmed || sendingRef.current) return
 
       const userMsg: ChatMessage = {
-        id: crypto.randomUUID(),
+        id: createId(),
         role: "user",
         content: trimmed,
       }
@@ -81,31 +86,32 @@ export function AIAssistantProvider({ children }: { children: ReactNode }) {
       sendingRef.current = true
 
       try {
-        const history = [...messages.filter((m) => m.id !== "welcome"), userMsg]
-        const res = await fetch("/api/assistant-chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            context: contextJson,
-            messages: history.map((m) => ({ role: m.role, content: m.content })),
-          }),
+        const history = messagesRef.current
+          .filter((m) => m.id !== "welcome")
+          .map((m) => ({ role: m.role, content: m.content }))
+
+        const prepared = prepareAssistantChatPayload({
+          contextJson,
+          history,
+          userText: trimmed,
         })
 
-        const data = (await res.json()) as { ok?: boolean; reply?: string; message?: string }
-        if (!res.ok || !data.ok || !data.reply) {
-          throw new Error(data.message ?? "Réponse impossible")
+        if ("error" in prepared) {
+          throw new Error(prepared.error)
         }
+
+        const { reply } = await postAssistantChat(prepared.payload)
 
         setMessages((prev) => [
           ...prev,
-          { id: crypto.randomUUID(), role: "assistant", content: data.reply! },
+          { id: createId(), role: "assistant", content: reply },
         ])
       } catch (e) {
         const errText = e instanceof Error ? e.message : "Erreur inconnue"
         setMessages((prev) => [
           ...prev,
           {
-            id: crypto.randomUUID(),
+            id: createId(),
             role: "assistant",
             content: `Désolé, une erreur s'est produite : ${errText}`,
           },
@@ -115,7 +121,7 @@ export function AIAssistantProvider({ children }: { children: ReactNode }) {
         sendingRef.current = false
       }
     },
-    [contextJson, messages]
+    [contextJson]
   )
 
   const value = useMemo(

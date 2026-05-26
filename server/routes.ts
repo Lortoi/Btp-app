@@ -125,7 +125,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ ok: false, message: "messages requis (tableau non vide)." })
       }
       if (typeof context !== "string" || !context.trim()) {
-        return res.status(400).json({ ok: false, message: "context requis." })
+        return res.status(400).json({ ok: false, message: "context requis (chaîne JSON non vide)." })
+      }
+
+      let parsedContext: unknown
+      try {
+        parsedContext = JSON.parse(context.trim())
+        if (!parsedContext || typeof parsedContext !== "object" || Array.isArray(parsedContext)) {
+          return res.status(400).json({ ok: false, message: "context doit être un objet JSON valide." })
+        }
+      } catch {
+        return res.status(400).json({ ok: false, message: "context JSON illisible." })
       }
 
       const parsed: AssistantChatMessage[] = []
@@ -137,15 +147,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
           typeof m.content === "string" &&
           m.content.trim()
         ) {
-          parsed.push({ role: m.role, content: m.content.trim() })
+          parsed.push({ role: m.role, content: m.content.trim().slice(0, 4000) })
         }
       }
 
       if (parsed.length === 0 || parsed[parsed.length - 1].role !== "user") {
-        return res.status(400).json({ ok: false, message: "Le dernier message doit être utilisateur." })
+        return res.status(400).json({ ok: false, message: "Le dernier message doit être utilisateur et non vide." })
       }
 
-      const reply = await chatWithAssistant({ messages: parsed, context: context.trim() })
+      const reply = await chatWithAssistant({
+        messages: parsed,
+        context: JSON.stringify(parsedContext),
+      })
       return res.json({ ok: true, reply })
     } catch (e) {
       const message = e instanceof Error ? e.message : "Erreur serveur"
