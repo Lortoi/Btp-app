@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 
-/** Chantiers fictifs BTP — avril / mai 2026 (données mock, hors composant) */
+/** Chantiers fictifs BTP — avril / mai / juin 2026 (données mock, hors composant) */
 interface MockPlanningChantier {
   id: string
   nom: string
@@ -118,6 +118,87 @@ const mockChantiers: MockPlanningChantier[] = [
     dateFin: "2026-05-28",
     couleur: "#EC4899",
     client: "Résidence Horizon",
+    statut: "Planifié",
+  },
+  {
+    id: "mock-12",
+    nom: "Rénovation SDB Bernard",
+    dateDebut: "2026-06-02",
+    dateFin: "2026-06-09",
+    couleur: "#F97316",
+    client: "M. et Mme Bernard",
+    statut: "En cours",
+  },
+  {
+    id: "mock-13",
+    nom: "Carrelage cuisine Moreau",
+    dateDebut: "2026-06-05",
+    dateFin: "2026-06-12",
+    couleur: "#3B82F6",
+    client: "Famille Moreau",
+    statut: "Planifié",
+  },
+  {
+    id: "mock-14",
+    nom: "Peinture appartement T3",
+    dateDebut: "2026-06-10",
+    dateFin: "2026-06-17",
+    couleur: "#10B981",
+    client: "SCI Les Terrasses",
+    statut: "En cours",
+  },
+  {
+    id: "mock-15",
+    nom: "Ravalement immeuble Haussmann",
+    dateDebut: "2026-06-12",
+    dateFin: "2026-06-27",
+    couleur: "#EF4444",
+    client: "Syndic Haussmann 8",
+    statut: "Planifié",
+  },
+  {
+    id: "mock-16",
+    nom: "Pose fenêtres PVC",
+    dateDebut: "2026-06-16",
+    dateFin: "2026-06-20",
+    couleur: "#8B5CF6",
+    client: "Mme Petit",
+    statut: "En cours",
+  },
+  {
+    id: "mock-17",
+    nom: "Réfection toiture garage",
+    dateDebut: "2026-06-18",
+    dateFin: "2026-06-24",
+    couleur: "#EAB308",
+    client: "Garage Central Auto",
+    statut: "Planifié",
+  },
+  {
+    id: "mock-18",
+    nom: "Aménagement combles 45 m²",
+    dateDebut: "2026-06-22",
+    dateFin: "2026-06-30",
+    couleur: "#EC4899",
+    client: "M. Girard",
+    statut: "En cours",
+  },
+  {
+    id: "mock-19",
+    nom: "Dépannage fuite cuisine",
+    dateDebut: "2026-06-03",
+    dateFin: "2026-06-03",
+    couleur: "#06B6D4",
+    client: "Résidence Bellevue",
+    statut: "Terminé",
+  },
+  {
+    id: "mock-20",
+    nom: "Terrasse bois composite",
+    dateDebut: "2026-06-25",
+    dateFin: "2026-06-30",
+    couleur: "#84CC16",
+    client: "M. et Mme Roche",
     statut: "Planifié",
   },
 ]
