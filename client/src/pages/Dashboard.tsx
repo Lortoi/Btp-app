@@ -11,19 +11,15 @@ import { AppTopBar } from '@/components/AppTopBar'
 import { 
   Building, 
   FileText, 
-  Wand2, 
   BarChart3,
   Users,
   Euro,
   TrendingUp,
   Clock,
   Plus,
-  Upload,
   Calendar,
   Camera,
-  Mail,
-  Settings,
-  Sparkles
+  Mail
 } from 'lucide-react'
 import { Link, useLocation } from 'wouter'
 import { useToast } from "@/hooks/use-toast"
@@ -58,26 +54,9 @@ export default function Dashboard() {
         <AppTopBar />
 
         <header className="bg-white/80 dark:bg-black/20 backdrop-blur-xl border-b border-border dark:border-gray-600 px-6 py-4 lg:rounded-tl-3xl">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-foreground dark:text-white">
-                Dashboard PLANCHAIS
-              </h1>
-              <p className="text-sm text-muted-foreground dark:text-subtitle">Construire pour durer</p>
-            </div>
-            <div className="flex items-center gap-4">
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                className="text-foreground dark:text-white border-border dark:border-white/20 hover:bg-muted dark:hover:bg-white/10"
-                onClick={() => setLocation("/dashboard/settings")}
-              >
-                <Settings className="h-4 w-4 mr-2" />
-                Paramètres
-              </Button>
-            </div>
-          </div>
+          <h1 className="text-2xl font-bold text-foreground dark:text-white">
+            Dashboard PLANCHAIS
+          </h1>
         </header>
 
         {/* Tabs Navigation */}
@@ -94,20 +73,6 @@ export default function Dashboard() {
                 }
               >
                 Vue d'ensemble
-              </Button>
-            </Link>
-            <Link href="/dashboard/import">
-              <Button
-                variant="ghost"
-                size="sm"
-                className={
-                  location === "/dashboard/import"
-                    ? "bg-white/20 backdrop-blur-md border border-border text-foreground hover:bg-white/30"
-                    : "text-foreground hover:bg-white/5"
-                }
-              >
-                <Upload className="h-4 w-4 mr-2" />
-                Import
               </Button>
             </Link>
             <Link href="/dashboard/quotes">
@@ -277,43 +242,7 @@ function OverviewTab() {
         </Card>
       </div>
 
-      <Card className="relative overflow-hidden ai-surface-card backdrop-blur-sm shadow-ai-glow-sm">
-        <div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-br from-ai/10 via-transparent to-transparent"
-          aria-hidden
-        />
-        <CardHeader className="relative flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-          <div className="space-y-1">
-            <div className="flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-ai-light" />
-              <CardTitle className="text-lg">Importer vos anciennes factures (IA)</CardTitle>
-            </div>
-            <p className="text-sm text-subtitle max-w-2xl">
-              Déposez vos PDF — extraction des clients, chantiers et montants. Données stockées dans votre espace
-              Supabase (UE). Activez l&apos;Edge Function <code className="text-xs text-foreground">analyze-invoice</code> pour lancer l&apos;analyse.
-            </p>
-          </div>
-          <Button
-            type="button"
-            className="relative shrink-0 ai-btn"
-            onClick={() => setLocation("/dashboard/import")}
-          >
-            <Upload className="h-4 w-4 mr-2" />
-            Commencer l&apos;import
-          </Button>
-        </CardHeader>
-      </Card>
-
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="surface-card backdrop-blur-sm text-foreground">
-          <CardHeader>
-            <CardTitle>Activité Récente</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-subtitle">Aucune activité récente</p>
-          </CardContent>
-        </Card>
-
         <Card className="surface-card backdrop-blur-sm text-foreground">
           <CardHeader>
             <CardTitle>Actions Rapides</CardTitle>
@@ -336,22 +265,6 @@ function OverviewTab() {
             >
               <FileText className="h-4 w-4 mr-2" />
               Créer un Devis
-            </Button>
-            <Button
-              className="w-full justify-start border-ai/30 hover:border-ai/50 hover:shadow-ai-glow-sm"
-              variant="outline"
-              onClick={() => setLocation('/dashboard/estimation')}
-            >
-              <Wand2 className="h-4 w-4 mr-2 text-ai-light" />
-              Estimation IA
-            </Button>
-            <Button
-              className="w-full justify-start border-ai/30 hover:border-ai/50 hover:shadow-ai-glow-sm"
-              variant="outline"
-              onClick={() => setLocation('/dashboard/import')}
-            >
-              <Upload className="h-4 w-4 mr-2 text-ai-light" />
-              Importer factures PDF (IA)
             </Button>
           </CardContent>
         </Card>

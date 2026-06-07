@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { AnimatedThemeToggler } from '@/components/ui/animated-theme-toggler';
 import { Menu, X, Building2 } from 'lucide-react';
 
 export default function Header() {
@@ -33,7 +32,6 @@ export default function Header() {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-4">
-            <AnimatedThemeToggler />
             <Button variant="ghost" size="sm" asChild data-testid="button-dashboard">
               <a href="/dashboard">Dashboard</a>
             </Button>
@@ -47,7 +45,6 @@ export default function Header() {
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center gap-2">
-            <AnimatedThemeToggler />
             <Button
             variant="ghost" 
             size="icon"
