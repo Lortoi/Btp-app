@@ -27,6 +27,7 @@ import {
 } from 'lucide-react'
 import { Link, useLocation } from 'wouter'
 import { useToast } from "@/hooks/use-toast"
+import { DashboardCharts } from "@/components/dashboard/DashboardCharts"
 
 export default function Dashboard() {
   const [location, setLocation] = useLocation();
@@ -62,7 +63,7 @@ export default function Dashboard() {
               <h1 className="text-2xl font-bold text-foreground dark:text-white">
                 Dashboard PLANCHAIS
               </h1>
-              <p className="text-sm text-muted-foreground dark:text-gray-600 dark:text-gray-300">Construire pour durer</p>
+              <p className="text-sm text-muted-foreground dark:text-subtitle">Construire pour durer</p>
             </div>
             <div className="flex items-center gap-4">
               <Button
@@ -80,7 +81,7 @@ export default function Dashboard() {
         </header>
 
         {/* Tabs Navigation */}
-        <div className="bg-white/80 dark:bg-black/20 backdrop-blur-xl border-b border-gray-200 dark:border-gray-600 px-6 lg:rounded-tl-3xl">
+        <div className="surface-header backdrop-blur-sm px-6 lg:rounded-tl-3xl">
           <div className="flex gap-2 overflow-x-auto">
             <Link href="/dashboard">
               <Button
@@ -88,8 +89,8 @@ export default function Dashboard() {
                 size="sm"
                 className={
                   location === "/dashboard"
-                    ? "bg-white/20 backdrop-blur-md border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover:bg-white/30"
-                    : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/10"
+                    ? "bg-white/20 backdrop-blur-md border border-border text-foreground hover:bg-white/30"
+                    : "text-foreground hover:bg-white/5"
                 }
               >
                 Vue d'ensemble
@@ -101,8 +102,8 @@ export default function Dashboard() {
                 size="sm"
                 className={
                   location === "/dashboard/import"
-                    ? "bg-white/20 backdrop-blur-md border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover:bg-white/30"
-                    : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/10"
+                    ? "bg-white/20 backdrop-blur-md border border-border text-foreground hover:bg-white/30"
+                    : "text-foreground hover:bg-white/5"
                 }
               >
                 <Upload className="h-4 w-4 mr-2" />
@@ -115,8 +116,8 @@ export default function Dashboard() {
                 size="sm"
                 className={
                   location === "/dashboard/quotes"
-                    ? "bg-white/20 backdrop-blur-md border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover:bg-white/30"
-                    : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/10"
+                    ? "bg-white/20 backdrop-blur-md border border-border text-foreground hover:bg-white/30"
+                    : "text-foreground hover:bg-white/5"
                 }
               >
                 <FileText className="h-4 w-4 mr-2" />
@@ -129,8 +130,8 @@ export default function Dashboard() {
                 size="sm"
                 className={
                   location === "/dashboard/projects"
-                    ? "bg-white/20 backdrop-blur-md border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover:bg-white/30"
-                    : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/10"
+                    ? "bg-white/20 backdrop-blur-md border border-border text-foreground hover:bg-white/30"
+                    : "text-foreground hover:bg-white/5"
                 }
               >
                 <Building className="h-4 w-4 mr-2" />
@@ -143,8 +144,8 @@ export default function Dashboard() {
                 size="sm"
                 className={
                   location === "/dashboard/crm"
-                    ? "bg-white/20 backdrop-blur-md border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover:bg-white/30"
-                    : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/10"
+                    ? "bg-white/20 backdrop-blur-md border border-border text-foreground hover:bg-white/30"
+                    : "text-foreground hover:bg-white/5"
                 }
               >
                 <Users className="h-4 w-4 mr-2" />
@@ -157,8 +158,8 @@ export default function Dashboard() {
                 size="sm"
                 className={
                   location === "/dashboard/planning"
-                    ? "bg-white/20 backdrop-blur-md border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover:bg-white/30"
-                    : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/10"
+                    ? "bg-white/20 backdrop-blur-md border border-border text-foreground hover:bg-white/30"
+                    : "text-foreground hover:bg-white/5"
                 }
               >
                 <Calendar className="h-4 w-4 mr-2" />
@@ -184,11 +185,13 @@ function OverviewTab() {
   
   return (
     <div className="space-y-6">
+      <DashboardCharts />
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card
           role="button"
           tabIndex={0}
-          className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+          className="surface-card backdrop-blur-sm text-foreground cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
           onClick={() => setLocation('/dashboard/quotes')}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
@@ -199,18 +202,18 @@ function OverviewTab() {
         >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Chiffre d'Affaires</CardTitle>
-            <Euro className="h-4 w-4 text-gray-600 dark:text-gray-300" />
+            <Euro className="h-4 w-4 text-subtitle" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">€165,000</div>
-            <p className="text-xs text-gray-600 dark:text-gray-300">+18.2% ce mois</p>
+            <p className="text-xs text-subtitle">+18.2% ce mois</p>
           </CardContent>
         </Card>
 
         <Card
           role="button"
           tabIndex={0}
-          className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+          className="surface-card backdrop-blur-sm text-foreground cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
           onClick={() => setLocation('/dashboard/projects')}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
@@ -221,18 +224,18 @@ function OverviewTab() {
         >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Chantiers Actifs</CardTitle>
-            <Building className="h-4 w-4 text-gray-600 dark:text-gray-300" />
+            <Building className="h-4 w-4 text-subtitle" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">12</div>
-            <p className="text-xs text-gray-600 dark:text-gray-300">+3 en cours</p>
+            <p className="text-xs text-subtitle">+3 en cours</p>
           </CardContent>
         </Card>
 
         <Card
           role="button"
           tabIndex={0}
-          className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+          className="surface-card backdrop-blur-sm text-foreground cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
           onClick={() => setLocation('/dashboard/quotes')}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
@@ -243,18 +246,18 @@ function OverviewTab() {
         >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Devis En Attente</CardTitle>
-            <FileText className="h-4 w-4 text-gray-600 dark:text-gray-300" />
+            <FileText className="h-4 w-4 text-subtitle" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">8</div>
-            <p className="text-xs text-gray-600 dark:text-gray-300">Réponses attendues</p>
+            <p className="text-xs text-subtitle">Réponses attendues</p>
           </CardContent>
         </Card>
 
         <Card
           role="button"
           tabIndex={0}
-          className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+          className="surface-card backdrop-blur-sm text-foreground cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
           onClick={() => setLocation('/dashboard/crm')}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
@@ -265,34 +268,34 @@ function OverviewTab() {
         >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Taux de Conversion</CardTitle>
-            <TrendingUp className="h-4 w-4 text-gray-600 dark:text-gray-300" />
+            <TrendingUp className="h-4 w-4 text-subtitle" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">73%</div>
-            <p className="text-xs text-gray-600 dark:text-gray-300">+5.2% devis → chantiers</p>
+            <p className="text-xs text-subtitle">+5.2% devis → chantiers</p>
           </CardContent>
         </Card>
       </div>
 
-      <Card className="relative overflow-hidden bg-black/20 backdrop-blur-xl border border-violet-500/30 text-gray-900 dark:text-white shadow-lg shadow-violet-950/20">
+      <Card className="relative overflow-hidden ai-surface-card backdrop-blur-sm shadow-ai-glow-sm">
         <div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-br from-violet-600/20 via-transparent to-primary/10"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-br from-ai/10 via-transparent to-transparent"
           aria-hidden
         />
         <CardHeader className="relative flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-violet-300" />
+              <Sparkles className="h-5 w-5 text-ai-light" />
               <CardTitle className="text-lg">Importer vos anciennes factures (IA)</CardTitle>
             </div>
-            <p className="text-sm text-gray-600 dark:text-gray-300 max-w-2xl">
+            <p className="text-sm text-subtitle max-w-2xl">
               Déposez vos PDF — extraction des clients, chantiers et montants. Données stockées dans votre espace
-              Supabase (UE). Activez l&apos;Edge Function <code className="text-xs text-gray-900 dark:text-white">analyze-invoice</code> pour lancer l&apos;analyse.
+              Supabase (UE). Activez l&apos;Edge Function <code className="text-xs text-foreground">analyze-invoice</code> pour lancer l&apos;analyse.
             </p>
           </div>
           <Button
             type="button"
-            className="relative shrink-0 bg-violet-600 hover:bg-violet-500 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600"
+            className="relative shrink-0 ai-btn"
             onClick={() => setLocation("/dashboard/import")}
           >
             <Upload className="h-4 w-4 mr-2" />
@@ -302,16 +305,16 @@ function OverviewTab() {
       </Card>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+        <Card className="surface-card backdrop-blur-sm text-foreground">
           <CardHeader>
             <CardTitle>Activité Récente</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-gray-600 dark:text-gray-300">Aucune activité récente</p>
+            <p className="text-sm text-subtitle">Aucune activité récente</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+        <Card className="surface-card backdrop-blur-sm text-foreground">
           <CardHeader>
             <CardTitle>Actions Rapides</CardTitle>
           </CardHeader>
@@ -335,20 +338,20 @@ function OverviewTab() {
               Créer un Devis
             </Button>
             <Button
-              className="w-full justify-start"
+              className="w-full justify-start border-ai/30 hover:border-ai/50 hover:shadow-ai-glow-sm"
               variant="outline"
               onClick={() => setLocation('/dashboard/estimation')}
             >
-              <Wand2 className="h-4 w-4 mr-2" />
+              <Wand2 className="h-4 w-4 mr-2 text-ai-light" />
               Estimation IA
             </Button>
             <Button
-              className="w-full justify-start"
+              className="w-full justify-start border-ai/30 hover:border-ai/50 hover:shadow-ai-glow-sm"
               variant="outline"
               onClick={() => setLocation('/dashboard/import')}
             >
-              <Upload className="h-4 w-4 mr-2" />
-              Importer factures PDF
+              <Upload className="h-4 w-4 mr-2 text-ai-light" />
+              Importer factures PDF (IA)
             </Button>
           </CardContent>
         </Card>

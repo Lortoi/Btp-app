@@ -26,7 +26,7 @@ const mockChantiers: MockPlanningChantier[] = [
     nom: "Rénovation Dupont",
     dateDebut: "2026-04-01",
     dateFin: "2026-04-08",
-    couleur: "#F97316",
+    couleur: "#F5A623",
     client: "SCI Dupont",
     statut: "En cours",
   },
@@ -71,7 +71,7 @@ const mockChantiers: MockPlanningChantier[] = [
     nom: "Couverture Zinguerie Les Oliviers",
     dateDebut: "2026-05-02",
     dateFin: "2026-05-10",
-    couleur: "#F97316",
+    couleur: "#F5A623",
     client: "Copropriété Les Oliviers",
     statut: "En cours",
   },
@@ -125,7 +125,7 @@ const mockChantiers: MockPlanningChantier[] = [
     nom: "Rénovation SDB Bernard",
     dateDebut: "2026-06-02",
     dateFin: "2026-06-09",
-    couleur: "#F97316",
+    couleur: "#F5A623",
     client: "M. et Mme Bernard",
     statut: "En cours",
   },
@@ -476,26 +476,26 @@ export default function PlanningPage() {
   
   return (
     <PageWrapper>
-      <header className="bg-white/80 dark:bg-black/20 backdrop-blur-xl border-b border-gray-200 dark:border-gray-600 px-6 py-4 rounded-tl-3xl">
+      <header className="surface-header backdrop-blur-sm px-6 py-4 rounded-tl-3xl">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            <h1 className="text-2xl font-bold text-foreground">
               Planning des Chantiers
             </h1>
-            <p className="text-sm text-gray-600 dark:text-gray-300">Calendrier intégré pour organiser vos interventions</p>
+            <p className="text-sm text-subtitle">Calendrier intégré pour organiser vos interventions</p>
           </div>
         </div>
       </header>
 
       <main className="flex-1 p-6 space-y-6">
         {/* Contrôles du calendrier */}
-        <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+        <Card className="surface-card backdrop-blur-sm text-foreground">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <button
                   onClick={goToPreviousMonth}
-                  className="p-2 rounded-lg hover:bg-gray-100 dark:bg-white/10 transition-colors"
+                  className="p-2 rounded-lg hover:bg-white/5 transition-colors"
                 >
                   <Calendar className="h-5 w-5 rotate-180" />
                 </button>
@@ -503,7 +503,7 @@ export default function PlanningPage() {
                   <select
                     value={month}
                     onChange={(e) => setMonthYear(Number(e.target.value), year)}
-                    className="h-10 min-w-[140px] rounded-xl bg-black/20 backdrop-blur-md border border-gray-300 dark:border-white/20 px-4 text-sm text-gray-900 dark:text-white shadow-sm outline-none transition-colors hover:bg-gray-100 dark:bg-white/10 focus:ring-2 focus:ring-white/30"
+                    className="h-10 min-w-[140px] rounded-xl bg-black/20 backdrop-blur-md border border-gray-300 dark:border-white/20 px-4 text-sm text-foreground shadow-sm outline-none transition-colors hover:bg-white/5 focus:ring-2 focus:ring-white/30"
                     aria-label="Mois"
                   >
                     {monthNames.map((mName, idx) => (
@@ -515,7 +515,7 @@ export default function PlanningPage() {
                   <select
                     value={year}
                     onChange={(e) => setMonthYear(month, Number(e.target.value))}
-                    className="h-10 w-[110px] rounded-xl bg-black/20 backdrop-blur-md border border-gray-300 dark:border-white/20 px-4 text-sm text-gray-900 dark:text-white shadow-sm outline-none transition-colors hover:bg-gray-100 dark:bg-white/10 focus:ring-2 focus:ring-white/30"
+                    className="h-10 w-[110px] rounded-xl bg-black/20 backdrop-blur-md border border-gray-300 dark:border-white/20 px-4 text-sm text-foreground shadow-sm outline-none transition-colors hover:bg-white/5 focus:ring-2 focus:ring-white/30"
                     aria-label="Année"
                   >
                     {Array.from({ length: 11 }, (_, i) => year - 5 + i).map((y) => (
@@ -527,14 +527,14 @@ export default function PlanningPage() {
                 </div>
                 <button
                   onClick={goToNextMonth}
-                  className="p-2 rounded-lg hover:bg-gray-100 dark:bg-white/10 transition-colors"
+                  className="p-2 rounded-lg hover:bg-white/5 transition-colors"
                 >
                   <Calendar className="h-5 w-5" />
                 </button>
               </div>
               <button
                 onClick={handleTodayClick}
-                className="px-4 py-2 rounded-lg bg-white/20 backdrop-blur-md text-gray-900 dark:text-white hover:bg-white/30 transition-colors text-sm"
+                className="px-4 py-2 rounded-lg bg-white/20 backdrop-blur-md text-foreground hover:bg-white/30 transition-colors text-sm"
               >
                 Aujourd'hui
               </button>
@@ -543,12 +543,12 @@ export default function PlanningPage() {
         </Card>
 
         {/* Calendrier */}
-        <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+        <Card className="surface-card backdrop-blur-sm text-foreground">
           <CardContent className="p-6">
             {/* En-têtes des jours */}
             <div className="grid grid-cols-7 gap-2 mb-4">
               {dayNames.map(day => (
-                <div key={day} className="text-center text-sm font-semibold text-gray-600 dark:text-gray-300 py-2">
+                <div key={day} className="text-center text-sm font-semibold text-subtitle py-2">
                   {day}
                 </div>
               ))}
@@ -569,9 +569,9 @@ export default function PlanningPage() {
                       day.isCurrentMonth
                         ? isToday
                           ? 'bg-gray-100 dark:bg-white/10 border-white/30 border-2'
-                          : 'bg-black/10 border-gray-300 dark:border-gray-600'
+                          : 'bg-black/10 border-border'
                         : 'bg-black/5 border-white/5 opacity-50'
-                    } cursor-pointer hover:bg-gray-100 dark:bg-white/10 transition-colors`}
+                    } cursor-pointer hover:bg-white/5 transition-colors`}
                     role="button"
                     tabIndex={0}
                     onClick={() => openNewEvent(day.date)}
@@ -580,8 +580,8 @@ export default function PlanningPage() {
                     }}
                   >
                     <div className={`text-sm font-medium mb-1 ${
-                      day.isCurrentMonth ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'
-                    } ${isToday ? 'text-gray-900 dark:text-white font-bold' : ''}`}>
+                      day.isCurrentMonth ? 'text-foreground' : 'text-secondary'
+                    } ${isToday ? 'text-foreground font-bold' : ''}`}>
                       {day.date.getDate()}
                     </div>
                     
@@ -590,7 +590,7 @@ export default function PlanningPage() {
                       {dayCustomEvents.slice(0, 2).map((event, idx) => (
                         <div
                           key={event.id}
-                          className="text-xs bg-gray-50 dark:bg-gray-800/50 backdrop-blur-md border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded px-1 py-0.5 truncate"
+                          className="text-xs bg-gray-50 dark:bg-gray-800/50 backdrop-blur-md border border-border text-foreground rounded px-1 py-0.5 truncate"
                           title={`${event.time} - ${event.title}`}
                           role="button"
                           tabIndex={0}
@@ -609,7 +609,7 @@ export default function PlanningPage() {
                         </div>
                       ))}
                       {dayCustomEvents.length > 2 && (
-                        <div className="text-xs text-gray-600 dark:text-gray-300">
+                        <div className="text-xs text-subtitle">
                           +{dayCustomEvents.length - 2} autre(s)
                         </div>
                       )}
@@ -627,7 +627,7 @@ export default function PlanningPage() {
                             <PopoverTrigger asChild>
                               <button
                                 type="button"
-                                className={`w-full text-left text-xs text-gray-900 dark:text-white px-1 py-0.5 min-h-0 truncate ${rounded}`}
+                                className={`w-full text-left text-xs text-foreground px-1 py-0.5 min-h-0 truncate ${rounded}`}
                                 style={{ backgroundColor: chantier.couleur }}
                                 onClick={(e) => e.stopPropagation()}
                                 onKeyDown={(e) => {
@@ -638,21 +638,21 @@ export default function PlanningPage() {
                               </button>
                             </PopoverTrigger>
                             <PopoverContent
-                              className="w-72 bg-white dark:bg-black/90 backdrop-blur-xl border border-gray-200 dark:border-gray-600 dark:border-gray-600 text-gray-900 dark:text-white shadow-xl"
+                              className="w-72 bg-white dark:bg-black/90 backdrop-blur-xl border border-border dark:border-gray-600 text-foreground shadow-xl"
                               onClick={(e) => e.stopPropagation()}
                             >
                               <div className="space-y-2 text-sm">
                                 <p className="font-semibold leading-tight">{chantier.nom}</p>
-                                <p className="text-gray-600 dark:text-gray-300">
-                                  <span className="text-gray-500 dark:text-gray-400">Client : </span>
+                                <p className="text-subtitle">
+                                  <span className="text-secondary">Client : </span>
                                   {chantier.client}
                                 </p>
-                                <p className="text-gray-600 dark:text-gray-300 text-xs">
-                                  <span className="text-gray-500 dark:text-gray-400">Période : </span>
+                                <p className="text-subtitle text-xs">
+                                  <span className="text-secondary">Période : </span>
                                   {formatRangeFr(chantier.dateDebut, chantier.dateFin)}
                                 </p>
                                 <p className="text-xs">
-                                  <span className="text-gray-500 dark:text-gray-400">Statut : </span>
+                                  <span className="text-secondary">Statut : </span>
                                   {chantier.statut}
                                 </p>
                               </div>
@@ -666,20 +666,20 @@ export default function PlanningPage() {
               })}
             </div>
 
-            <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-600">
-              <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">
+            <div className="mt-6 pt-4 border-t border-border">
+              <p className="text-xs font-semibold text-secondary uppercase tracking-wide mb-3">
                 Légende chantiers (démo)
               </p>
               <div className="flex flex-wrap gap-3">
                 {mockChantiers.map((c) => (
-                  <div key={c.id} className="flex items-center gap-2 text-sm text-gray-900 dark:text-white">
+                  <div key={c.id} className="flex items-center gap-2 text-sm text-foreground">
                     <span
                       className="shrink-0 w-4 h-4 rounded-sm border border-gray-300 dark:border-white/20 shadow-inner"
                       style={{ backgroundColor: c.couleur }}
                       aria-hidden
                     />
                     <span className="font-medium">{c.nom}</span>
-                    <span className="text-gray-500 dark:text-gray-400 text-xs">
+                    <span className="text-secondary text-xs">
                       {formatLegendPeriod(c.dateDebut, c.dateFin)}
                     </span>
                   </div>
@@ -690,14 +690,14 @@ export default function PlanningPage() {
         </Card>
 
         <Dialog open={isNewEventOpen} onOpenChange={setIsNewEventOpen}>
-          <DialogContent className="bg-black/30 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-2xl">
+          <DialogContent className="bg-black/30 backdrop-blur-xl border border-border text-foreground rounded-2xl">
             <DialogHeader>
-              <DialogTitle className="text-gray-900 dark:text-white">Nouveau rendez-vous</DialogTitle>
+              <DialogTitle className="text-foreground">Nouveau rendez-vous</DialogTitle>
             </DialogHeader>
 
             <div className="grid gap-4 py-2">
               <div className="space-y-2">
-                <Label htmlFor="planning-event-date" className="text-gray-900 dark:text-white">Date</Label>
+                <Label htmlFor="planning-event-date" className="text-foreground">Date</Label>
                 <div className="flex items-center gap-2">
                   <Input
                     key={datePickerKey}
@@ -714,13 +714,13 @@ export default function PlanningPage() {
                       setSelectedDate(next)
                       setCurrentDate(next)
                     }}
-                    className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
+                    className="bg-gray-50 dark:bg-black/20 border-border text-foreground"
                   />
                   <Button
                     type="button"
                     variant="outline"
                     onClick={() => shiftSelectedDateByDays(-1)}
-                    className="text-gray-900 dark:text-white border-gray-300 dark:border-white/20 hover:bg-gray-100 dark:hover:bg-white/10 px-3"
+                    className="text-foreground border-gray-300 dark:border-white/20 hover:bg-white/5 px-3"
                     disabled={!selectedDate}
                     title="Jour précédent"
                   >
@@ -730,7 +730,7 @@ export default function PlanningPage() {
                     type="button"
                     variant="outline"
                     onClick={() => shiftSelectedDateByDays(1)}
-                    className="text-gray-900 dark:text-white border-gray-300 dark:border-white/20 hover:bg-gray-100 dark:hover:bg-white/10 px-3"
+                    className="text-foreground border-gray-300 dark:border-white/20 hover:bg-white/5 px-3"
                     disabled={!selectedDate}
                     title="Jour suivant"
                   >
@@ -739,21 +739,21 @@ export default function PlanningPage() {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="planning-event-time" className="text-gray-900 dark:text-white">Heure</Label>
+                <Label htmlFor="planning-event-time" className="text-foreground">Heure</Label>
                 <div className="flex items-center gap-2">
                   <Input
                     id="planning-event-time"
                     type="time"
                     value={newEventTime}
                     onChange={(e) => setNewEventTime(e.target.value)}
-                    className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
+                    className="bg-gray-50 dark:bg-black/20 border-border text-foreground"
                   />
                   <div className="grid grid-rows-2 gap-1">
                     <Button
                       type="button"
                       variant="outline"
                       onClick={() => shiftTimeHours(1)}
-                      className="text-gray-900 dark:text-white border-gray-300 dark:border-white/20 hover:bg-gray-100 dark:hover:bg-white/10 px-3 h-9 w-9"
+                      className="text-foreground border-gray-300 dark:border-white/20 hover:bg-white/5 px-3 h-9 w-9"
                       title="Heure +1"
                     >
                       ↑
@@ -762,7 +762,7 @@ export default function PlanningPage() {
                       type="button"
                       variant="outline"
                       onClick={() => shiftTimeHours(-1)}
-                      className="text-gray-900 dark:text-white border-gray-300 dark:border-white/20 hover:bg-gray-100 dark:hover:bg-white/10 px-3 h-9 w-9"
+                      className="text-foreground border-gray-300 dark:border-white/20 hover:bg-white/5 px-3 h-9 w-9"
                       title="Heure -1"
                     >
                       ↓
@@ -771,13 +771,13 @@ export default function PlanningPage() {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="planning-event-title" className="text-gray-900 dark:text-white">Titre</Label>
+                <Label htmlFor="planning-event-title" className="text-foreground">Titre</Label>
                 <Input
                   id="planning-event-title"
                   type="text"
                   value={newEventTitle}
                   onChange={(e) => setNewEventTitle(e.target.value)}
-                  className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
+                  className="bg-gray-50 dark:bg-black/20 border-border text-foreground"
                 />
               </div>
             </div>
@@ -786,13 +786,13 @@ export default function PlanningPage() {
               <Button
                 variant="outline"
                 onClick={() => setIsNewEventOpen(false)}
-                className="text-gray-900 dark:text-white border-gray-300 dark:border-white/20 hover:bg-gray-100 dark:hover:bg-white/10"
+                className="text-foreground border-gray-300 dark:border-white/20 hover:bg-white/5"
               >
                 Annuler
               </Button>
               {editingEventId ? (
                 <>
-                  <Button variant="outline" onClick={deleteEditedEvent} className="text-gray-900 dark:text-white border-gray-300 dark:border-white/20 hover:bg-gray-100 dark:hover:bg-white/10">
+                  <Button variant="outline" onClick={deleteEditedEvent} className="text-foreground border-gray-300 dark:border-white/20 hover:bg-white/5">
                     Supprimer
                   </Button>
                   <Button onClick={saveEditedEvent}>Enregistrer</Button>
@@ -806,7 +806,7 @@ export default function PlanningPage() {
 
         {/* Liste des chantiers du mois */}
         {chantiers.length > 0 && (
-          <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+          <Card className="surface-card backdrop-blur-sm text-foreground">
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
                 <Building className="h-5 w-5" />
@@ -832,12 +832,12 @@ export default function PlanningPage() {
                     return (
                       <div
                         key={chantier.id}
-                        className="p-3 rounded-lg bg-black/20 border border-gray-300 dark:border-gray-600"
+                        className="p-3 rounded-lg bg-black/20 border border-border"
                       >
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-1">
-                              <Building className="h-4 w-4 text-gray-600 dark:text-gray-300" />
+                              <Building className="h-4 w-4 text-subtitle" />
                               <span className="font-semibold">{chantier.nom}</span>
                               <span className={`px-2 py-0.5 rounded text-xs ${
                                 chantier.statut === 'planifié'
@@ -849,7 +849,7 @@ export default function PlanningPage() {
                                 {chantier.statut}
                               </span>
                             </div>
-                            <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-300">
+                            <div className="flex items-center gap-4 text-sm text-subtitle">
                               <div className="flex items-center gap-1">
                                 <User className="h-3 w-3" />
                                 {chantier.clientName}

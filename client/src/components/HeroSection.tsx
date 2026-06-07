@@ -1,3 +1,5 @@
+import { motion } from "framer-motion"
+
 interface HeroSectionProps {
   title?: string
   highlightText?: string
@@ -5,61 +7,39 @@ interface HeroSectionProps {
   buttonText?: string
   onButtonClick?: () => void
   className?: string
-  titleClassName?: string
-  descriptionClassName?: string
-  buttonClassName?: string
-  maxWidth?: string
-  fontFamily?: string
-  fontWeight?: number
 }
 
 export function HeroSection({
-  title = "Intelligent AI Agents for",
-  highlightText = "Smart Brands",
-  description = "Transform your brand and evolve it through AI-driven brand guidelines and always up-to-date core components.",
-  buttonText = "Join Waitlist",
+  title = "PLANCHAIS",
+  highlightText = "Construire pour durer",
+  description = "Votre application professionnelle",
+  buttonText = "Se connecter",
   onButtonClick,
   className = "",
-  titleClassName = "",
-  descriptionClassName = "",
-  buttonClassName = "",
-  maxWidth = "max-w-6xl",
-  fontFamily = "Satoshi, sans-serif",
-  fontWeight = 500,
 }: HeroSectionProps) {
-  const handleButtonClick = () => {
-    if (onButtonClick) {
-      onButtonClick()
-    }
-  }
-
   return (
     <section
-      className={`relative w-full min-h-screen overflow-hidden bg-transparent flex items-center justify-center ${className}`}
+      className={`relative w-full min-h-screen overflow-hidden flex items-center justify-center ${className}`}
     >
-      <div className={`relative z-10 ${maxWidth} mx-auto px-6 w-full`}>
-        <div className="text-center">
-          <h1
-            className={`font-bold text-gray-900 dark:text-white text-balance text-4xl sm:text-5xl md:text-6xl xl:text-[80px] leading-tight sm:leading-tight md:leading-tight lg:leading-tight xl:leading-[1.1] mb-6 lg:text-7xl ${titleClassName}`}
-            style={{ fontFamily, fontWeight }}
-          >
-            {title}{" "}
-            <span className="text-violet-300 italic">{highlightText}</span>
+      <div className="relative z-10 max-w-4xl mx-auto px-6 w-full text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <h1 className="font-bold tracking-tight text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-4">
+            {title}
           </h1>
-
-          <p
-            className={`text-lg sm:text-xl text-gray-900 dark:text-white text-pretty max-w-2xl mx-auto leading-relaxed mb-10 px-4 ${descriptionClassName}`}
-          >
-            {description}
-          </p>
-
+          <p className="text-brand-light italic text-xl sm:text-2xl mb-3">{highlightText}</p>
+          <p className="text-gray-400 text-lg mb-10 max-w-xl mx-auto">{description}</p>
           <button
-            onClick={handleButtonClick}
-            className={`px-6 py-4 sm:px-8 sm:py-6 rounded-full border-4 bg-[rgba(63,63,63,1)] border-card text-sm sm:text-base text-gray-900 dark:text-white hover:bg-[rgba(63,63,63,0.9)] transition-colors ${buttonClassName}`}
+            type="button"
+            onClick={onButtonClick}
+            className="px-8 py-3 rounded-lg bg-brand text-[#0A0A0A] font-medium hover:bg-brand-light transition-colors shadow-glow-sm"
           >
             {buttonText}
           </button>
-        </div>
+        </motion.div>
       </div>
     </section>
   )

@@ -9,7 +9,6 @@ interface MetricCardProps {
   trend?: 'up' | 'down';
   subtitle?: string;
   icon?: React.ReactNode;
-  gradient?: string;
   className?: string;
 }
 
@@ -20,21 +19,20 @@ export default function MetricCard({
   trend,
   subtitle,
   icon,
-  gradient = "from-blue-500 to-purple-600",
   className
 }: MetricCardProps) {
   return (
-    <Card className={cn("hover-elevate overflow-hidden", className)}>
+    <Card className={cn("shadow-glow-hover", className)}>
       <CardContent className="p-6">
         <div className="flex items-start justify-between">
           <div className="space-y-2">
-            <p className="text-sm font-medium text-muted-foreground">{title}</p>
+            <p className="text-sm font-medium text-gray-400">{title}</p>
             <div className="flex items-end gap-2">
-              <h3 className="text-2xl font-bold text-foreground">{value}</h3>
+              <h3 className="text-stat">{value}</h3>
               {change && (
                 <div className={cn(
                   "flex items-center text-xs font-medium",
-                  trend === 'up' ? "text-green-600" : "text-red-600"
+                  trend === 'up' ? "text-brand-light" : "text-red-400"
                 )}>
                   {trend === 'up' ? (
                     <TrendingUp className="h-3 w-3 mr-1" />
@@ -46,18 +44,13 @@ export default function MetricCard({
               )}
             </div>
             {subtitle && (
-              <p className="text-xs text-muted-foreground">{subtitle}</p>
+              <p className="text-xs text-[#888888]">{subtitle}</p>
             )}
           </div>
           
           {icon && (
-            <div className={cn(
-              "p-3 rounded-lg bg-gradient-to-r",
-              gradient
-            )}>
-              <div className="text-gray-900 dark:text-white">
-                {icon}
-              </div>
+            <div className="p-3 rounded-lg bg-brand/10 border border-brand/20 text-brand">
+              {icon}
             </div>
           )}
         </div>

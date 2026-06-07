@@ -58,7 +58,7 @@ export function PageWrapper({ children }: PageWrapperProps) {
   // #endregion
 
   return (
-    <div className="flex min-h-screen relative overflow-hidden">
+    <div className="flex min-h-screen relative overflow-hidden bg-[#0A0A0A]">
       {/* Sidebar - drawer < lg, fixed >= lg */}
       <Sidebar />
 
@@ -70,7 +70,7 @@ export function PageWrapper({ children }: PageWrapperProps) {
           animate="animate"
           exit="exit"
           variants={contentVariants}
-          className="flex-1 flex flex-col relative z-10 lg:ml-64 lg:rounded-l-3xl overflow-hidden"
+          className="flex-1 flex flex-col relative z-10 lg:ml-64 overflow-hidden border-l border-[#222222]"
         >
           {/* Top bar — menu mobile + toggle thème */}
           <AppTopBar />

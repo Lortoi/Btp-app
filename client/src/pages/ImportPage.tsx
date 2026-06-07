@@ -274,22 +274,25 @@ export default function ImportPage() {
 
   return (
     <PageWrapper>
-      <header className="bg-white/80 dark:bg-black/20 backdrop-blur-xl border-b border-gray-200 dark:border-gray-600 px-6 py-4 rounded-tl-3xl">
+      <header className="surface-header backdrop-blur-sm px-6 py-4 rounded-tl-3xl border-b border-ai/25">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-start gap-3">
             <Button
               type="button"
               variant="ghost"
               size="icon"
-              className="text-gray-900 dark:text-white shrink-0 hover:bg-gray-100 dark:hover:bg-white/10"
+              className="text-foreground shrink-0 hover:bg-white/5"
               onClick={() => setLocation("/dashboard")}
               aria-label="Retour au dashboard"
             >
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Importer mes factures (IA)</h1>
-              <p className="text-sm text-gray-600 dark:text-gray-300">
+              <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
+                <Wand2 className="h-6 w-6 text-ai-light shrink-0" />
+                Importer mes factures (IA)
+              </h1>
+              <p className="text-sm text-subtitle">
                 Déposez vos PDF — analyse par Claude, stockage sécurisé sur Supabase (région EU).
               </p>
             </div>
@@ -298,26 +301,26 @@ export default function ImportPage() {
       </header>
 
       <main className="flex-1 p-6 space-y-6 max-w-3xl">
-        <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+        <Card className="ai-surface-card backdrop-blur-sm text-foreground">
           <CardHeader>
             <div className="flex items-center gap-2">
-              <Wand2 className="h-5 w-5 text-gray-600 dark:text-gray-300" />
-              <CardTitle className="text-lg">Factures PDF</CardTitle>
+              <Wand2 className="h-5 w-5 text-ai-light" />
+              <CardTitle className="text-lg">Factures PDF — analyse Claude</CardTitle>
             </div>
-            <CardDescription className="text-gray-500 dark:text-gray-400">
+            <CardDescription className="text-secondary">
               Jusqu&apos;à {MAX_FILES} fichiers, {MAX_BYTES / (1024 * 1024)} Mo chacun. L&apos;analyse utilise Claude
-              intégré via <code className="text-xs text-gray-600 dark:text-gray-300">/api/analyze-invoice</code>{" "}
-              (configurez <code className="text-xs text-gray-600 dark:text-gray-300">ANTHROPIC_API_KEY</code> dans{" "}
-              <code className="text-xs text-gray-600 dark:text-gray-300">.env</code>).
+              intégré via <code className="text-xs text-subtitle">/api/analyze-invoice</code>{" "}
+              (configurez <code className="text-xs text-subtitle">ANTHROPIC_API_KEY</code> dans{" "}
+              <code className="text-xs text-subtitle">.env</code>).
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div
               {...dropHandlers}
-              className="rounded-xl border border-dashed border-gray-300 dark:border-white/20 bg-black/20 px-6 py-10 text-center cursor-pointer hover:border-white/40 transition-colors"
+              className="rounded-xl border border-dashed border-ai/30 bg-ai-muted px-6 py-10 text-center cursor-pointer hover:border-ai/50 hover:shadow-ai-glow-sm transition-all"
             >
-              <Upload className="h-10 w-10 mx-auto text-gray-500 dark:text-gray-400 mb-3" />
-              <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">Glissez-déposez vos PDF ici ou cliquez pour parcourir</p>
+              <Upload className="h-10 w-10 mx-auto text-secondary mb-3" />
+              <p className="text-sm text-subtitle mb-2">Glissez-déposez vos PDF ici ou cliquez pour parcourir</p>
               <input
                 ref={fileInputRef}
                 type="file"
@@ -341,14 +344,14 @@ export default function ImportPage() {
 
             {jobs.length > 0 && (
               <div className="space-y-2">
-                <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-gray-600 dark:text-gray-300">
+                <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-subtitle">
                   <span>
                     {jobs.length} fichier{jobs.length > 1 ? "s" : ""} — {(totalBytes / (1024 * 1024)).toFixed(1)} Mo
                   </span>
                   {importId && <span className="font-mono text-xs truncate max-w-[200px]">Import {importId}</span>}
                 </div>
                 {analyzing && <Progress value={progressPct} className="h-2" />}
-                <ul className="max-h-48 overflow-y-auto space-y-1 rounded-lg border border-gray-300 dark:border-gray-600 divide-y divide-white/5">
+                <ul className="max-h-48 overflow-y-auto space-y-1 rounded-lg border border-border divide-y divide-white/5">
                   {jobs.map((j, i) => (
                     <li key={i} className="px-3 py-2 text-sm space-y-2">
                       <div className="flex items-center justify-between gap-2">
@@ -357,16 +360,16 @@ export default function ImportPage() {
                             type="button"
                             disabled={analyzing || j.status === "uploading"}
                             onClick={() => removeJob(i)}
-                            className="shrink-0 inline-flex h-6 w-6 items-center justify-center rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 disabled:opacity-40 disabled:pointer-events-none"
+                            className="shrink-0 inline-flex h-6 w-6 items-center justify-center rounded-md text-secondary hover:text-gray-900 dark:hover:text-white hover:bg-white/5 disabled:opacity-40 disabled:pointer-events-none"
                             aria-label={`Retirer ${j.file.name}`}
                           >
                             <X className="h-4 w-4" />
                           </button>
-                          <FileText className="h-4 w-4 shrink-0 text-gray-500 dark:text-gray-400" />
-                          <span className="truncate text-gray-900 dark:text-white">{j.file.name}</span>
+                          <FileText className="h-4 w-4 shrink-0 text-secondary" />
+                          <span className="truncate text-foreground">{j.file.name}</span>
                         </span>
                         {j.status === "uploading" && (
-                          <Loader2 className="h-4 w-4 animate-spin text-gray-600 dark:text-gray-300 shrink-0" />
+                          <Loader2 className="h-4 w-4 animate-spin text-subtitle shrink-0" />
                         )}
                         {j.status === "pending" && (
                           <Badge variant="secondary" className="shrink-0">
@@ -439,7 +442,7 @@ export default function ImportPage() {
                   type="button"
                   disabled={analyzing || jobs.length === 0}
                   onClick={runAnalysis}
-                  className="w-full bg-gray-100 dark:bg-white/20 backdrop-blur-md text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-white/30"
+                  className="w-full ai-btn"
                 >
                   {analyzing ? (
                     <>
@@ -459,7 +462,7 @@ export default function ImportPage() {
         </Card>
 
         {recentImports.length > 0 && (
-          <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+          <Card className="surface-card backdrop-blur-sm text-foreground">
             <CardHeader>
               <div className="flex items-start justify-between gap-3">
                 <div className="space-y-1.5">
@@ -467,7 +470,7 @@ export default function ImportPage() {
                     <CheckCircle2 className="h-4 w-4 text-emerald-500" />
                     Dernières extractions
                   </CardTitle>
-                  <CardDescription className="text-gray-500 dark:text-gray-400">
+                  <CardDescription className="text-secondary">
                     Résultats enregistrés localement sur cet appareil.
                   </CardDescription>
                 </div>
@@ -476,7 +479,7 @@ export default function ImportPage() {
                   variant="ghost"
                   size="sm"
                   onClick={clearRecentImports}
-                  className="shrink-0 text-gray-500 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400"
+                  className="shrink-0 text-secondary hover:text-red-500 dark:hover:text-red-400"
                 >
                   Tout effacer
                 </Button>
@@ -486,21 +489,21 @@ export default function ImportPage() {
               {recentImports.slice(0, 5).map((item) => (
                 <div
                   key={item.id}
-                  className="rounded-lg border border-gray-300 dark:border-gray-600 bg-white/50 dark:bg-black/20 p-3 space-y-2"
+                  className="rounded-lg border border-border bg-white/50 dark:bg-black/20 p-3 space-y-2"
                 >
                   <div className="flex items-center justify-between gap-2">
                     <div className="flex items-center gap-2 min-w-0 flex-1">
                       <button
                         type="button"
                         onClick={() => removeRecentImport(item.id)}
-                        className="shrink-0 inline-flex h-6 w-6 items-center justify-center rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10"
+                        className="shrink-0 inline-flex h-6 w-6 items-center justify-center rounded-md text-secondary hover:text-gray-900 dark:hover:text-white hover:bg-white/5"
                         aria-label={`Supprimer ${item.filename}`}
                       >
                         <X className="h-4 w-4" />
                       </button>
                       <p className="font-medium text-sm truncate">{item.filename}</p>
                     </div>
-                    <span className="text-xs text-gray-500 dark:text-gray-400 shrink-0">
+                    <span className="text-xs text-secondary shrink-0">
                       {new Date(item.analyzedAt).toLocaleString("fr-FR")}
                     </span>
                   </div>
@@ -511,10 +514,10 @@ export default function ImportPage() {
           </Card>
         )}
 
-        <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white opacity-80">
+        <Card className="surface-card backdrop-blur-sm text-foreground opacity-80">
           <CardHeader>
             <CardTitle className="text-base">Autres méthodes</CardTitle>
-            <CardDescription className="text-gray-500 dark:text-gray-400">
+            <CardDescription className="text-secondary">
               Import CSV et saisie manuelle arrivent dans une prochaine version.
             </CardDescription>
           </CardHeader>
@@ -522,7 +525,7 @@ export default function ImportPage() {
 
         <div className="pb-8">
           <Link href="/dashboard">
-            <Button type="button" variant="ghost" className="text-gray-600 dark:text-gray-300 hover:text-white hover:bg-gray-100 dark:bg-white/10">
+            <Button type="button" variant="ghost" className="text-subtitle hover:text-white hover:bg-white/5">
               ← Retour au dashboard
             </Button>
           </Link>
@@ -541,19 +544,19 @@ function ExtractionSummary({ extraction }: { extraction: ExtractedInvoice }) {
   const confidence = Math.round((extraction.confidence ?? 0) * 100)
 
   return (
-    <div className="pl-6 space-y-1 text-xs text-gray-600 dark:text-gray-300">
+    <div className="pl-6 space-y-1 text-xs text-subtitle">
       <p>
-        <span className="text-gray-500 dark:text-gray-400">Client :</span>{" "}
-        <span className="text-gray-900 dark:text-white">{client}</span>
+        <span className="text-secondary">Client :</span>{" "}
+        <span className="text-foreground">{client}</span>
       </p>
       <p>
-        <span className="text-gray-500 dark:text-gray-400">N° facture :</span> {numero}
+        <span className="text-secondary">N° facture :</span> {numero}
         {" · "}
-        <span className="text-gray-500 dark:text-gray-400">TTC :</span>{" "}
-        <span className="font-semibold text-[#F97316]">{ttc}</span>
+        <span className="text-secondary">TTC :</span>{" "}
+        <span className="font-semibold text-[#F5A623]">{ttc}</span>
       </p>
       <p>
-        <span className="text-gray-500 dark:text-gray-400">Confiance IA :</span> {confidence}%
+        <span className="text-secondary">Confiance IA :</span> {confidence}%
         {extraction.remarques ? ` — ${extraction.remarques}` : ""}
       </p>
     </div>
@@ -574,50 +577,50 @@ function ExtractionDetailDialog({
 
   return (
     <Dialog open onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white max-w-lg max-h-[85vh] overflow-y-auto">
+      <DialogContent className="surface-card backdrop-blur-sm text-foreground max-w-lg max-h-[85vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <CheckCircle2 className="h-5 w-5 text-emerald-500 shrink-0" />
             Extraction réussie
           </DialogTitle>
-          <DialogDescription className="text-gray-500 dark:text-gray-400 truncate">
+          <DialogDescription className="text-secondary truncate">
             {filename}
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 text-sm">
           <section className="space-y-1">
-            <h3 className="font-semibold text-gray-900 dark:text-white">Client</h3>
+            <h3 className="font-semibold text-foreground">Client</h3>
             <p>{e.client?.nom ?? "—"}</p>
-            {e.client?.email && <p className="text-gray-600 dark:text-gray-300">{e.client.email}</p>}
-            {e.client?.telephone && <p className="text-gray-600 dark:text-gray-300">{e.client.telephone}</p>}
+            {e.client?.email && <p className="text-subtitle">{e.client.email}</p>}
+            {e.client?.telephone && <p className="text-subtitle">{e.client.telephone}</p>}
             {(e.client?.adresse || e.client?.ville) && (
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-subtitle">
                 {[e.client.adresse, e.client.code_postal, e.client.ville].filter(Boolean).join(", ")}
               </p>
             )}
           </section>
 
           <section className="space-y-1">
-            <h3 className="font-semibold text-gray-900 dark:text-white">Facture</h3>
+            <h3 className="font-semibold text-foreground">Facture</h3>
             <p>N° {e.facture?.numero ?? "—"}</p>
-            <p className="text-gray-600 dark:text-gray-300">
+            <p className="text-subtitle">
               Émission : {e.facture?.date_emission ?? "—"}
               {e.facture?.date_prestation ? ` · Prestation : ${e.facture.date_prestation}` : ""}
             </p>
             <div className="flex flex-wrap gap-3 pt-1">
               <span>HT : {formatEuro(e.facture?.montant_ht)}</span>
               <span>TVA : {formatEuro(e.facture?.montant_tva)}</span>
-              <span className="font-bold text-[#F97316]">TTC : {formatEuro(e.facture?.montant_ttc)}</span>
+              <span className="font-bold text-[#F5A623]">TTC : {formatEuro(e.facture?.montant_ttc)}</span>
             </div>
           </section>
 
           {e.lignes.length > 0 && (
             <section className="space-y-2">
-              <h3 className="font-semibold text-gray-900 dark:text-white">
+              <h3 className="font-semibold text-foreground">
                 Lignes ({e.lignes.length})
               </h3>
-              <ul className="max-h-40 overflow-y-auto space-y-1 rounded-lg border border-gray-300 dark:border-gray-600 divide-y divide-gray-200 dark:divide-gray-600">
+              <ul className="max-h-40 overflow-y-auto space-y-1 rounded-lg border border-border divide-y divide-gray-200 dark:divide-gray-600">
                 {e.lignes.map((l, idx) => (
                   <li key={idx} className="px-3 py-2 text-xs flex justify-between gap-2">
                     <span className="truncate">{l.designation}</span>
@@ -628,7 +631,7 @@ function ExtractionDetailDialog({
             </section>
           )}
 
-          <p className="text-xs text-gray-500 dark:text-gray-400">
+          <p className="text-xs text-secondary">
             Confiance IA : {confidence}%
             {e.champs_incertains?.length
               ? ` · Champs incertains : ${e.champs_incertains.join(", ")}`

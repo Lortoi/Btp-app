@@ -5,26 +5,20 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0" +
-  " hover-elevate active-elevate-2",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brand disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 transition-colors",
   {
     variants: {
       variant: {
         default:
-          "bg-gray-100 dark:bg-white/20 backdrop-blur-md text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-white/30",
+          "bg-brand text-[#0A0A0A] border border-brand/50 hover:bg-brand-light shadow-glow-sm",
         destructive:
           "bg-destructive text-destructive-foreground border border-destructive-border",
         outline:
-          // Shows the background color of whatever card / sidebar / accent background it is inside of.
-          // Inherits the current text color.
-          " border [border-color:var(--button-outline)]  shadow-xs active:shadow-none ",
-        secondary: "border bg-secondary text-secondary-foreground border border-secondary-border ",
-        // Add a transparent border so that when someone toggles a border on later, it doesn't shift layout/size.
-        ghost: "border border-transparent",
+          "border border-[#222222] bg-transparent text-white hover:bg-white/5 hover:border-brand/30 shadow-glow-hover",
+        secondary:
+          "border bg-[#111111] text-white border-[#222222] hover:bg-white/5",
+        ghost: "border border-transparent text-white hover:bg-white/5",
       },
-      // Heights are set as "min" heights, because sometimes Ai will place large amount of content
-      // inside buttons. With a min-height they will look appropriate with small amounts of content,
-      // but will expand to fit large amounts of content.
       size: {
         default: "min-h-9 px-4 py-2",
         sm: "min-h-8 rounded-md px-3 text-xs",

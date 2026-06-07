@@ -41,7 +41,7 @@ import {
 
 type AddressSuggestion = { label: string }
 
-const ORANGE = "#F97316"
+const AI_ACCENT = "#7C3AED"
 
 export default function EstimationPage() {
   const [, setLocation] = useLocation()
@@ -67,13 +67,14 @@ export default function EstimationPage() {
 
   return (
     <PageWrapper>
-      <header className="bg-white/80 dark:bg-black/20 backdrop-blur-xl border-b border-gray-200 dark:border-white/10 px-6 py-4 rounded-tl-3xl">
+      <header className="surface-header backdrop-blur-sm border-b border-ai/25 px-6 py-4 rounded-tl-3xl">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
+              <Sparkles className="h-6 w-6 text-ai-light shrink-0" />
               Estimation Automatique des Chantiers
             </h1>
-            <p className="text-sm text-gray-600 dark:text-gray-300">
+            <p className="text-sm text-subtitle">
               Étape {step}/3 — {stepLabel}
             </p>
           </div>
@@ -295,13 +296,13 @@ function ProgressSteps({ step }: { step: EstimationStep }) {
         const circleClass = completed
           ? "bg-green-500/20 border-green-500/60 text-green-600 dark:text-green-400"
           : active
-            ? "border-[#F97316] bg-[#F97316]/15 text-[#F97316]"
-            : "bg-gray-200 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400"
+            ? "border-[#F5A623] bg-[#F5A623]/15 text-[#F5A623]"
+            : "bg-gray-200 dark:bg-gray-700 border-border text-secondary"
         const labelClass = completed
           ? "text-green-600 dark:text-green-400"
           : active
-            ? "text-[#F97316]"
-            : "text-gray-500 dark:text-gray-400"
+            ? "text-[#F5A623]"
+            : "text-secondary"
 
         return (
           <div key={it.n} className="flex items-center gap-3">
@@ -341,10 +342,10 @@ function StepPhotos({ onNext }: { onNext: () => void }) {
   }
 
   return (
-    <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+    <Card className="surface-card backdrop-blur-sm text-foreground">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Upload className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+          <Upload className="h-5 w-5 text-subtitle" />
           Import des Photos du Chantier
         </CardTitle>
       </CardHeader>
@@ -366,11 +367,11 @@ function StepPhotos({ onNext }: { onNext: () => void }) {
               : "border-gray-300 dark:border-white/20 hover:border-gray-400 dark:hover:border-white/30")
           }
         >
-          <Upload className="h-12 w-12 mx-auto mb-4 text-gray-600 dark:text-gray-300" />
-          <p className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+          <Upload className="h-12 w-12 mx-auto mb-4 text-subtitle" />
+          <p className="text-lg font-medium text-foreground mb-2">
             Glissez-déposez vos photos ici
           </p>
-          <p className="text-sm text-gray-500 dark:text-gray-400">ou cliquez pour sélectionner des fichiers</p>
+          <p className="text-sm text-secondary">ou cliquez pour sélectionner des fichiers</p>
 
           <div className="mt-5 flex flex-col items-center gap-2">
             <input
@@ -383,15 +384,15 @@ function StepPhotos({ onNext }: { onNext: () => void }) {
             />
             <Button
               variant="outline"
-              className="text-gray-900 dark:text-white border-gray-300 dark:border-white/20 hover:bg-gray-100 dark:hover:bg-white/10"
+              className="text-foreground border-gray-300 dark:border-white/20 hover:bg-white/5"
               onClick={() => document.getElementById("photo-upload")?.click()}
             >
               Sélectionner des photos
             </Button>
-            <div className="text-xs text-gray-500 dark:text-gray-400">
+            <div className="text-xs text-secondary">
               Formats acceptés : JPG, PNG, HEIC – Max 10 photos
             </div>
-            <div className="text-xs text-gray-600 dark:text-gray-300">
+            <div className="text-xs text-subtitle">
               <span className="tabular-nums">{photos.length}</span>/10 photos ajoutées
             </div>
           </div>
@@ -404,12 +405,12 @@ function StepPhotos({ onNext }: { onNext: () => void }) {
                 <img
                   src={image.previewUrl}
                   alt={`Photo ${index + 1}`}
-                  className="w-full aspect-square object-cover rounded-lg border border-gray-300 dark:border-gray-600"
+                  className="w-full aspect-square object-cover rounded-lg border border-border"
                 />
                 <button
                   type="button"
                   onClick={() => removePhoto(index)}
-                  className="absolute top-2 right-2 bg-black/60 hover:bg-black/80 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-full h-7 w-7 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="absolute top-2 right-2 bg-black/60 hover:bg-black/80 border border-border text-foreground rounded-full h-7 w-7 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
                   aria-label="Supprimer"
                 >
                   ×
@@ -423,7 +424,7 @@ function StepPhotos({ onNext }: { onNext: () => void }) {
           <Button
             onClick={onNext}
             disabled={photos.length === 0}
-            className="bg-gray-100 dark:bg-white/20 backdrop-blur-md text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-white/30 disabled:opacity-50"
+            className="bg-gray-100 dark:bg-white/20 backdrop-blur-md text-foreground border border-border hover:bg-gray-200 dark:hover:bg-white/30 disabled:opacity-50"
           >
             Suivant
             <ArrowRight className="h-4 w-4 ml-2" />
@@ -517,19 +518,19 @@ function StepInfos({
     surfaceM2.trim() && typeTravaux && corpsMetier && localisation.trim()
 
   return (
-    <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+    <Card className="surface-card backdrop-blur-sm text-foreground">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Sparkles className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+          <Sparkles className="h-5 w-5 text-ai-light" />
           Informations du Chantier
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">👤 Client</h3>
-          <div className="p-4 bg-gray-50 dark:bg-gray-800/50 backdrop-blur-md border border-gray-300 dark:border-gray-600 rounded-xl space-y-4">
+          <h3 className="text-lg font-semibold text-foreground">👤 Client</h3>
+          <div className="p-4 bg-gray-50 dark:bg-gray-800/50 backdrop-blur-md border border-border rounded-xl space-y-4">
             <div className="space-y-2 relative">
-              <Label className="text-gray-900 dark:text-white">Nom du client</Label>
+              <Label className="text-foreground">Nom du client</Label>
               <Input
                 value={clientMode === "existing" ? clientQuery : newClientName}
                 onChange={(e) => {
@@ -546,16 +547,16 @@ function StepInfos({
                   if (clientMode === "existing") setShowClientMenu(true)
                 }}
                 placeholder="Rechercher un client…"
-                className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/50"
+                className="bg-gray-50 dark:bg-black/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
               />
 
               {clientMode === "existing" && showClientMenu && (
-                <div className="absolute z-20 mt-2 w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-black/80 backdrop-blur-xl overflow-hidden border border-gray-200 dark:border-transparent">
+                <div className="absolute z-20 mt-2 w-full rounded-xl border border-border bg-white dark:bg-black/80 backdrop-blur-xl overflow-hidden border border-gray-200 dark:border-transparent">
                   {filteredClients.slice(0, 6).map((c) => (
                     <button
                       key={c.id}
                       type="button"
-                      className="w-full text-left px-3 py-2 hover:bg-gray-100 dark:bg-white/10"
+                      className="w-full text-left px-3 py-2 hover:bg-white/5"
                       onClick={() => {
                         setClientMode("existing")
                         setClientId(c.id)
@@ -563,16 +564,16 @@ function StepInfos({
                         setShowClientMenu(false)
                       }}
                     >
-                      <div className="text-sm text-gray-900 dark:text-white">{c.name}</div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400">{c.email}</div>
+                      <div className="text-sm text-foreground">{c.name}</div>
+                      <div className="text-xs text-secondary">{c.email}</div>
                     </button>
                   ))}
                   {filteredClients.length === 0 && (
-                    <div className="px-3 py-2 text-sm text-gray-600 dark:text-gray-300">Aucun résultat</div>
+                    <div className="px-3 py-2 text-sm text-subtitle">Aucun résultat</div>
                   )}
                   <button
                     type="button"
-                    className="w-full text-left px-3 py-2 border-t border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:bg-white/10 text-sm"
+                    className="w-full text-left px-3 py-2 border-t border-border hover:bg-white/5 text-sm"
                     onClick={() => {
                       setClientMode("new")
                       setNewClient({ newClientName: clientQuery })
@@ -586,28 +587,28 @@ function StepInfos({
               )}
 
               {clientMode === "existing" && clientId && (
-                <div className="text-xs text-gray-500 dark:text-gray-400">Client sélectionné : {clientQuery}</div>
+                <div className="text-xs text-secondary">Client sélectionné : {clientQuery}</div>
               )}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label className="text-gray-900 dark:text-white">Email (optionnel)</Label>
+                <Label className="text-foreground">Email (optionnel)</Label>
                 <Input
                   value={newClientEmail}
                   onChange={(e) => setNewClient({ newClientEmail: e.target.value })}
                   placeholder="email@example.com"
-                  className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/50"
+                  className="bg-gray-50 dark:bg-black/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
                   disabled={clientMode === "existing"}
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-gray-900 dark:text-white">Téléphone (optionnel)</Label>
+                <Label className="text-foreground">Téléphone (optionnel)</Label>
                 <Input
                   value={newClientPhone}
                   onChange={(e) => setNewClient({ newClientPhone: e.target.value })}
                   placeholder="06 12 34 56 78"
-                  className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/50"
+                  className="bg-gray-50 dark:bg-black/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
                   disabled={clientMode === "existing"}
                 />
               </div>
@@ -618,26 +619,26 @@ function StepInfos({
         <div className="h-px bg-gray-200 dark:bg-white/10" />
 
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">🏗️ Chantier</h3>
-          <div className="p-4 bg-gray-50 dark:bg-gray-800/50 backdrop-blur-md border border-gray-300 dark:border-gray-600 rounded-xl space-y-4">
+          <h3 className="text-lg font-semibold text-foreground">🏗️ Chantier</h3>
+          <div className="p-4 bg-gray-50 dark:bg-gray-800/50 backdrop-blur-md border border-border rounded-xl space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label className="text-gray-900 dark:text-white">Surface (m²)</Label>
+                <Label className="text-foreground">Surface (m²)</Label>
                 <Input
                   type="number"
                   value={surfaceM2}
                   onChange={(e) => setChantier({ surfaceM2: e.target.value })}
-                  className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/50"
+                  className="bg-gray-50 dark:bg-black/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
                   placeholder="Ex: 50"
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-gray-900 dark:text-white">Type de travaux</Label>
+                <Label className="text-foreground">Type de travaux</Label>
                 <Select
                   value={typeTravaux}
                   onValueChange={(v) => setChantier({ typeTravaux: v as any })}
                 >
-                  <SelectTrigger className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+                  <SelectTrigger className="bg-gray-50 dark:bg-black/20 border-border text-foreground">
                     <SelectValue placeholder="Sélectionner" />
                   </SelectTrigger>
                   <SelectContent>
@@ -650,12 +651,12 @@ function StepInfos({
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label className="text-gray-900 dark:text-white">Corps de métier principal</Label>
+                <Label className="text-foreground">Corps de métier principal</Label>
                 <Select
                   value={corpsMetier}
                   onValueChange={(v) => setChantier({ corpsMetier: v as any })}
                 >
-                  <SelectTrigger className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+                  <SelectTrigger className="bg-gray-50 dark:bg-black/20 border-border text-foreground">
                     <SelectValue placeholder="Sélectionner" />
                   </SelectTrigger>
                   <SelectContent>
@@ -673,7 +674,7 @@ function StepInfos({
                 </Select>
               </div>
               <div className="space-y-2 relative">
-                <Label className="text-gray-900 dark:text-white">Localisation</Label>
+                <Label className="text-foreground">Localisation</Label>
                 <Input
                   value={addressQuery}
                   onChange={(e) => {
@@ -683,16 +684,16 @@ function StepInfos({
                     setChantier({ localisation: v })
                   }}
                   onFocus={() => setShowAddressMenu(true)}
-                  className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/50"
+                  className="bg-gray-50 dark:bg-black/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
                   placeholder="Ex: Paris 75001"
                 />
                 {showAddressMenu && addressSuggestions.length > 0 && (
-                  <div className="absolute z-20 mt-2 w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-black/80 backdrop-blur-xl overflow-hidden border border-gray-200 dark:border-transparent">
+                  <div className="absolute z-20 mt-2 w-full rounded-xl border border-border bg-white dark:bg-black/80 backdrop-blur-xl overflow-hidden border border-gray-200 dark:border-transparent">
                     {addressSuggestions.map((sug, idx) => (
                       <button
                         key={idx}
                         type="button"
-                        className="w-full text-left px-3 py-2 hover:bg-gray-100 dark:hover:bg-white/10 text-sm text-gray-900 dark:text-white"
+                        className="w-full text-left px-3 py-2 hover:bg-white/5 text-sm text-foreground"
                         onClick={() => {
                           setChantier({ localisation: sug.label })
                           setAddressQuery(sug.label)
@@ -705,32 +706,32 @@ function StepInfos({
                   </div>
                 )}
                 {!!localisation.trim() && (
-                  <div className="text-xs text-gray-500 dark:text-gray-400">Sélection : {localisation}</div>
+                  <div className="text-xs text-secondary">Sélection : {localisation}</div>
                 )}
               </div>
               <div className="space-y-2">
-                <Label className="text-gray-900 dark:text-white">Nombre d'ouvriers estimé</Label>
+                <Label className="text-foreground">Nombre d'ouvriers estimé</Label>
                 <Input
                   type="number"
                   value={ouvriersEstimes}
                   onChange={(e) => setChantier({ ouvriersEstimes: e.target.value })}
-                  className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/50"
+                  className="bg-gray-50 dark:bg-black/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
                   placeholder="Ex: 2"
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-gray-900 dark:text-white">Durée estimée du chantier</Label>
+                <Label className="text-foreground">Durée estimée du chantier</Label>
                 <Input
                   value={dureeEstimee}
                   onChange={(e) => setChantier({ dureeEstimee: e.target.value })}
-                  className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/50"
+                  className="bg-gray-50 dark:bg-black/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
                   placeholder="Ex: 2 semaines"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label className="text-gray-900 dark:text-white">Matériaux (tags)</Label>
+              <Label className="text-foreground">Matériaux (tags)</Label>
               <Input
                 value={materiauInput}
                 onChange={(e) => setMateriauInput(e.target.value)}
@@ -741,7 +742,7 @@ function StepInfos({
                     setMateriauInput("")
                   }
                 }}
-                className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/50"
+                className="bg-gray-50 dark:bg-black/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
                 placeholder="Tape un matériau puis Entrée"
               />
               {materiauxTags.length > 0 && (
@@ -751,7 +752,7 @@ function StepInfos({
                       key={t}
                       type="button"
                       onClick={() => removeMateriauTag(t)}
-                      className="text-xs px-2 py-1 rounded-full bg-gray-100 dark:bg-white/10 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-white/15"
+                      className="text-xs px-2 py-1 rounded-full bg-gray-100 dark:bg-white/10 border border-border text-foreground hover:bg-gray-200 dark:hover:bg-white/15"
                       title="Supprimer"
                     >
                       {t} ×
@@ -762,11 +763,11 @@ function StepInfos({
             </div>
 
             <div className="space-y-2">
-              <Label className="text-gray-900 dark:text-white">Notes / contexte chantier</Label>
+              <Label className="text-foreground">Notes / contexte chantier</Label>
               <Textarea
                 value={notes}
                 onChange={(e) => setChantier({ notes: e.target.value })}
-                className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/50"
+                className="bg-gray-50 dark:bg-black/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
                 rows={4}
                 placeholder="Décris le chantier, contraintes, contexte…"
               />
@@ -777,16 +778,16 @@ function StepInfos({
         <div className="h-px bg-gray-200 dark:bg-white/10" />
 
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">💰 Paramètres financiers</h3>
-          <div className="p-4 bg-gray-50 dark:bg-gray-800/50 backdrop-blur-md border border-gray-300 dark:border-gray-600 rounded-xl space-y-5">
+          <h3 className="text-lg font-semibold text-foreground">💰 Paramètres financiers</h3>
+          <div className="p-4 bg-gray-50 dark:bg-gray-800/50 backdrop-blur-md border border-border rounded-xl space-y-5">
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <Label className="text-gray-900 dark:text-white">Taux TVA applicable</Label>
+                <Label className="text-foreground">Taux TVA applicable</Label>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <button
                       type="button"
-                      className="text-xs text-gray-500 dark:text-gray-400 underline decoration-white/30 underline-offset-2"
+                      className="text-xs text-secondary underline decoration-white/30 underline-offset-2"
                     >
                       ?
                     </button>
@@ -800,7 +801,7 @@ function StepInfos({
                 value={String(tvaRate)}
                 onValueChange={(v) => setFinancier({ tvaRate: Number(v) as TvaRate })}
               >
-                <SelectTrigger className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+                <SelectTrigger className="bg-gray-50 dark:bg-black/20 border-border text-foreground">
                   <SelectValue placeholder="Sélectionner" />
                 </SelectTrigger>
                 <SelectContent>
@@ -813,8 +814,8 @@ function StepInfos({
 
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label className="text-gray-900 dark:text-white">Marge souhaitée (%)</Label>
-                <div className="text-xs text-gray-600 dark:text-gray-300 tabular-nums">{margePct}%</div>
+                <Label className="text-foreground">Marge souhaitée (%)</Label>
+                <div className="text-xs text-subtitle tabular-nums">{margePct}%</div>
               </div>
               <Slider
                 value={[margePct]}
@@ -827,8 +828,8 @@ function StepInfos({
 
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label className="text-gray-900 dark:text-white">Provision pour aléas (%)</Label>
-                <div className="text-xs text-gray-600 dark:text-gray-300 tabular-nums">{aleasPct}%</div>
+                <Label className="text-foreground">Provision pour aléas (%)</Label>
+                <div className="text-xs text-subtitle tabular-nums">{aleasPct}%</div>
               </div>
               <Slider
                 value={[aleasPct]}
@@ -845,7 +846,7 @@ function StepInfos({
           <Button
             variant="outline"
             onClick={onBack}
-            className="text-gray-900 dark:text-white border-gray-300 dark:border-white/20 hover:bg-gray-100 dark:hover:bg-white/10"
+            className="text-foreground border-gray-300 dark:border-white/20 hover:bg-white/5"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Retour
@@ -854,7 +855,7 @@ function StepInfos({
             onClick={onLaunchAnalysis}
             disabled={!requiredOk}
             className="text-white font-semibold disabled:opacity-50"
-            style={{ backgroundColor: ORANGE }}
+            style={{ backgroundColor: AI_ACCENT }}
           >
             <Sparkles className="h-4 w-4 mr-2" />
             Lancer l'analyse
@@ -889,18 +890,18 @@ function StepResults({
 
   if (!results) {
     return (
-      <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+      <Card className="surface-card backdrop-blur-sm text-foreground">
         <CardHeader>
           <CardTitle>Résultats</CardTitle>
         </CardHeader>
-        <CardContent className="text-gray-600 dark:text-gray-300">Aucun résultat pour le moment.</CardContent>
+        <CardContent className="text-subtitle">Aucun résultat pour le moment.</CardContent>
       </Card>
     )
   }
 
   return (
     <div className="space-y-6">
-      <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+      <Card className="surface-card backdrop-blur-sm text-foreground">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <CheckCircle2 className="h-5 w-5 text-green-400" />
@@ -908,10 +909,10 @@ function StepResults({
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="overflow-x-auto rounded-xl border border-gray-300 dark:border-gray-600">
+          <div className="overflow-x-auto rounded-xl border border-border">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-gray-100 dark:bg-white/5 text-gray-900 dark:text-white">
+                <tr className="bg-gray-100 dark:bg-white/5 text-foreground">
                   <th className="text-left p-3">Poste</th>
                   <th className="text-right p-3">Quantité</th>
                   <th className="text-right p-3">PU HT</th>
@@ -920,15 +921,15 @@ function StepResults({
               </thead>
               <tbody>
                 {results.lignes.map((l) => (
-                  <tr key={l.poste} className="border-t border-gray-200 dark:border-gray-600">
-                    <td className="p-3 text-gray-900 dark:text-white">{l.poste}</td>
-                    <td className="p-3 text-right tabular-nums text-gray-600 dark:text-gray-300">
+                  <tr key={l.poste} className="border-t border-border">
+                    <td className="p-3 text-foreground">{l.poste}</td>
+                    <td className="p-3 text-right tabular-nums text-subtitle">
                       {l.quantite}
                     </td>
-                    <td className="p-3 text-right tabular-nums text-gray-600 dark:text-gray-300">
+                    <td className="p-3 text-right tabular-nums text-subtitle">
                       {l.puHT.toFixed(2)} €
                     </td>
-                    <td className="p-3 text-right tabular-nums font-medium text-gray-900 dark:text-white">
+                    <td className="p-3 text-right tabular-nums font-medium text-foreground">
                       {(l.quantite * l.puHT).toFixed(2)} €
                     </td>
                   </tr>
@@ -937,34 +938,34 @@ function StepResults({
             </table>
           </div>
 
-          <div className="rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-black/20 p-4 space-y-2">
+          <div className="rounded-xl border border-border bg-gray-50 dark:bg-black/20 p-4 space-y-2">
             <div className="flex justify-between text-sm">
-              <span className="text-gray-600 dark:text-gray-300">Total HT</span>
-              <span className="text-gray-900 dark:text-white tabular-nums font-medium">
+              <span className="text-subtitle">Total HT</span>
+              <span className="text-foreground tabular-nums font-medium">
                 {results.totalHT.toFixed(2)} €
               </span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-gray-600 dark:text-gray-300">Marge ({margePct}%)</span>
-              <span className="text-gray-900 dark:text-white tabular-nums font-medium">
+              <span className="text-subtitle">Marge ({margePct}%)</span>
+              <span className="text-foreground tabular-nums font-medium">
                 {results.margeAmount.toFixed(2)} €
               </span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-gray-600 dark:text-gray-300">Total HT + marge</span>
-              <span className="text-gray-900 dark:text-white tabular-nums font-medium">
+              <span className="text-subtitle">Total HT + marge</span>
+              <span className="text-foreground tabular-nums font-medium">
                 {results.totalHTAvecMarge.toFixed(2)} €
               </span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-gray-600 dark:text-gray-300">TVA ({tvaRate}%)</span>
-              <span className="text-gray-900 dark:text-white tabular-nums font-medium">
+              <span className="text-subtitle">TVA ({tvaRate}%)</span>
+              <span className="text-foreground tabular-nums font-medium">
                 {results.tvaAmount.toFixed(2)} €
               </span>
             </div>
-            <div className="flex justify-between pt-2 border-t border-gray-200 dark:border-gray-600">
-              <span className="font-bold text-gray-900 dark:text-white">TOTAL TTC</span>
-              <span className="font-bold text-gray-900 dark:text-white tabular-nums">
+            <div className="flex justify-between pt-2 border-t border-border">
+              <span className="font-bold text-foreground">TOTAL TTC</span>
+              <span className="font-bold text-foreground tabular-nums">
                 {results.totalTTC.toFixed(2)} €
               </span>
             </div>
@@ -974,7 +975,7 @@ function StepResults({
             <Button
               variant="outline"
               onClick={onBack}
-              className="text-gray-900 dark:text-white border-gray-300 dark:border-white/20 hover:bg-gray-100 dark:hover:bg-white/10"
+              className="text-foreground border-gray-300 dark:border-white/20 hover:bg-white/5"
             >
               Modifier les paramètres
             </Button>
@@ -982,14 +983,14 @@ function StepResults({
               <Button
                 variant="outline"
                 onClick={onSaveChantier}
-                className="text-gray-900 dark:text-white border-gray-300 dark:border-white/20 hover:bg-gray-100 dark:hover:bg-white/10"
+                className="text-foreground border-gray-300 dark:border-white/20 hover:bg-white/5"
               >
                 Sauvegarder en tant que chantier
               </Button>
               <Button
                 onClick={onGenerateDevis}
                 className="text-white font-semibold"
-                style={{ backgroundColor: ORANGE }}
+                style={{ backgroundColor: AI_ACCENT }}
               >
                 Générer le devis PDF
               </Button>
@@ -999,7 +1000,7 @@ function StepResults({
           <div className="flex justify-end">
             <Button
               onClick={onReset}
-              className="bg-gray-100 dark:bg-white/20 backdrop-blur-md text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-white/30"
+              className="bg-gray-100 dark:bg-white/20 backdrop-blur-md text-foreground border border-border hover:bg-gray-200 dark:hover:bg-white/30"
             >
               Nouvelle estimation
             </Button>

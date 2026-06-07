@@ -11,11 +11,11 @@ export default function DisplayCardsExample() {
       titleClassName: "text-blue-400",
     },
     {
-      icon: <TrendingUp className="size-4 text-purple-300" />,
+      icon: <TrendingUp className="size-4 text-brand" />,
       title: "Analyse Marché",
       description: "Prix en hausse de 12%",
       date: "Aujourd'hui",
-      titleClassName: "text-purple-400",
+      titleClassName: "text-brand",
     },
     {
       icon: <Camera className="size-4 text-green-300" />,

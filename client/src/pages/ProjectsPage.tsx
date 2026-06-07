@@ -51,7 +51,7 @@ const mockChantiers: MockChantier[] = [
     montant: 18500,
     statut: 'En cours',
     avancement: 60,
-    couleur: '#F97316',
+    couleur: '#F5A623',
   },
   {
     id: '2',
@@ -136,13 +136,13 @@ function formatPeriodeCourte(debutIso: string, finIso: string): string {
 function mockStatutBadgeClass(statut: MockStatutChantier): string {
   switch (statut) {
     case 'En cours':
-      return 'bg-orange-100 dark:bg-[#F97316]/20 text-orange-700 dark:text-orange-100 border-orange-300 dark:border-[#F97316]/40';
+      return 'bg-orange-100 dark:bg-[#F5A623]/20 text-orange-700 dark:text-orange-100 border-orange-300 dark:border-[#F5A623]/40';
     case 'Planifié':
       return 'bg-blue-100 dark:bg-[#3B82F6]/20 text-blue-700 dark:text-blue-100 border-blue-300 dark:border-[#3B82F6]/40';
     case 'Terminé':
       return 'bg-emerald-100 dark:bg-[#10B981]/20 text-emerald-700 dark:text-emerald-100 border-emerald-300 dark:border-[#10B981]/40';
     default:
-      return 'bg-gray-100 dark:bg-white/10 text-gray-600 dark:text-gray-300';
+      return 'bg-gray-100 dark:bg-white/10 text-subtitle';
   }
 }
 
@@ -243,53 +243,53 @@ export default function ProjectsPage() {
       <header className="bg-white/80 dark:bg-black/20 backdrop-blur-xl border-b border-gray-200 dark:border-white/10 px-6 py-4 rounded-tl-3xl">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            <h1 className="text-2xl font-bold text-foreground">
               Mes Chantiers
             </h1>
-            <p className="text-sm text-gray-600 dark:text-gray-300">Gérez tous vos projets en cours et terminés</p>
+            <p className="text-sm text-subtitle">Gérez tous vos projets en cours et terminés</p>
           </div>
           <div className="flex gap-2">
             <Link href="/dashboard/clients">
-              <Button variant="outline" className="text-gray-900 dark:text-white border-gray-300 dark:border-white/20 hover:bg-gray-100 dark:hover:bg-white/10">
+              <Button variant="outline" className="text-foreground border-gray-300 dark:border-white/20 hover:bg-white/5">
                 <User className="h-4 w-4 mr-2" />
                 Clients
               </Button>
             </Link>
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
-                <Button className="bg-gray-100 dark:bg-white/20 backdrop-blur-md text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-white/30">
+                <Button className="bg-gray-100 dark:bg-white/20 backdrop-blur-md text-foreground border border-border hover:bg-gray-200 dark:hover:bg-white/30">
                   <Plus className="h-4 w-4 mr-2" />
                   Ajouter un Chantier
                 </Button>
               </DialogTrigger>
-              <DialogContent className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white max-w-2xl">
+              <DialogContent className="surface-card backdrop-blur-sm text-foreground max-w-2xl">
                 <DialogHeader>
-                  <DialogTitle className="text-gray-900 dark:text-white">Nouveau Chantier</DialogTitle>
+                  <DialogTitle className="text-foreground">Nouveau Chantier</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4">
                   <div>
-                    <Label className="text-gray-900 dark:text-white">Nom du chantier</Label>
+                    <Label className="text-foreground">Nom du chantier</Label>
                     <Input
                       value={newChantier.nom}
                       onChange={(e) => setNewChantier({ ...newChantier, nom: e.target.value })}
                       placeholder="Ex: Rénovation salle de bain"
-                      className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/50"
+                      className="bg-gray-50 dark:bg-black/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
                     />
                   </div>
 
                   <div>
-                    <Label className="text-gray-900 dark:text-white">Client</Label>
+                    <Label className="text-foreground">Client</Label>
                     <div className="flex gap-2">
                       <Select
                         value={newChantier.clientId}
                         onValueChange={(value) => setNewChantier({ ...newChantier, clientId: value })}
                       >
-                        <SelectTrigger className="bg-gray-50 dark:bg-black/20 backdrop-blur-md border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+                        <SelectTrigger className="bg-gray-50 dark:bg-black/20 backdrop-blur-md border-border text-foreground">
                           <SelectValue placeholder="Sélectionner un client" />
                         </SelectTrigger>
-                        <SelectContent className="bg-white dark:bg-black/20 backdrop-blur-xl border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white">
+                        <SelectContent className="bg-white dark:bg-black/20 backdrop-blur-xl border border-border text-foreground">
                           {clients.map((client) => (
-                            <SelectItem key={client.id} value={client.id} className="text-gray-900 dark:text-white">
+                            <SelectItem key={client.id} value={client.id} className="text-foreground">
                               {client.name}
                             </SelectItem>
                           ))}
@@ -299,7 +299,7 @@ export default function ProjectsPage() {
                         type="button"
                         variant="outline"
                         onClick={handleAddClient}
-                        className="text-gray-900 dark:text-white border-gray-300 dark:border-white/20 hover:bg-gray-100 dark:hover:bg-white/10"
+                        className="text-foreground border-gray-300 dark:border-white/20 hover:bg-white/5"
                       >
                         <Plus className="h-4 w-4" />
                       </Button>
@@ -308,27 +308,27 @@ export default function ProjectsPage() {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label className="text-gray-900 dark:text-white">Date de début</Label>
+                      <Label className="text-foreground">Date de début</Label>
                       <Input
                         type="date"
                         value={newChantier.dateDebut}
                         onChange={(e) => setNewChantier({ ...newChantier, dateDebut: e.target.value })}
-                        className="bg-gray-50 dark:bg-black/20 backdrop-blur-md border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
+                        className="bg-gray-50 dark:bg-black/20 backdrop-blur-md border-border text-foreground"
                       />
                     </div>
                     <div>
-                      <Label className="text-gray-900 dark:text-white">Durée</Label>
+                      <Label className="text-foreground">Durée</Label>
                       <Input
                         value={newChantier.duree}
                         onChange={(e) => setNewChantier({ ...newChantier, duree: e.target.value })}
                         placeholder="Ex: 2 semaines"
-                        className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/50"
+                        className="bg-gray-50 dark:bg-black/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <Label className="text-gray-900 dark:text-white">Images</Label>
+                    <Label className="text-foreground">Images</Label>
                     <input
                       type="file"
                       multiple
@@ -341,7 +341,7 @@ export default function ProjectsPage() {
                       type="button"
                       variant="outline"
                       onClick={() => document.getElementById('chantier-images')?.click()}
-                      className="w-full text-gray-900 dark:text-white border-gray-300 dark:border-white/20 hover:bg-gray-100 dark:hover:bg-white/10"
+                      className="w-full text-foreground border-gray-300 dark:border-white/20 hover:bg-white/5"
                     >
                       <ImageIcon className="h-4 w-4 mr-2" />
                       Ajouter des images
@@ -371,14 +371,14 @@ export default function ProjectsPage() {
                     <Button
                       variant="outline"
                       onClick={() => setIsDialogOpen(false)}
-                      className="text-gray-900 dark:text-white border-gray-300 dark:border-white/20 hover:bg-gray-100 dark:hover:bg-white/10"
+                      className="text-foreground border-gray-300 dark:border-white/20 hover:bg-white/5"
                     >
                       Annuler
                     </Button>
                     <Button
                       onClick={handleAddChantier}
                       disabled={!newChantier.nom || !newChantier.clientId || !newChantier.dateDebut || !newChantier.duree}
-                      className="bg-gray-100 dark:bg-white/20 backdrop-blur-md text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-white/30 disabled:opacity-50"
+                      className="bg-gray-100 dark:bg-white/20 backdrop-blur-md text-foreground border border-border hover:bg-gray-200 dark:hover:bg-white/30 disabled:opacity-50"
                     >
                       Ajouter
                     </Button>
@@ -392,45 +392,45 @@ export default function ProjectsPage() {
 
       <main className="flex-1 p-6 space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+          <Card className="surface-card backdrop-blur-sm text-foreground">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Chantiers</CardTitle>
-              <Building className="h-4 w-4 text-gray-600 dark:text-gray-300" />
+              <Building className="h-4 w-4 text-subtitle" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{kpiMock.total}</div>
-              <p className="text-xs text-gray-600 dark:text-gray-300">total (démo)</p>
+              <p className="text-xs text-subtitle">total (démo)</p>
             </CardContent>
           </Card>
-          <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+          <Card className="surface-card backdrop-blur-sm text-foreground">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">En cours</CardTitle>
-              <HardHat className="h-4 w-4 text-gray-600 dark:text-gray-300" />
+              <HardHat className="h-4 w-4 text-subtitle" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{kpiMock.enCours}</div>
-              <p className="text-xs text-gray-600 dark:text-gray-300">chantiers actifs</p>
+              <p className="text-xs text-subtitle">chantiers actifs</p>
             </CardContent>
           </Card>
-          <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+          <Card className="surface-card backdrop-blur-sm text-foreground">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Planifiés</CardTitle>
-              <ClipboardList className="h-4 w-4 text-gray-600 dark:text-gray-300" />
+              <ClipboardList className="h-4 w-4 text-subtitle" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{kpiMock.planifie}</div>
-              <p className="text-xs text-gray-600 dark:text-gray-300">à démarrer</p>
+              <p className="text-xs text-subtitle">à démarrer</p>
             </CardContent>
           </Card>
         </div>
 
         <div>
-          <h2 className="text-sm font-semibold text-gray-600 dark:text-gray-300 mb-3">Aperçu chantiers (démo)</h2>
+          <h2 className="text-sm font-semibold text-subtitle mb-3">Aperçu chantiers (démo)</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {mockChantiers.map((c) => (
               <Card
                 key={c.id}
-                className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white overflow-hidden flex flex-col border-l-4 shadow-none"
+                className="surface-card backdrop-blur-sm text-foreground overflow-hidden flex flex-col border-l-4 shadow-none"
                 style={{ borderLeftColor: c.couleur }}
               >
                 <CardHeader className="pb-2 space-y-0">
@@ -443,27 +443,27 @@ export default function ProjectsPage() {
                 </CardHeader>
                 <CardContent className="space-y-3 flex-1 flex flex-col">
                   <div className="space-y-2 text-sm">
-                    <div className="flex items-center gap-2 text-gray-900 dark:text-white">
-                      <User className="h-4 w-4 shrink-0 text-gray-500 dark:text-gray-400" aria-hidden />
+                    <div className="flex items-center gap-2 text-foreground">
+                      <User className="h-4 w-4 shrink-0 text-secondary" aria-hidden />
                       <span>{c.client}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-gray-900 dark:text-white">
-                      <Hammer className="h-4 w-4 shrink-0 text-gray-500 dark:text-gray-400" aria-hidden />
+                    <div className="flex items-center gap-2 text-foreground">
+                      <Hammer className="h-4 w-4 shrink-0 text-secondary" aria-hidden />
                       <span>{c.typeTravaux}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-gray-900 dark:text-white">
-                      <MapPin className="h-4 w-4 shrink-0 text-gray-500 dark:text-gray-400" aria-hidden />
+                    <div className="flex items-center gap-2 text-foreground">
+                      <MapPin className="h-4 w-4 shrink-0 text-secondary" aria-hidden />
                       <span>{c.localisation}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-gray-900 dark:text-white">
-                      <Calendar className="h-4 w-4 shrink-0 text-gray-500 dark:text-gray-400" aria-hidden />
+                    <div className="flex items-center gap-2 text-foreground">
+                      <Calendar className="h-4 w-4 shrink-0 text-secondary" aria-hidden />
                       <span>{formatPeriodeCourte(c.dateDebut, c.dateFin)}</span>
                     </div>
                   </div>
-                  <p className="text-lg font-bold text-[#F97316]">{formatMontantEUR(c.montant)}</p>
+                  <p className="text-lg font-bold text-[#F5A623]">{formatMontantEUR(c.montant)}</p>
                   <div className="space-y-1">
                     <div className="flex justify-end">
-                      <span className="text-xs text-gray-500 dark:text-gray-400">{c.avancement}% réalisé</span>
+                      <span className="text-xs text-secondary">{c.avancement}% réalisé</span>
                     </div>
                     <div className="h-2 w-full rounded-full bg-gray-100 dark:bg-white/10 overflow-hidden">
                       <div
@@ -479,7 +479,7 @@ export default function ProjectsPage() {
                     <Button
                       type="button"
                       variant="outline"
-                      className="w-full text-gray-900 dark:text-white border-gray-300 dark:border-white/20 hover:bg-gray-100 dark:hover:bg-white/10"
+                      className="w-full text-foreground border-gray-300 dark:border-white/20 hover:bg-white/5"
                     >
                       Voir le chantier
                     </Button>
@@ -492,12 +492,12 @@ export default function ProjectsPage() {
 
         {chantiers.length > 0 && (
           <div className="space-y-3">
-            <h2 className="text-sm font-semibold text-gray-600 dark:text-gray-300">Chantiers enregistrés</h2>
+            <h2 className="text-sm font-semibold text-subtitle">Chantiers enregistrés</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {chantiers.map((chantier) => (
                 <Card
                   key={chantier.id}
-                  className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover:shadow-lg transition-shadow cursor-pointer"
+                  className="surface-card backdrop-blur-sm text-foreground hover:shadow-lg transition-shadow cursor-pointer"
                 >
                   {chantier.images.length > 0 && (
                     <div className="relative h-48 overflow-hidden rounded-t-lg">
@@ -516,17 +516,17 @@ export default function ProjectsPage() {
                   )}
                   <CardHeader>
                     <CardTitle className="text-lg">{chantier.nom}</CardTitle>
-                    <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
+                    <div className="flex items-center gap-2 text-sm text-subtitle">
                       <User className="h-4 w-4" />
                       {chantier.clientName}
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-2">
-                    <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
+                    <div className="flex items-center gap-2 text-sm text-subtitle">
                       <Calendar className="h-4 w-4" />
                       {new Date(chantier.dateDebut).toLocaleDateString('fr-FR')}
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
+                    <div className="flex items-center gap-2 text-sm text-subtitle">
                       <Clock className="h-4 w-4" />
                       {chantier.duree}
                     </div>

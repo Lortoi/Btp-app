@@ -71,22 +71,22 @@ export default function AccountDialog({ children }: AccountDialogProps) {
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-2xl max-w-md">
+      <DialogContent className="surface-card backdrop-blur-sm text-foreground rounded-2xl max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-gray-900 dark:text-white text-2xl">Mon Compte</DialogTitle>
+          <DialogTitle className="text-foreground text-2xl">Mon Compte</DialogTitle>
         </DialogHeader>
         
         <div className="space-y-6 py-4">
           {/* Avatar et nom */}
           <div className="flex flex-col items-center space-y-4">
             <Avatar className="h-20 w-20 border-2 border-gray-300 dark:border-white/20">
-              <AvatarFallback className="bg-gray-100 dark:bg-white/10 text-gray-900 dark:text-white text-xl">
+              <AvatarFallback className="bg-gray-100 dark:bg-white/10 text-foreground text-xl">
                 {getInitials(displayName)}
               </AvatarFallback>
             </Avatar>
             <div className="text-center">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{displayName}</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-300">{displayRole}</p>
+              <h3 className="text-xl font-semibold text-foreground">{displayName}</h3>
+              <p className="text-sm text-subtitle">{displayRole}</p>
             </div>
           </div>
 
@@ -94,15 +94,15 @@ export default function AccountDialog({ children }: AccountDialogProps) {
 
           {/* Informations du compte */}
           <div className="space-y-4">
-            <Card className="bg-gray-50 dark:bg-white/5 border-gray-300 dark:border-gray-600">
+            <Card className="bg-gray-50 dark:bg-white/5 border-border">
               <CardContent className="pt-6 space-y-4">
                 {/* Email */}
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
-                    <Mail className="h-4 w-4 text-gray-600 dark:text-gray-300" />
-                    <Label className="text-gray-600 dark:text-gray-300 text-sm">Email</Label>
+                    <Mail className="h-4 w-4 text-subtitle" />
+                    <Label className="text-subtitle text-sm">Email</Label>
                   </div>
-                  <p className="text-gray-900 dark:text-white ml-6">{displayEmail}</p>
+                  <p className="text-foreground ml-6">{displayEmail}</p>
                 </div>
 
                 {/* Nom complet (si membre d'équipe) */}
@@ -111,10 +111,10 @@ export default function AccountDialog({ children }: AccountDialogProps) {
                     <Separator className="bg-gray-100 dark:bg-white/10" />
                     <div className="space-y-2">
                       <div className="flex items-center gap-2">
-                        <UserIcon className="h-4 w-4 text-gray-600 dark:text-gray-300" />
-                        <Label className="text-gray-600 dark:text-gray-300 text-sm">Nom complet</Label>
+                        <UserIcon className="h-4 w-4 text-subtitle" />
+                        <Label className="text-subtitle text-sm">Nom complet</Label>
                       </div>
-                      <p className="text-gray-900 dark:text-white ml-6">{teamMember.name}</p>
+                      <p className="text-foreground ml-6">{teamMember.name}</p>
                     </div>
                   </>
                 )}
@@ -123,10 +123,10 @@ export default function AccountDialog({ children }: AccountDialogProps) {
                 <Separator className="bg-gray-100 dark:bg-white/10" />
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
-                    <Briefcase className="h-4 w-4 text-gray-600 dark:text-gray-300" />
-                    <Label className="text-gray-600 dark:text-gray-300 text-sm">Rôle</Label>
+                    <Briefcase className="h-4 w-4 text-subtitle" />
+                    <Label className="text-subtitle text-sm">Rôle</Label>
                   </div>
-                  <p className="text-gray-900 dark:text-white ml-6">{displayRole}</p>
+                  <p className="text-foreground ml-6">{displayRole}</p>
                 </div>
 
                 {/* Téléphone (si membre d'équipe) */}
@@ -135,10 +135,10 @@ export default function AccountDialog({ children }: AccountDialogProps) {
                     <Separator className="bg-gray-100 dark:bg-white/10" />
                     <div className="space-y-2">
                       <div className="flex items-center gap-2">
-                        <Phone className="h-4 w-4 text-gray-600 dark:text-gray-300" />
-                        <Label className="text-gray-600 dark:text-gray-300 text-sm">Téléphone</Label>
+                        <Phone className="h-4 w-4 text-subtitle" />
+                        <Label className="text-subtitle text-sm">Téléphone</Label>
                       </div>
-                      <p className="text-gray-900 dark:text-white ml-6">{teamMember.phone}</p>
+                      <p className="text-foreground ml-6">{teamMember.phone}</p>
                     </div>
                   </>
                 )}
@@ -149,8 +149,8 @@ export default function AccountDialog({ children }: AccountDialogProps) {
                     <Separator className="bg-gray-100 dark:bg-white/10" />
                     <div className="space-y-2">
                       <div className="flex items-center gap-2">
-                        <UserIcon className="h-4 w-4 text-gray-600 dark:text-gray-300" />
-                        <Label className="text-gray-600 dark:text-gray-300 text-sm">Code de connexion</Label>
+                        <UserIcon className="h-4 w-4 text-subtitle" />
+                        <Label className="text-subtitle text-sm">Code de connexion</Label>
                       </div>
                       <p className="text-white ml-6 font-mono">{teamMember.login_code}</p>
                     </div>

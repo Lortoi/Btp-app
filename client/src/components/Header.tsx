@@ -17,7 +17,7 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center gap-2">
-            <Building2 className="h-8 w-8 text-gray-600 dark:text-gray-300" />
+            <Building2 className="h-8 w-8 text-subtitle" />
             <span className="text-xl font-bold text-foreground">AgentPro</span>
           </div>
 

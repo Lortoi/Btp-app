@@ -58,14 +58,14 @@ export default function TeamSidebar() {
       <div className="p-4 border-b border-border dark:border-gray-600">
         <div className="flex flex-col">
           <span className="font-semibold text-foreground dark:text-white">Membre d'équipe</span>
-          <span className="text-xs text-muted-foreground dark:text-gray-600 dark:text-gray-300 italic">PLANCHAIS</span>
+          <span className="text-xs text-muted-foreground dark:text-subtitle italic">PLANCHAIS</span>
         </div>
       </div>
 
       {/* Navigation */}
       <nav className="flex-1 p-4 space-y-2">
         {!collapsed && (
-          <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-4">
+          <div className="text-xs font-medium text-secondary uppercase tracking-wide mb-4">
             Navigation
           </div>
         )}
@@ -77,8 +77,8 @@ export default function TeamSidebar() {
               className={cn(
                 "w-full justify-start gap-3 h-10 text-white",
                 collapsed && "justify-center",
-                item.active && "bg-white/20 backdrop-blur-md border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover:bg-white/30",
-                !item.active && "hover:bg-gray-100 dark:bg-white/10"
+                item.active && "bg-white/20 backdrop-blur-md border border-border text-foreground hover:bg-white/30",
+                !item.active && "hover:bg-white/5"
               )}
             >
               <item.icon className="h-4 w-4" />

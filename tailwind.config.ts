@@ -81,6 +81,24 @@ export default {
           busy: "rgb(239 68 68)",
           offline: "rgb(156 163 175)",
         },
+        brand: {
+          DEFAULT: "#F5A623",
+          light: "#F7B84A",
+          muted: "rgba(245, 166, 35, 0.15)",
+          dark: "#C4841C",
+        },
+        ai: {
+          DEFAULT: "#7C3AED",
+          light: "#8B5CF6",
+          muted: "rgba(124, 58, 237, 0.15)",
+          dark: "#6D28D9",
+        },
+      },
+      boxShadow: {
+        glow: "0 0 0 1px rgba(245, 166, 35, 0.25), 0 0 20px rgba(245, 166, 35, 0.12)",
+        "glow-sm": "0 0 0 1px rgba(245, 166, 35, 0.15), 0 0 12px rgba(245, 166, 35, 0.08)",
+        "ai-glow": "0 0 0 1px rgba(124, 58, 237, 0.35), 0 0 20px rgba(124, 58, 237, 0.15)",
+        "ai-glow-sm": "0 0 0 1px rgba(124, 58, 237, 0.25), 0 0 12px rgba(124, 58, 237, 0.12)",
       },
       fontFamily: {
         sans: ["var(--font-sans)"],

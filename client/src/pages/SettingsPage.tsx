@@ -33,16 +33,16 @@ export default function SettingsPage() {
 
   return (
     <PageWrapper>
-      <header className="bg-white/80 dark:bg-black/20 backdrop-blur-xl border-b border-gray-200 dark:border-gray-600 px-6 py-4 rounded-tl-3xl">
+      <header className="surface-header backdrop-blur-sm px-6 py-4 rounded-tl-3xl">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Paramètres</h1>
-            <p className="text-sm text-gray-600 dark:text-gray-300">Préférences enregistrées localement sur cet appareil</p>
+            <h1 className="text-2xl font-bold text-foreground">Paramètres</h1>
+            <p className="text-sm text-subtitle">Préférences enregistrées localement sur cet appareil</p>
           </div>
           <Button
             type="button"
             onClick={handleSave}
-            className="bg-gray-100 dark:bg-white/20 backdrop-blur-md text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-white/30 shrink-0"
+            className="bg-gray-100 dark:bg-white/20 backdrop-blur-md text-foreground border border-border hover:bg-gray-200 dark:hover:bg-white/30 shrink-0"
           >
             Enregistrer les modifications
           </Button>
@@ -50,20 +50,20 @@ export default function SettingsPage() {
       </header>
 
       <main className="flex-1 p-6 space-y-6 max-w-3xl">
-        <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+        <Card className="surface-card backdrop-blur-sm text-foreground">
           <CardHeader>
             <div className="flex items-center gap-2">
-              <UserCircle className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+              <UserCircle className="h-5 w-5 text-subtitle" />
               <CardTitle className="text-lg">Compte</CardTitle>
             </div>
-            <CardDescription className="text-gray-500 dark:text-gray-400">
+            <CardDescription className="text-secondary">
               Informations utilisées dans l&apos;interface. Le menu latéral « Compte » reste disponible pour le
               profil complet.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="nom-aff" className="text-gray-900 dark:text-white">
+              <Label htmlFor="nom-aff" className="text-foreground">
                 Nom affiché
               </Label>
               <Input
@@ -71,11 +71,11 @@ export default function SettingsPage() {
                 value={draft.nomAffiche}
                 onChange={(e) => update("nomAffiche", e.target.value)}
                 placeholder="Ex. PLANCHAIS — Bureau d&apos;études"
-                className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/50"
+                className="bg-gray-50 dark:bg-black/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="tel-contact" className="text-gray-900 dark:text-white">
+              <Label htmlFor="tel-contact" className="text-foreground">
                 Téléphone de contact
               </Label>
               <Input
@@ -83,26 +83,26 @@ export default function SettingsPage() {
                 value={draft.telephoneContact}
                 onChange={(e) => update("telephoneContact", e.target.value)}
                 placeholder="06 12 34 56 78"
-                className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/50"
+                className="bg-gray-50 dark:bg-black/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
               />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-violet-50 dark:bg-black/20 backdrop-blur-xl border border-violet-300 dark:border-violet-500/25 text-gray-900 dark:text-white">
+        <Card className="ai-surface-card backdrop-blur-sm text-foreground">
           <CardHeader>
             <div className="flex items-center gap-2">
-              <Wand2 className="h-5 w-5 text-violet-300" />
-              <CardTitle className="text-lg">Import de mes données</CardTitle>
+              <Wand2 className="h-5 w-5 text-ai-light" />
+              <CardTitle className="text-lg">Import de mes données (IA)</CardTitle>
             </div>
-            <CardDescription className="text-gray-500 dark:text-gray-400">
+            <CardDescription className="text-secondary">
               Importez vos factures PDF : l&apos;IA extrait clients, chantiers et montants (stockage UE Supabase).
             </CardDescription>
           </CardHeader>
           <CardContent>
             <Button
               type="button"
-              className="w-full sm:w-auto bg-violet-600 hover:bg-violet-500 text-white border border-violet-500/30"
+              className="w-full sm:w-auto ai-btn"
               onClick={() => setLocation("/dashboard/import")}
             >
               <Upload className="h-4 w-4 mr-2" />
@@ -111,19 +111,19 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
 
-        <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+        <Card className="surface-card backdrop-blur-sm text-foreground">
           <CardHeader>
             <div className="flex items-center gap-2">
-              <Bell className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+              <Bell className="h-5 w-5 text-subtitle" />
               <CardTitle className="text-lg">Notifications</CardTitle>
             </div>
-            <CardDescription className="text-gray-500 dark:text-gray-400">
+            <CardDescription className="text-secondary">
               Activez ou désactivez les rappels (stockés localement ; pas d&apos;envoi réel sans backend).
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center justify-between gap-4">
-              <Label htmlFor="notif-chantier" className="text-gray-900 dark:text-white cursor-pointer">
+              <Label htmlFor="notif-chantier" className="text-foreground cursor-pointer">
                 Rappels chantiers
               </Label>
               <Switch
@@ -133,7 +133,7 @@ export default function SettingsPage() {
               />
             </div>
             <div className="flex items-center justify-between gap-4">
-              <Label htmlFor="notif-devis" className="text-gray-900 dark:text-white cursor-pointer">
+              <Label htmlFor="notif-devis" className="text-foreground cursor-pointer">
                 Alertes devis
               </Label>
               <Switch
@@ -145,17 +145,17 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
 
-        <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+        <Card className="surface-card backdrop-blur-sm text-foreground">
           <CardHeader>
             <div className="flex items-center gap-2">
-              <Moon className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+              <Moon className="h-5 w-5 text-subtitle" />
               <CardTitle className="text-lg">Apparence</CardTitle>
             </div>
-            <CardDescription className="text-gray-500 dark:text-gray-400">Confort d&apos;affichage.</CardDescription>
+            <CardDescription className="text-secondary">Confort d&apos;affichage.</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="flex items-center justify-between gap-4">
-              <Label htmlFor="reduce-motion" className="text-gray-900 dark:text-white cursor-pointer">
+              <Label htmlFor="reduce-motion" className="text-foreground cursor-pointer">
                 Réduire les animations
               </Label>
               <Switch
@@ -167,19 +167,19 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
 
-        <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+        <Card className="surface-card backdrop-blur-sm text-foreground">
           <CardHeader>
             <div className="flex items-center gap-2">
-              <Shield className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+              <Shield className="h-5 w-5 text-subtitle" />
               <CardTitle className="text-lg">Confidentialité</CardTitle>
             </div>
-            <CardDescription className="text-gray-500 dark:text-gray-400">
+            <CardDescription className="text-secondary">
               Contrôlez le partage de données techniques anonymisées pour améliorer l&apos;application.
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="flex items-center justify-between gap-4">
-              <Label htmlFor="stats-anon" className="text-gray-900 dark:text-white cursor-pointer">
+              <Label htmlFor="stats-anon" className="text-foreground cursor-pointer">
                 Autoriser les statistiques d&apos;usage anonymes
               </Label>
               <Switch
@@ -195,7 +195,7 @@ export default function SettingsPage() {
           <Button
             type="button"
             onClick={handleSave}
-            className="bg-gray-100 dark:bg-white/20 backdrop-blur-md text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-white/30"
+            className="bg-gray-100 dark:bg-white/20 backdrop-blur-md text-foreground border border-border hover:bg-gray-200 dark:hover:bg-white/30"
           >
             Enregistrer les modifications
           </Button>

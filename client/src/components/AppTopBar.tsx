@@ -15,14 +15,14 @@ export function AppTopBar({ showMobileMenu = true, title = "PLANCHAIS" }: AppTop
   const [, setLocation] = useLocation()
 
   return (
-    <div className="sticky top-0 z-30 flex items-center gap-3 px-4 py-3 bg-white/85 dark:bg-black/40 backdrop-blur-xl border-b border-border dark:border-gray-600">
+    <div className="sticky top-0 z-30 flex items-center gap-3 px-4 py-3 surface-header backdrop-blur-sm">
       {showMobileMenu && (
         <div className="lg:hidden">
           <MobileMenuButton />
         </div>
       )}
       {title ? (
-        <span className="font-semibold text-foreground dark:text-white lg:hidden">{title}</span>
+        <span className="font-semibold text-white lg:hidden">{title}</span>
       ) : null}
       <div className="ml-auto flex items-center gap-2">
         <Tooltip>
@@ -31,13 +31,14 @@ export function AppTopBar({ showMobileMenu = true, title = "PLANCHAIS" }: AppTop
               <AIAssistantButton />
             </span>
           </TooltipTrigger>
-          <TooltipContent side="bottom">Assistant IA</TooltipContent>
+          <TooltipContent side="bottom" className="bg-[#111111] border-ai/30 text-white">
+            Assistant IA
+          </TooltipContent>
         </Tooltip>
         <Button
           type="button"
           variant="outline"
           size="sm"
-          className="text-gray-900 dark:text-white border-gray-300 dark:border-white/20 hover:bg-gray-100 dark:hover:bg-white/10"
           onClick={() => setLocation("/dashboard/settings")}
           aria-label="Paramètres"
         >
@@ -64,10 +65,12 @@ export function FullPageTopBar() {
                 <AIAssistantButton />
               </span>
             </TooltipTrigger>
-            <TooltipContent side="bottom">Assistant IA</TooltipContent>
+            <TooltipContent side="bottom" className="bg-[#111111] border-ai/30 text-white">
+              Assistant IA
+            </TooltipContent>
           </Tooltip>
         )}
-        <div className="rounded-lg bg-white/70 dark:bg-black/30 backdrop-blur-md border border-border dark:border-gray-600">
+        <div className="rounded-lg bg-white/5 backdrop-blur-sm border border-[#222222]">
           <AnimatedThemeToggler />
         </div>
       </div>

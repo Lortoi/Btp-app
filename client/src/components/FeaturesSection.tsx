@@ -6,40 +6,40 @@ import photoEnhancementImage from '@assets/generated_images/Photo_enhancement_co
 export default function FeaturesSection() {
   const features = [
     {
-      icon: <FileText className="h-8 w-8 text-gray-600 dark:text-gray-300" />,
+      icon: <FileText className="h-8 w-8 text-subtitle" />,
       title: "Générateur de Devis",
       description: "Créez des devis professionnels en quelques clics. Templates personnalisables pour piscines, paysage, menuiserie et plus.",
-      color: "bg-black/20 backdrop-blur-md border border-gray-300 dark:border-gray-600",
+      color: "bg-black/20 backdrop-blur-md border border-border",
     },
     {
-      icon: <Wand2 className="h-8 w-8 text-gray-600 dark:text-gray-300" />,
+      icon: <Wand2 className="h-8 w-8 text-subtitle" />,
       title: "Visualisation IA",
       description: "Uploadez une photo du terrain, sélectionnez votre projet et l'IA génère un rendu professionnel pour impressionner vos clients.",
-      color: "bg-black/20 backdrop-blur-md border border-gray-300 dark:border-gray-600",
+      color: "bg-black/20 backdrop-blur-md border border-border",
     },
     {
-      icon: <Users className="h-8 w-8 text-gray-600 dark:text-gray-300" />,
+      icon: <Users className="h-8 w-8 text-subtitle" />,
       title: "Gestion des Prospects",
       description: "CRM intégré pour suivre vos leads, organiser vos rendez-vous et transformer vos prospects en clients fidèles.",
-      color: "bg-black/20 backdrop-blur-md border border-gray-300 dark:border-gray-600",
+      color: "bg-black/20 backdrop-blur-md border border-border",
     },
     {
-      icon: <Calendar className="h-8 w-8 text-gray-600 dark:text-gray-300" />,
+      icon: <Calendar className="h-8 w-8 text-subtitle" />,
       title: "Planning Chantiers",
       description: "Calendrier intelligent pour planifier vos interventions, suivre l'avancement et respecter vos délais.",
-      color: "bg-black/20 backdrop-blur-md border border-gray-300 dark:border-gray-600",
+      color: "bg-black/20 backdrop-blur-md border border-border",
     },
     {
-      icon: <Euro className="h-8 w-8 text-gray-600 dark:text-gray-300" />,
+      icon: <Euro className="h-8 w-8 text-subtitle" />,
       title: "Suivi Paiements",
       description: "Facturation automatique, suivi des encaissements et relances clients pour optimiser votre trésorerie.",
-      color: "bg-black/20 backdrop-blur-md border border-gray-300 dark:border-gray-600",
+      color: "bg-black/20 backdrop-blur-md border border-border",
     },
     {
-      icon: <Camera className="h-8 w-8 text-gray-600 dark:text-gray-300" />,
+      icon: <Camera className="h-8 w-8 text-subtitle" />,
       title: "Portfolio Avant/Après",
       description: "Showcasez vos réalisations avec des portfolios automatiques. Génération PDF pour présenter vos références.",
-      color: "bg-black/20 backdrop-blur-md border border-gray-300 dark:border-gray-600",
+      color: "bg-black/20 backdrop-blur-md border border-border",
     },
   ];
 
@@ -48,7 +48,7 @@ export default function FeaturesSection() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-bold mb-4">
-            <span className="text-gray-900 dark:text-white">
+            <span className="text-foreground">
               Fonctionnalités
             </span>{' '}
             <span className="text-foreground">Complètes</span>

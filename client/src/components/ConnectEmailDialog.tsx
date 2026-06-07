@@ -75,13 +75,13 @@ export function ConnectEmailDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white max-w-md">
+      <DialogContent className="surface-card backdrop-blur-sm text-foreground max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Mail className="h-5 w-5" />
             {connection ? "Compte email connecté" : "Connecter votre email"}
           </DialogTitle>
-          <DialogDescription className="text-gray-500 dark:text-gray-400">
+          <DialogDescription className="text-secondary">
             {connection
               ? "Votre boîte est enregistrée pour les automatisations CRM (relances, suivi devis)."
               : "Liez votre adresse professionnelle pour activer les automatisations du pipeline."}
@@ -90,7 +90,7 @@ export function ConnectEmailDialog({
 
         <div className="space-y-4 py-2">
           <div className="space-y-2">
-            <Label htmlFor="crm-email" className="text-gray-900 dark:text-white">
+            <Label htmlFor="crm-email" className="text-foreground">
               Adresse email
             </Label>
             <Input
@@ -99,17 +99,17 @@ export function ConnectEmailDialog({
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="vous@entreprise.fr"
-              className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/50"
+              className="bg-gray-50 dark:bg-black/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
             />
           </div>
 
           <div className="space-y-2">
-            <Label className="text-gray-900 dark:text-white">Fournisseur</Label>
+            <Label className="text-foreground">Fournisseur</Label>
             <Select value={provider} onValueChange={(v) => setProvider(v as EmailProvider)}>
-              <SelectTrigger className="bg-gray-50 dark:bg-black/20 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+              <SelectTrigger className="bg-gray-50 dark:bg-black/20 border-border text-foreground">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white">
+              <SelectContent className="bg-white dark:bg-gray-800 border border-border text-foreground">
                 <SelectItem value="gmail">Gmail</SelectItem>
                 <SelectItem value="outlook">Outlook / Microsoft 365</SelectItem>
                 <SelectItem value="other">Autre (IMAP)</SelectItem>
@@ -120,7 +120,7 @@ export function ConnectEmailDialog({
           {error && <p className="text-sm text-red-500">{error}</p>}
 
           {connection && (
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+            <p className="text-xs text-secondary">
               Connecté depuis le {new Date(connection.connectedAt).toLocaleString("fr-FR")} via{" "}
               {providerLabel(connection.provider)}.
             </p>
@@ -132,7 +132,7 @@ export function ConnectEmailDialog({
             <Button
               type="button"
               variant="outline"
-              className="text-gray-900 dark:text-white border-gray-300 dark:border-white/20 hover:bg-gray-100 dark:hover:bg-white/10"
+              className="text-foreground border-gray-300 dark:border-white/20 hover:bg-white/5"
               onClick={() => {
                 onDisconnect()
                 onOpenChange(false)
@@ -145,7 +145,7 @@ export function ConnectEmailDialog({
             type="button"
             onClick={handleConnect}
             disabled={connecting}
-            className="bg-gray-100 dark:bg-white/20 backdrop-blur-md text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-white/30"
+            className="bg-gray-100 dark:bg-white/20 backdrop-blur-md text-foreground border border-border hover:bg-gray-200 dark:hover:bg-white/30"
           >
             {connecting ? (
               <>

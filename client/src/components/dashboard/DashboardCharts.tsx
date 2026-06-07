@@ -1,0 +1,213 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Legend,
+  Line,
+  LineChart,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts"
+
+const ORANGE = "#F5A623"
+const GRAY = "#888888"
+const RED = "#EF4444"
+const WHITE = "#FFFFFF"
+const GRAY_LIGHT = "#A3A3A3"
+const GRAY_DARK = "#404040"
+
+const revenueData = [
+  { mois: "Déc", ca: 118000 },
+  { mois: "Jan", ca: 132000 },
+  { mois: "Fév", ca: 125000 },
+  { mois: "Mar", ca: 148000 },
+  { mois: "Avr", ca: 156000 },
+  { mois: "Mai", ca: 165000 },
+]
+
+const chantierTypesData = [
+  { name: "Maçonnerie", value: 35, color: ORANGE },
+  { name: "Plomberie", value: 25, color: WHITE },
+  { name: "Électricité", value: 20, color: GRAY_LIGHT },
+  { name: "Peinture", value: 20, color: GRAY_DARK },
+]
+
+const devisData = [
+  { mois: "Mar", envoyes: 14, acceptes: 9, refuses: 3 },
+  { mois: "Avr", envoyes: 16, acceptes: 11, refuses: 2 },
+  { mois: "Mai", envoyes: 12, acceptes: 8, refuses: 4 },
+]
+
+type TooltipPayload = { name?: string; value?: number; color?: string }
+
+function ChartTooltip({
+  active,
+  payload,
+  label,
+  formatter,
+}: {
+  active?: boolean
+  payload?: TooltipPayload[]
+  label?: string
+  formatter?: (value: number, name: string) => string
+}) {
+  if (!active || !payload?.length) return null
+
+  return (
+    <div className="rounded-lg border border-[#222222] bg-[#111111] px-3 py-2 text-sm shadow-lg">
+      {label ? <p className="text-white font-medium mb-1">{label}</p> : null}
+      <ul className="space-y-0.5">
+        {payload.map((entry, i) => (
+          <li key={i} className="text-gray-400 flex items-center gap-2">
+            {entry.color ? (
+              <span
+                className="inline-block h-2 w-2 rounded-full shrink-0"
+                style={{ backgroundColor: entry.color }}
+              />
+            ) : null}
+            <span>
+              {entry.name}:{" "}
+              <span className="text-white font-medium">
+                {formatter && entry.value != null
+                  ? formatter(entry.value, entry.name ?? "")
+                  : entry.value?.toLocaleString("fr-FR")}
+              </span>
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+const axisTick = { fill: GRAY, fontSize: 12 }
+const gridStroke = "#222222"
+
+function formatEuro(value: number) {
+  return new Intl.NumberFormat("fr-FR", {
+    style: "currency",
+    currency: "EUR",
+    maximumFractionDigits: 0,
+  }).format(value)
+}
+
+const CHART_HEIGHT = 200
+
+export function DashboardCharts() {
+  return (
+    <div className="space-y-4 md:space-y-6">
+      <div className="grid grid-cols-2 gap-3 md:gap-6">
+        <Card className="surface-card backdrop-blur-sm border-[#222222] bg-transparent">
+          <CardHeader className="p-3 md:p-6 pb-1 md:pb-2">
+            <CardTitle className="text-xs md:text-base font-bold tracking-tight text-white leading-tight">
+              Chiffre d&apos;affaires — 6 derniers mois
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-3 md:p-6 pt-0">
+            <div className="w-full min-w-0" style={{ height: CHART_HEIGHT }}>
+              <ResponsiveContainer width="100%" height={CHART_HEIGHT}>
+                <LineChart data={revenueData} margin={{ top: 4, right: 4, left: -12, bottom: 0 }}>
+                  <CartesianGrid stroke={gridStroke} strokeDasharray="3 3" vertical={false} />
+                  <XAxis dataKey="mois" axisLine={false} tickLine={false} tick={axisTick} />
+                  <YAxis
+                    axisLine={false}
+                    tickLine={false}
+                    tick={axisTick}
+                    tickFormatter={(v) => `${Math.round(v / 1000)}k`}
+                    width={44}
+                  />
+                  <Tooltip content={<ChartTooltip formatter={(v) => formatEuro(v)} />} />
+                  <Line
+                    type="monotone"
+                    dataKey="ca"
+                    name="CA"
+                    stroke={ORANGE}
+                    strokeWidth={2.5}
+                    dot={{ fill: ORANGE, strokeWidth: 0, r: 3 }}
+                    activeDot={{ r: 5, fill: ORANGE }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="surface-card backdrop-blur-sm border-[#222222] bg-transparent">
+          <CardHeader className="p-3 md:p-6 pb-1 md:pb-2">
+            <CardTitle className="text-xs md:text-base font-bold tracking-tight text-white leading-tight">
+              Types de chantiers
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-3 md:p-6 pt-0">
+            <div className="w-full min-w-0" style={{ height: CHART_HEIGHT }}>
+              <ResponsiveContainer width="100%" height={CHART_HEIGHT}>
+                <PieChart>
+                  <Pie
+                    data={chantierTypesData}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="42%"
+                    innerRadius="38%"
+                    outerRadius="58%"
+                    paddingAngle={2}
+                    stroke="#222222"
+                    strokeWidth={2}
+                  >
+                    {chantierTypesData.map((entry) => (
+                      <Cell key={entry.name} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip content={<ChartTooltip formatter={(v) => `${v} %`} />} />
+                  <Legend
+                    verticalAlign="bottom"
+                    height={32}
+                    formatter={(value) => (
+                      <span className="text-gray-400 text-xs">{value}</span>
+                    )}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Card className="surface-card backdrop-blur-sm border-[#222222] bg-transparent">
+        <CardHeader className="p-3 md:p-6 pb-1 md:pb-2">
+          <CardTitle className="text-sm md:text-base font-bold tracking-tight text-white">
+            Devis — 3 derniers mois
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-3 md:p-6 pt-0">
+          <div className="w-full min-w-0" style={{ height: CHART_HEIGHT }}>
+            <ResponsiveContainer width="100%" height={CHART_HEIGHT}>
+              <BarChart data={devisData} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
+                <CartesianGrid stroke={gridStroke} strokeDasharray="3 3" vertical={false} />
+                <XAxis dataKey="mois" axisLine={false} tickLine={false} tick={axisTick} />
+                <YAxis axisLine={false} tickLine={false} tick={axisTick} width={32} />
+                <Tooltip content={<ChartTooltip />} />
+                <Legend
+                  verticalAlign="bottom"
+                  height={32}
+                  formatter={(value) => (
+                    <span className="text-gray-400 text-xs capitalize">{value}</span>
+                  )}
+                />
+                <Bar dataKey="envoyes" name="Envoyés" fill={GRAY} radius={[4, 4, 0, 0]} />
+                <Bar dataKey="acceptes" name="Acceptés" fill={ORANGE} radius={[4, 4, 0, 0]} />
+                <Bar dataKey="refuses" name="Refusés" fill={RED} radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}

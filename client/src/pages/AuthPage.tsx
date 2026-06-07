@@ -67,10 +67,10 @@ export default function AuthPage() {
       <div className="relative z-10 max-w-md mx-auto px-6 w-full">
         <div className="bg-gray-100 dark:bg-white/10 dark:bg-black/20 backdrop-blur-lg rounded-2xl border border-gray-300 dark:border-white/20 p-8 shadow-2xl">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+            <h1 className="text-3xl font-bold text-foreground mb-2">
               {isSignUp ? "Créer un compte" : "Connexion"}
             </h1>
-            <p className="text-gray-600 dark:text-gray-300 text-sm">
+            <p className="text-subtitle text-sm">
               {isSignUp 
                 ? "Créez votre compte pour accéder à votre application PLANCHAIS"
                 : "Connectez-vous à votre compte PLANCHAIS"}
@@ -87,8 +87,8 @@ export default function AuthPage() {
                 setError(null)
               }}
               className={`flex-1 ${!isSignUp 
-                ? 'bg-white/20 backdrop-blur-md text-gray-900 dark:text-white border-gray-300 dark:border-gray-600' 
-                : 'bg-transparent text-gray-900 dark:text-white border-gray-300 dark:border-white/20 hover:bg-gray-100 dark:hover:bg-white/10'}`}
+                ? 'bg-white/20 backdrop-blur-md text-foreground border-border' 
+                : 'bg-transparent text-foreground border-gray-300 dark:border-white/20 hover:bg-white/5'}`}
             >
               Connexion
             </Button>
@@ -100,8 +100,8 @@ export default function AuthPage() {
                 setError(null)
               }}
               className={`flex-1 ${isSignUp 
-                ? 'bg-white/20 backdrop-blur-md text-gray-900 dark:text-white border-gray-300 dark:border-gray-600' 
-                : 'bg-transparent text-gray-900 dark:text-white border-gray-300 dark:border-white/20 hover:bg-gray-100 dark:hover:bg-white/10'}`}
+                ? 'bg-white/20 backdrop-blur-md text-foreground border-border' 
+                : 'bg-transparent text-foreground border-gray-300 dark:border-white/20 hover:bg-white/5'}`}
             >
               Créer un compte
             </Button>
@@ -117,16 +117,16 @@ export default function AuthPage() {
             {isSignUp && (
               <>
                 <div className="space-y-2">
-                  <Label htmlFor="fullName" className="text-gray-900 dark:text-white">Nom complet *</Label>
+                  <Label htmlFor="fullName" className="text-foreground">Nom complet *</Label>
                   <div className="relative">
-                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500 dark:text-gray-400" />
+                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-secondary" />
                     <Input
                       id="fullName"
                       type="text"
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
                       placeholder="Jean Dupont"
-                      className="w-full bg-gray-100 dark:bg-white/10 border-gray-300 dark:border-white/20 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/50 focus:border-white/40 focus:ring-white/20 h-12 pl-10"
+                      className="w-full bg-gray-100 dark:bg-white/10 border-gray-300 dark:border-white/20 text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50 focus:border-white/40 focus:ring-white/20 h-12 pl-10"
                     />
                   </div>
                 </div>
@@ -134,32 +134,32 @@ export default function AuthPage() {
             )}
             
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-gray-900 dark:text-white">Email *</Label>
+              <Label htmlFor="email" className="text-foreground">Email *</Label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500 dark:text-gray-400" />
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-secondary" />
                 <Input
                   id="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="votre@email.com"
-                  className="w-full bg-gray-100 dark:bg-white/10 border-gray-300 dark:border-white/20 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/50 focus:border-white/40 focus:ring-white/20 h-12 pl-10"
+                  className="w-full bg-gray-100 dark:bg-white/10 border-gray-300 dark:border-white/20 text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50 focus:border-white/40 focus:ring-white/20 h-12 pl-10"
                   required
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-gray-900 dark:text-white">Mot de passe *</Label>
+              <Label htmlFor="password" className="text-foreground">Mot de passe *</Label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500 dark:text-gray-400" />
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-secondary" />
                 <Input
                   id="password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full bg-gray-100 dark:bg-white/10 border-gray-300 dark:border-white/20 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/50 focus:border-white/40 focus:ring-white/20 h-12 pl-10"
+                  className="w-full bg-gray-100 dark:bg-white/10 border-gray-300 dark:border-white/20 text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50 focus:border-white/40 focus:ring-white/20 h-12 pl-10"
                   required
                   minLength={6}
                 />
@@ -169,7 +169,7 @@ export default function AuthPage() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-[rgba(63,63,63,1)] border-4 border-card text-gray-900 dark:text-white hover:bg-[rgba(63,63,63,0.9)] transition-colors h-12 text-base font-semibold disabled:opacity-50"
+              className="w-full bg-[rgba(63,63,63,1)] border-4 border-card text-foreground hover:bg-[rgba(63,63,63,0.9)] transition-colors h-12 text-base font-semibold disabled:opacity-50"
             >
               {loading ? "Chargement..." : isSignUp ? "Créer mon compte" : "Se connecter"}
             </Button>
@@ -177,7 +177,7 @@ export default function AuthPage() {
               type="button"
               variant="outline"
               onClick={handleBypassToDashboard}
-              className="w-full bg-transparent text-gray-900 dark:text-white border-white/30 hover:bg-gray-100 dark:bg-white/10 h-12 text-base"
+              className="w-full bg-transparent text-foreground border-white/30 hover:bg-white/5 h-12 text-base"
             >
               Acceder au dashboard sans connexion
             </Button>

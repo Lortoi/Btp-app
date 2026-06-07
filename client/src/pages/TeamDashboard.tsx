@@ -64,7 +64,7 @@ export default function TeamDashboard() {
                   <h1 className="text-2xl font-bold text-foreground dark:text-white">
                     Dashboard Membre d'Équipe
                   </h1>
-                  <p className="text-sm text-muted-foreground dark:text-gray-600 dark:text-gray-300">
+                  <p className="text-sm text-muted-foreground dark:text-subtitle">
                     {teamMember ? `Bienvenue, ${teamMember.name}` : 'Chargement...'}
                   </p>
                 </div>
@@ -72,13 +72,13 @@ export default function TeamDashboard() {
             </header>
 
             {/* Tabs Navigation */}
-            <div className="bg-white/80 dark:bg-black/20 backdrop-blur-xl border-b border-gray-200 dark:border-gray-600 px-6 lg:rounded-tl-3xl">
+            <div className="surface-header backdrop-blur-sm px-6 lg:rounded-tl-3xl">
               <div className="flex gap-2 overflow-x-auto">
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => setActiveTab('overview')}
-                  className={activeTab === 'overview' ? 'bg-white/20 backdrop-blur-md border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover:bg-white/30' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/10'}
+                  className={activeTab === 'overview' ? 'bg-white/20 backdrop-blur-md border border-border text-foreground hover:bg-white/30' : 'text-foreground hover:bg-white/5'}
                 >
                   Vue d'ensemble
                 </Button>
@@ -86,7 +86,7 @@ export default function TeamDashboard() {
                   variant="ghost"
                   size="sm"
                   onClick={() => setActiveTab('projects')}
-                  className={activeTab === 'projects' ? 'bg-white/20 backdrop-blur-md border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover:bg-white/30' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/10'}
+                  className={activeTab === 'projects' ? 'bg-white/20 backdrop-blur-md border border-border text-foreground hover:bg-white/30' : 'text-foreground hover:bg-white/5'}
                 >
                   <Building className="h-4 w-4 mr-2" />
                   Mes Chantiers
@@ -95,7 +95,7 @@ export default function TeamDashboard() {
                   variant="ghost"
                   size="sm"
                   onClick={() => setActiveTab('planning')}
-                  className={activeTab === 'planning' ? 'bg-white/20 backdrop-blur-md border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover:bg-white/30' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/10'}
+                  className={activeTab === 'planning' ? 'bg-white/20 backdrop-blur-md border border-border text-foreground hover:bg-white/30' : 'text-foreground hover:bg-white/5'}
                 >
                   <Calendar className="h-4 w-4 mr-2" />
                   Planning
@@ -109,59 +109,59 @@ export default function TeamDashboard() {
                 <div className="space-y-6">
                   {/* Stats Cards */}
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+                    <Card className="surface-card backdrop-blur-sm text-foreground">
                       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">Mes Chantiers</CardTitle>
-                        <Building className="h-4 w-4 text-gray-600 dark:text-gray-300" />
+                        <Building className="h-4 w-4 text-subtitle" />
                       </CardHeader>
                       <CardContent>
                         <div className="text-2xl font-bold">{myChantiers.length}</div>
-                        <p className="text-xs text-gray-600 dark:text-gray-300">Chantiers actifs</p>
+                        <p className="text-xs text-subtitle">Chantiers actifs</p>
                       </CardContent>
                     </Card>
 
-                    <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+                    <Card className="surface-card backdrop-blur-sm text-foreground">
                       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">En Cours</CardTitle>
-                        <Clock className="h-4 w-4 text-gray-600 dark:text-gray-300" />
+                        <Clock className="h-4 w-4 text-subtitle" />
                       </CardHeader>
                       <CardContent>
                         <div className="text-2xl font-bold">{chantiersEnCours.length}</div>
-                        <p className="text-xs text-gray-600 dark:text-gray-300">Chantiers en cours</p>
+                        <p className="text-xs text-subtitle">Chantiers en cours</p>
                       </CardContent>
                     </Card>
 
-                    <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+                    <Card className="surface-card backdrop-blur-sm text-foreground">
                       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">Planifiés</CardTitle>
-                        <Calendar className="h-4 w-4 text-gray-600 dark:text-gray-300" />
+                        <Calendar className="h-4 w-4 text-subtitle" />
                       </CardHeader>
                       <CardContent>
                         <div className="text-2xl font-bold">{chantiersPlanifies.length}</div>
-                        <p className="text-xs text-gray-600 dark:text-gray-300">Chantiers planifiés</p>
+                        <p className="text-xs text-subtitle">Chantiers planifiés</p>
                       </CardContent>
                     </Card>
                   </div>
 
                   {/* Mes Chantiers Récents */}
-                  <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+                  <Card className="surface-card backdrop-blur-sm text-foreground">
                     <CardHeader>
                       <CardTitle>Mes Chantiers Récents</CardTitle>
                     </CardHeader>
                     <CardContent>
                       {myChantiers.length === 0 ? (
-                        <p className="text-gray-600 dark:text-gray-300 text-center py-4">Aucun chantier assigné</p>
+                        <p className="text-subtitle text-center py-4">Aucun chantier assigné</p>
                       ) : (
                         <div className="space-y-3">
                           {myChantiers.slice(0, 5).map((chantier) => (
                             <div
                               key={chantier.id}
-                              className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 backdrop-blur-md border border-gray-300 dark:border-gray-600 rounded-lg"
+                              className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 backdrop-blur-md border border-border rounded-lg"
                             >
                               <div>
-                                <p className="font-medium text-gray-900 dark:text-white">{chantier.nom}</p>
-                                <p className="text-sm text-gray-600 dark:text-gray-300">Client: {chantier.clientName}</p>
-                                <p className="text-xs text-gray-500 dark:text-gray-400">Début: {chantier.dateDebut} ({chantier.duree})</p>
+                                <p className="font-medium text-foreground">{chantier.nom}</p>
+                                <p className="text-sm text-subtitle">Client: {chantier.clientName}</p>
+                                <p className="text-xs text-secondary">Début: {chantier.dateDebut} ({chantier.duree})</p>
                               </div>
                               <Badge className={
                                 chantier.statut === 'planifié' ? 'bg-blue-500/20 text-blue-300' :
@@ -180,27 +180,27 @@ export default function TeamDashboard() {
               )}
 
               {activeTab === 'projects' && (
-                <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+                <Card className="surface-card backdrop-blur-sm text-foreground">
                   <CardHeader>
                     <CardTitle>Mes Chantiers</CardTitle>
                   </CardHeader>
                   <CardContent>
                     {myChantiers.length === 0 ? (
                       <div className="text-center py-8">
-                        <Building className="h-12 w-12 mx-auto mb-4 text-gray-500 dark:text-gray-400" />
-                        <p className="text-gray-600 dark:text-gray-300">Aucun chantier assigné</p>
+                        <Building className="h-12 w-12 mx-auto mb-4 text-secondary" />
+                        <p className="text-subtitle">Aucun chantier assigné</p>
                       </div>
                     ) : (
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {myChantiers.map((chantier) => (
-                          <Card key={chantier.id} className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-lg border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+                          <Card key={chantier.id} className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-lg border border-border text-foreground">
                             <CardHeader>
                               <CardTitle className="text-lg">{chantier.nom}</CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-2">
-                              <p className="text-sm text-gray-600 dark:text-gray-300">Client: {chantier.clientName}</p>
-                              <p className="text-sm text-gray-600 dark:text-gray-300">Début: {chantier.dateDebut}</p>
-                              <p className="text-sm text-gray-600 dark:text-gray-300">Durée: {chantier.duree}</p>
+                              <p className="text-sm text-subtitle">Client: {chantier.clientName}</p>
+                              <p className="text-sm text-subtitle">Début: {chantier.dateDebut}</p>
+                              <p className="text-sm text-subtitle">Durée: {chantier.duree}</p>
                               {chantier.images.length > 0 && (
                                 <div className="grid grid-cols-2 gap-2 mt-2">
                                   {chantier.images.slice(0, 2).map((img, index) => (
@@ -225,12 +225,12 @@ export default function TeamDashboard() {
               )}
 
               {activeTab === 'planning' && (
-                <Card className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+                <Card className="surface-card backdrop-blur-sm text-foreground">
                   <CardHeader>
                     <CardTitle>Mon Planning</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-gray-600 dark:text-gray-300 text-center py-4">
+                    <p className="text-subtitle text-center py-4">
                       Vue planning simplifiée pour les membres d'équipe
                     </p>
                     {/* Ici vous pouvez ajouter un calendrier simplifié si nécessaire */}

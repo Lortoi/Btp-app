@@ -4,14 +4,12 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useMobileNavStore } from '@/stores/mobileNavStore';
 import { 
-  Hammer, 
   Home, 
   FileText, 
   Wand2, 
   User,
   Users,
   Settings, 
-  Bell,
   Upload,
   Calendar,
   Building,
@@ -25,17 +23,13 @@ import AccountDialog from './AccountDialog';
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const [location, setLocation] = useLocation();
-  // Responsive: drawer mobile contrôlé par le store global.
-  // Sur lg+ (≥1024 px), la sidebar reste visible en permanence — isOpen est ignoré par les classes `lg:translate-x-0`.
   const isMobileOpen = useMobileNavStore((s) => s.isOpen);
   const closeMobile = useMobileNavStore((s) => s.close);
 
-  // Auto-close du drawer à chaque changement de route.
   useEffect(() => {
     closeMobile();
   }, [location, closeMobile]);
 
-  // ESC ferme le drawer sur mobile.
   useEffect(() => {
     if (!isMobileOpen) return;
     const onKey = (e: KeyboardEvent) => {
@@ -66,46 +60,40 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* Overlay (mobile uniquement) — caché sur lg+ */}
       {isMobileOpen && (
         <div
           aria-hidden
           onClick={closeMobile}
-          className="lg:hidden fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
+          className="lg:hidden fixed inset-0 z-40 bg-black/70 backdrop-blur-sm"
         />
       )}
 
       <div
         className={cn(
-          "fixed left-0 top-0 h-screen bg-white/90 dark:bg-black/20 backdrop-blur-xl border-r border-border dark:border-gray-600 transition-all duration-300 ease-in-out flex flex-col z-50 rounded-r-3xl",
+          "fixed left-0 top-0 h-screen bg-[#0A0A0A]/95 backdrop-blur-sm border-r border-[#222222] transition-all duration-300 ease-in-out flex flex-col z-50",
           collapsed ? "w-16" : "w-64 max-w-[80vw]",
-          // Drawer mobile : caché par défaut sous lg, visible quand isMobileOpen.
-          // Sur lg+ : toujours visible (translate-x-0).
           isMobileOpen ? "translate-x-0" : "-translate-x-full",
           "lg:translate-x-0",
         )}
       >
-      {/* Header */}
-      <div className="p-4 border-b border-border dark:border-gray-600 flex items-start justify-between gap-2">
+      <div className="p-4 border-b border-[#222222] flex items-start justify-between gap-2">
         <div className="flex flex-col">
-          <span className="font-semibold text-foreground dark:text-white">PLANCHAIS</span>
-          <span className="text-xs text-muted-foreground dark:text-gray-600 dark:text-gray-300 italic">Construire pour durer</span>
+          <span className="font-bold tracking-tight text-white">PLANCHAIS</span>
+          <span className="text-xs text-gray-400 italic">Construire pour durer</span>
         </div>
-        {/* Bouton de fermeture du drawer (mobile uniquement) */}
         <button
           type="button"
           onClick={closeMobile}
           aria-label="Fermer le menu"
-          className="lg:hidden inline-flex items-center justify-center h-9 w-9 rounded-lg text-gray-600 dark:text-gray-300 hover:text-white hover:bg-gray-100 dark:bg-white/10 transition-colors shrink-0"
+          className="lg:hidden inline-flex items-center justify-center h-9 w-9 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors shrink-0"
         >
           <X className="h-5 w-5" />
         </button>
       </div>
 
-      {/* Navigation */}
-      <nav className="flex-1 p-4 space-y-2">
+      <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
         {!collapsed && (
-          <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-4">
+          <div className="text-xs font-medium text-[#888888] uppercase tracking-wide mb-4 px-2">
             Navigation
           </div>
         )}
@@ -115,14 +103,14 @@ export default function Sidebar() {
             <Button
               variant="ghost"
               className={cn(
-                "w-full justify-start gap-3 h-10 text-white",
+                "w-full justify-start gap-3 h-10 text-gray-400",
                 collapsed && "justify-center",
-                item.active && "bg-white/20 backdrop-blur-md border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover:bg-white/30",
-                !item.active && "hover:bg-gray-100 dark:bg-white/10"
+                item.active && (item.path === '/dashboard/ai-visualization' ? "ai-nav-active text-white" : "nav-active text-white"),
+                !item.active && "hover:text-white hover:bg-white/5"
               )}
               data-testid={`nav-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
             >
-              <item.icon className="h-4 w-4" />
+              <item.icon className={cn("h-4 w-4", item.active && (item.path === '/dashboard/ai-visualization' ? "text-ai-light" : "text-brand"))} />
               {!collapsed && <span>{item.label}</span>}
             </Button>
           </Link>
@@ -130,29 +118,30 @@ export default function Sidebar() {
 
         {!collapsed && (
           <>
-            <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mt-8 mb-4">
+            <div className="text-xs font-medium text-[#888888] uppercase tracking-wide mt-8 mb-4 px-2">
               Actions Rapides
             </div>
             
-            {quickActions.map((action, index) => (
+            {quickActions.map((action, index) => {
+              const isAi = action.path.includes("ai-visualization")
+              return (
               <Button
                 key={index}
                 variant="outline"
                 size="sm"
-                className="w-full justify-start gap-3 h-9 text-gray-900 dark:text-white border-gray-300 dark:border-white/20 hover:bg-gray-100 dark:hover:bg-white/10"
+                className={cn("w-full justify-start gap-3 h-9", isAi && "border-ai/30 hover:border-ai/50")}
                 onClick={() => setLocation(action.path)}
                 data-testid={`quick-${action.label.toLowerCase().replace(/\s+/g, '-')}`}
               >
-                <action.icon className="h-4 w-4" />
+                <action.icon className={cn("h-4 w-4", isAi ? "text-ai-light" : "text-brand")} />
                 <span>{action.label}</span>
               </Button>
-            ))}
+            )})}
           </>
         )}
       </nav>
 
-      {/* Account Button at the bottom */}
-      <div className="p-4 border-t border-gray-200 dark:border-gray-600 mt-auto space-y-2">
+      <div className="p-4 border-t border-[#222222] mt-auto space-y-1">
         <Link href="/dashboard/settings">
           <Button
             variant="ghost"
@@ -160,8 +149,8 @@ export default function Sidebar() {
               "w-full justify-start gap-3 h-10",
               collapsed && "justify-center",
               location === "/dashboard/settings"
-                ? "bg-white/20 backdrop-blur-md border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover:bg-white/30"
-                : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/10",
+                ? "nav-active text-white"
+                : "text-gray-400 hover:text-white hover:bg-white/5",
             )}
           >
             <Settings className="h-4 w-4" />
@@ -172,9 +161,9 @@ export default function Sidebar() {
           <Button
             variant="ghost"
             className={cn(
-              "w-full justify-start gap-3 h-10 text-white",
+              "w-full justify-start gap-3 h-10 text-gray-400",
               collapsed && "justify-center",
-              "hover:bg-gray-100 dark:bg-white/10"
+              "hover:text-white hover:bg-white/5"
             )}
           >
             <UserCircle className="h-4 w-4" />
