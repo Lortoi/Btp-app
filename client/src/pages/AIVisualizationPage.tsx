@@ -262,9 +262,6 @@ export default function AIVisualizationPage() {
             <h1 className="text-2xl font-bold text-foreground">
               Visualisation IA
             </h1>
-            <p className="text-sm text-subtitle">
-              Analysez votre chantier et générez un rapport professionnel avec Claude
-            </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
             {stepBadge("upload", "1. Upload")}

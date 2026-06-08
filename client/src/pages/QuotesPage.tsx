@@ -91,17 +91,6 @@ function parseClaudePrestationsJson(raw: string): LignePrestation[] {
 export default function QuotesPage() {
   const [draft, setDraft] = useState<QuoteDraft | null>(null)
   const [pdfLoading, setPdfLoading] = useState(false)
-  const [savedQuotes, setSavedQuotes] = useState<SavedQuote[]>([])
-
-  const persistSavedQuotes = (next: SavedQuote[]) => {
-    setSavedQuotes(next)
-    try {
-      localStorage.setItem(SAVED_QUOTES_KEY, JSON.stringify(next))
-    } catch {
-      // ignore
-    }
-  }
-
   useEffect(() => {
     try {
       const raw = localStorage.getItem(QUOTE_STORAGE_KEY)
@@ -113,16 +102,6 @@ export default function QuotesPage() {
       }
     } catch {
       setDraft(createDefaultDraft())
-    }
-  }, [])
-
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem(SAVED_QUOTES_KEY)
-      const parsed = raw ? (JSON.parse(raw) as SavedQuote[]) : []
-      setSavedQuotes(Array.isArray(parsed) ? parsed : [])
-    } catch {
-      setSavedQuotes([])
     }
   }, [])
 
@@ -251,64 +230,6 @@ export default function QuotesPage() {
     </div>
   )
 
-  const savedQuotesBlock = (
-    <Card className="surface-card backdrop-blur-sm text-foreground">
-      <CardHeader>
-        <CardTitle>Devis générés</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        {savedQuotes.length === 0 ? (
-          <div className="text-sm text-secondary">Aucun devis généré pour le moment.</div>
-        ) : (
-          <div className="space-y-2">
-            {savedQuotes
-              .slice()
-              .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
-              .slice(0, 20)
-              .map((q) => (
-                <div
-                  key={q.id}
-                  className="flex items-center justify-between gap-3 rounded-lg border border-border bg-black/20 px-3 py-2"
-                >
-                  <div className="min-w-0">
-                    <div className="text-sm font-medium text-foreground truncate">
-                      {q.numero || "DEV-—"} — {q.clientNom || "Client"}
-                    </div>
-                    <div className="text-xs text-secondary">
-                      {new Date(q.createdAt).toLocaleString("fr-FR")}
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2 shrink-0">
-                    <Button
-                      type="button"
-                      size="sm"
-                      variant="outline"
-                      className="text-foreground border-gray-300 dark:border-white/20 hover:bg-white/5"
-                      onClick={() => setDraft(q.draft)}
-                    >
-                      Ouvrir
-                    </Button>
-                    <Button
-                      type="button"
-                      size="icon"
-                      variant="ghost"
-                      onClick={() => {
-                        const next = savedQuotes.filter((x) => x.id !== q.id)
-                        persistSavedQuotes(next)
-                      }}
-                      aria-label="Supprimer"
-                    >
-                      <Trash2 className="h-4 w-4 text-red-400" />
-                    </Button>
-                  </div>
-                </div>
-              ))}
-          </div>
-        )}
-      </CardContent>
-    </Card>
-  )
-
   if (!draft || !totals) {
     return (
       <PageWrapper>
@@ -322,9 +243,6 @@ export default function QuotesPage() {
       <div className="flex flex-col flex-1 min-h-0 h-full">
         <header className="shrink-0 surface-header backdrop-blur-sm px-6 py-4">
           <h1 className="text-2xl font-bold text-foreground">Générateur de Devis</h1>
-          <p className="text-sm text-subtitle">
-            Onglets Formulaire et Aperçu — enregistrement automatique
-          </p>
         </header>
 
         <div className="flex-1 min-h-0 flex flex-col">
@@ -354,9 +272,6 @@ export default function QuotesPage() {
               value="form"
               className="flex-1 overflow-y-auto mt-0 p-4 data-[state=inactive]:hidden"
             >
-              <div className="mb-6">
-                {savedQuotesBlock}
-              </div>
               <QuoteForm
                 draft={draft}
                 setDraft={setDraft}

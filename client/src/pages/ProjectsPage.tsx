@@ -246,7 +246,6 @@ export default function ProjectsPage() {
             <h1 className="text-2xl font-bold text-foreground">
               Mes Chantiers
             </h1>
-            <p className="text-sm text-subtitle">Gérez tous vos projets en cours et terminés</p>
           </div>
           <div className="flex gap-2">
             <Link href="/dashboard/clients">
@@ -391,18 +390,18 @@ export default function ProjectsPage() {
       </header>
 
       <main className="flex-1 p-6 space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card className="surface-card backdrop-blur-sm text-foreground">
+        <div className="flex flex-row gap-4">
+          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Chantiers</CardTitle>
               <Building className="h-4 w-4 text-subtitle" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{kpiMock.total}</div>
-              <p className="text-xs text-subtitle">total (démo)</p>
+              <p className="text-xs text-subtitle">total</p>
             </CardContent>
           </Card>
-          <Card className="surface-card backdrop-blur-sm text-foreground">
+          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">En cours</CardTitle>
               <HardHat className="h-4 w-4 text-subtitle" />
@@ -412,7 +411,7 @@ export default function ProjectsPage() {
               <p className="text-xs text-subtitle">chantiers actifs</p>
             </CardContent>
           </Card>
-          <Card className="surface-card backdrop-blur-sm text-foreground">
+          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Planifiés</CardTitle>
               <ClipboardList className="h-4 w-4 text-subtitle" />
@@ -425,7 +424,7 @@ export default function ProjectsPage() {
         </div>
 
         <div>
-          <h2 className="text-sm font-semibold text-subtitle mb-3">Aperçu chantiers (démo)</h2>
+          <h2 className="text-sm font-semibold text-subtitle mb-3">Aperçu chantiers</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {mockChantiers.map((c) => (
               <Card

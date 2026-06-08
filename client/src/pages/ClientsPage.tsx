@@ -40,9 +40,9 @@ export default function ClientsPage() {
             <h1 className="text-2xl font-bold text-foreground">
               Clients
             </h1>
-            <p className="text-sm text-subtitle">
-              {selectedClient ? `Chantiers de ${selectedClient.name}` : 'Gérez vos clients et leurs chantiers'}
-            </p>
+            {selectedClient ? (
+              <p className="text-sm text-subtitle">Chantiers de {selectedClient.name}</p>
+            ) : null}
           </div>
           {!selectedClient && (
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

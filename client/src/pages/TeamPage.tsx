@@ -13,7 +13,6 @@ import {
   Mail,
   Phone,
   Trash2,
-  Building,
   Key,
   Edit2,
   HardHat,
@@ -209,7 +208,6 @@ export default function TeamPage() {
             <h1 className="text-2xl font-bold text-foreground">
               Gestion de l'Équipe
             </h1>
-            <p className="text-sm text-subtitle">Gérez les membres de votre équipe et leurs codes de connexion</p>
           </div>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
@@ -294,18 +292,18 @@ export default function TeamPage() {
       </header>
 
       <main className="flex-1 p-6 space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card className="surface-card backdrop-blur-sm text-foreground">
+        <div className="flex flex-row gap-4">
+          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Membres</CardTitle>
               <Users className="h-4 w-4 text-subtitle" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{kpiStats.total} membres</div>
-              <p className="text-xs text-subtitle">Équipe (démo)</p>
+              <p className="text-xs text-subtitle">total</p>
             </CardContent>
           </Card>
-          <Card className="surface-card backdrop-blur-sm text-foreground">
+          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">En chantier</CardTitle>
               <HardHat className="h-4 w-4 text-subtitle" />
@@ -315,7 +313,7 @@ export default function TeamPage() {
               <p className="text-xs text-subtitle">sur le terrain</p>
             </CardContent>
           </Card>
-          <Card className="surface-card backdrop-blur-sm text-foreground">
+          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Disponibles</CardTitle>
               <Check className="h-4 w-4 text-subtitle" />
@@ -550,21 +548,6 @@ export default function TeamPage() {
             </DialogFooter>
           </DialogContent>
         </Dialog>
-
-        <Card className="surface-card backdrop-blur-sm text-foreground">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Building className="h-5 w-5 text-subtitle" />
-              Affectation aux Chantiers
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-subtitle">
-              Affectez les membres de l'équipe aux chantiers depuis la fiche chantier ou depuis le planning.
-              Cette fonctionnalité vous permet de suivre qui travaille sur quel projet.
-            </p>
-          </CardContent>
-        </Card>
       </main>
 
       <Dialog open={showInviteModal} onOpenChange={setShowInviteModal}>
