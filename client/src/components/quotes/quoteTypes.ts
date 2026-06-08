@@ -94,35 +94,65 @@ export function createDefaultDraft(): QuoteDraft {
   return {
     company: {
       logoBase64: null,
-      raisonSociale: "",
+      raisonSociale: "Dupont Rénovation",
       formeJuridique: "auto-entrepreneur",
-      adresse: "",
-      siret: "",
+      adresse: "12 rue des Artisans, 92100 Boulogne-Billancourt",
+      siret: "123 456 789 00012",
       tvaIntra: "",
       capitalSocial: "",
-      decennale: { assureur: "", contrat: "", zone: "" },
+      decennale: {
+        assureur: "AXA France",
+        contrat: "DEC-2024-88421",
+        zone: "Île-de-France",
+      },
     },
     devis: {
       numero: nextQuoteNumber(),
       dateEmission: today,
       validiteJours: 30,
     },
-    client: { nom: "", adresse: "", email: "", phone: "" },
+    client: {
+      nom: "Sophie Bernard",
+      adresse: "45 rue Anatole France, 92300 Levallois-Perret",
+      email: "sophie.bernard@gmail.com",
+      phone: "06 14 25 36 47",
+    },
     lignes: [
       {
         id: crypto.randomUUID(),
-        description: "",
+        description: "Démolition, préparation des supports et étanchéité douche à l'italienne",
         quantity: 1,
-        unite: "u",
-        puHT: 0,
+        unite: "forfait",
+        puHT: 4200,
+      },
+      {
+        id: crypto.randomUUID(),
+        description: "Pose carrelage grès cérame au sol et murs (fourniture comprise)",
+        quantity: 18,
+        unite: "m2",
+        puHT: 95,
+      },
+      {
+        id: crypto.randomUUID(),
+        description: "Plomberie sanitaire complète (vasque, douche, robinetterie)",
+        quantity: 1,
+        unite: "forfait",
+        puHT: 3800,
+      },
+      {
+        id: crypto.randomUUID(),
+        description: "Électricité et ventilation mécanique contrôlée (VMC)",
+        quantity: 1,
+        unite: "forfait",
+        puHT: 2100,
       },
     ],
     financier: {
       tvaMode: "20",
-      modalitesPaiement: "",
+      modalitesPaiement: "30 % à la commande, 40 % en cours de chantier, solde à réception",
       penalitesRetard: "Taux légal en vigueur",
     },
-    notes: "",
+    notes: "Chantier : rénovation salle de bain — Levallois-Perret. Délai indicatif : 12 jours ouvrés.",
   }
 }
 

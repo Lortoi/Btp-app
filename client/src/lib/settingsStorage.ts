@@ -13,8 +13,8 @@ export interface AppSettings {
 }
 
 export const defaultSettings: AppSettings = {
-  nomAffiche: "",
-  telephoneContact: "",
+  nomAffiche: "Dupont Rénovation",
+  telephoneContact: "06 72 48 35 19",
   notifChantiers: true,
   notifDevis: true,
   reduireAnimations: false,

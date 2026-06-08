@@ -148,15 +148,17 @@ export default function Dashboard() {
 function OverviewTab() {
   const [, setLocation] = useLocation();
   
-  return (
-    <div className="space-y-6">
-      <DashboardCharts />
+  const kpiHeaderClass =
+    "flex flex-row items-center justify-between space-y-0 pb-2 lg:p-4 lg:pb-1.5"
+  const kpiContentClass = "lg:p-4 lg:pt-0"
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+  return (
+    <div className="space-y-4 lg:space-y-4">
+      <div className="grid grid-cols-4 gap-2 sm:gap-3 lg:gap-4">
         <Card
           role="button"
           tabIndex={0}
-          className="surface-card backdrop-blur-sm text-foreground cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+          className="surface-card backdrop-blur-sm text-foreground cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 min-w-0"
           onClick={() => setLocation('/dashboard/quotes')}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
@@ -165,20 +167,20 @@ function OverviewTab() {
             }
           }}
         >
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Chiffre d'Affaires</CardTitle>
+          <CardHeader className={kpiHeaderClass}>
+            <CardTitle className="text-sm lg:text-xs font-medium">Chiffre d'Affaires</CardTitle>
             <Euro className="h-4 w-4 text-subtitle" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">€165,000</div>
-            <p className="text-xs text-subtitle">+18.2% ce mois</p>
+          <CardContent className={kpiContentClass}>
+            <div className="text-2xl lg:text-xl font-bold">€58,600</div>
+            <p className="text-xs text-subtitle">+24,2% ce mois</p>
           </CardContent>
         </Card>
 
         <Card
           role="button"
           tabIndex={0}
-          className="surface-card backdrop-blur-sm text-foreground cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+          className="surface-card backdrop-blur-sm text-foreground cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 min-w-0"
           onClick={() => setLocation('/dashboard/projects')}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
@@ -187,20 +189,20 @@ function OverviewTab() {
             }
           }}
         >
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Chantiers Actifs</CardTitle>
+          <CardHeader className={kpiHeaderClass}>
+            <CardTitle className="text-sm lg:text-xs font-medium">Chantiers Actifs</CardTitle>
             <Building className="h-4 w-4 text-subtitle" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">12</div>
-            <p className="text-xs text-subtitle">+3 en cours</p>
+          <CardContent className={kpiContentClass}>
+            <div className="text-2xl lg:text-xl font-bold">5</div>
+            <p className="text-xs text-subtitle">2 en cours</p>
           </CardContent>
         </Card>
 
         <Card
           role="button"
           tabIndex={0}
-          className="surface-card backdrop-blur-sm text-foreground cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+          className="surface-card backdrop-blur-sm text-foreground cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 min-w-0"
           onClick={() => setLocation('/dashboard/quotes')}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
@@ -209,12 +211,12 @@ function OverviewTab() {
             }
           }}
         >
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Devis En Attente</CardTitle>
+          <CardHeader className={kpiHeaderClass}>
+            <CardTitle className="text-sm lg:text-xs font-medium">Devis En Attente</CardTitle>
             <FileText className="h-4 w-4 text-subtitle" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">8</div>
+          <CardContent className={kpiContentClass}>
+            <div className="text-2xl lg:text-xl font-bold">3</div>
             <p className="text-xs text-subtitle">Réponses attendues</p>
           </CardContent>
         </Card>
@@ -222,7 +224,7 @@ function OverviewTab() {
         <Card
           role="button"
           tabIndex={0}
-          className="surface-card backdrop-blur-sm text-foreground cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+          className="surface-card backdrop-blur-sm text-foreground cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 min-w-0"
           onClick={() => setLocation('/dashboard/crm')}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
@@ -231,16 +233,18 @@ function OverviewTab() {
             }
           }}
         >
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Taux de Conversion</CardTitle>
+          <CardHeader className={kpiHeaderClass}>
+            <CardTitle className="text-sm lg:text-xs font-medium">Taux de Conversion</CardTitle>
             <TrendingUp className="h-4 w-4 text-subtitle" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">73%</div>
-            <p className="text-xs text-subtitle">+5.2% devis → chantiers</p>
+          <CardContent className={kpiContentClass}>
+            <div className="text-2xl lg:text-xl font-bold">67%</div>
+            <p className="text-xs text-subtitle">devis → chantiers</p>
           </CardContent>
         </Card>
       </div>
+
+      <DashboardCharts />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card className="surface-card backdrop-blur-sm text-foreground">

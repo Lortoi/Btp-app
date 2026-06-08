@@ -23,12 +23,12 @@ const GRAY_LIGHT = "#A3A3A3"
 const GRAY_DARK = "#404040"
 
 const revenueData = [
-  { mois: "Déc", ca: 118000 },
-  { mois: "Jan", ca: 132000 },
-  { mois: "Fév", ca: 125000 },
-  { mois: "Mar", ca: 148000 },
-  { mois: "Avr", ca: 156000 },
-  { mois: "Mai", ca: 165000 },
+  { mois: "Déc", ca: 18200 },
+  { mois: "Jan", ca: 24500 },
+  { mois: "Fév", ca: 31800 },
+  { mois: "Mar", ca: 38400 },
+  { mois: "Avr", ca: 47200 },
+  { mois: "Mai", ca: 58600 },
 ]
 
 const chantierTypesData = [
@@ -39,9 +39,9 @@ const chantierTypesData = [
 ]
 
 const devisData = [
-  { mois: "Mar", envoyes: 14, acceptes: 9, refuses: 3 },
-  { mois: "Avr", envoyes: 16, acceptes: 11, refuses: 2 },
-  { mois: "Mai", envoyes: 12, acceptes: 8, refuses: 4 },
+  { mois: "Mar", envoyes: 6, acceptes: 4, refuses: 1 },
+  { mois: "Avr", envoyes: 8, acceptes: 5, refuses: 2 },
+  { mois: "Mai", envoyes: 7, acceptes: 4, refuses: 1 },
 ]
 
 type TooltipPayload = { name?: string; value?: number; color?: string }
@@ -99,17 +99,22 @@ function formatEuro(value: number) {
 
 const CHART_HEIGHT = 200
 
+const chartHeaderClass = "p-3 md:p-6 lg:p-4 pb-1 md:pb-2 lg:pb-1.5"
+const chartContentClass = "p-3 md:p-6 lg:p-4 pt-0"
+const chartTitleClass =
+  "text-xs md:text-base lg:text-sm font-bold tracking-tight text-white leading-tight"
+
 export function DashboardCharts() {
   return (
-    <div className="space-y-4 md:space-y-6">
-      <div className="grid grid-cols-2 gap-3 md:gap-6">
-        <Card className="surface-card backdrop-blur-sm border-[#222222] bg-transparent">
-          <CardHeader className="p-3 md:p-6 pb-1 md:pb-2">
-            <CardTitle className="text-xs md:text-base font-bold tracking-tight text-white leading-tight">
+    <div className="space-y-3 lg:space-y-4">
+      <div className="grid grid-cols-2 gap-3 md:gap-6 lg:grid-cols-2 lg:gap-4">
+        <Card className="surface-card backdrop-blur-sm border-[#222222] bg-transparent min-w-0">
+          <CardHeader className={chartHeaderClass}>
+            <CardTitle className={chartTitleClass}>
               Chiffre d&apos;affaires — 6 derniers mois
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-3 md:p-6 pt-0">
+          <CardContent className={chartContentClass}>
             <div className="w-full min-w-0" style={{ height: CHART_HEIGHT }}>
               <ResponsiveContainer width="100%" height={CHART_HEIGHT}>
                 <LineChart data={revenueData} margin={{ top: 4, right: 4, left: -12, bottom: 0 }}>
@@ -138,13 +143,13 @@ export function DashboardCharts() {
           </CardContent>
         </Card>
 
-        <Card className="surface-card backdrop-blur-sm border-[#222222] bg-transparent">
-          <CardHeader className="p-3 md:p-6 pb-1 md:pb-2">
-            <CardTitle className="text-xs md:text-base font-bold tracking-tight text-white leading-tight">
+        <Card className="surface-card backdrop-blur-sm border-[#222222] bg-transparent min-w-0">
+          <CardHeader className={chartHeaderClass}>
+            <CardTitle className={chartTitleClass}>
               Types de chantiers
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-3 md:p-6 pt-0">
+          <CardContent className={chartContentClass}>
             <div className="w-full min-w-0" style={{ height: CHART_HEIGHT }}>
               <ResponsiveContainer width="100%" height={CHART_HEIGHT}>
                 <PieChart>
@@ -179,13 +184,13 @@ export function DashboardCharts() {
         </Card>
       </div>
 
-      <Card className="surface-card backdrop-blur-sm border-[#222222] bg-transparent">
-        <CardHeader className="p-3 md:p-6 pb-1 md:pb-2">
-          <CardTitle className="text-sm md:text-base font-bold tracking-tight text-white">
+      <Card className="surface-card backdrop-blur-sm border-[#222222] bg-transparent w-full">
+        <CardHeader className={chartHeaderClass}>
+          <CardTitle className="text-sm md:text-base lg:text-sm font-bold tracking-tight text-white">
             Devis — 3 derniers mois
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-3 md:p-6 pt-0">
+        <CardContent className={chartContentClass}>
           <div className="w-full min-w-0" style={{ height: CHART_HEIGHT }}>
             <ResponsiveContainer width="100%" height={CHART_HEIGHT}>
               <BarChart data={devisData} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
