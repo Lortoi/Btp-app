@@ -7,6 +7,9 @@
   "functions": {
     "api/claude.ts": {
       "maxDuration": 60
+    },
+    "api/assistant-chat.ts": {
+      "maxDuration": 60
     }
   },
   "rewrites": [

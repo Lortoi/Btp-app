@@ -1,4 +1,4 @@
-import { ASSISTANT_SYSTEM_PROMPT } from "@shared/assistantPrompt"
+import { ASSISTANT_SYSTEM_PROMPT } from "../shared/assistantPrompt"
 
 const ASSISTANT_MODEL = "claude-sonnet-4-5"
 const ANTHROPIC_API_URL = "https://api.anthropic.com/v1/messages"
