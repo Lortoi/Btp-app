@@ -61,7 +61,7 @@ export default function Dashboard() {
 
         {/* Tabs Navigation */}
         <div className="surface-header backdrop-blur-sm px-6 lg:rounded-tl-3xl overflow-x-hidden w-full max-w-full">
-          <div className="flex gap-2 overflow-x-auto max-w-full lg:overflow-x-visible">
+          <div className="flex gap-2 overflow-x-auto whitespace-nowrap max-w-full lg:overflow-x-visible">
             <Link href="/dashboard">
               <Button
                 variant="ghost"

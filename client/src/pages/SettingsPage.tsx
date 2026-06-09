@@ -34,7 +34,7 @@ export default function SettingsPage() {
   return (
     <PageWrapper>
       <header className="surface-header backdrop-blur-sm px-6 py-4 rounded-tl-3xl">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between w-full max-w-full">
           <div>
             <h1 className="text-2xl font-bold text-foreground">Paramètres</h1>
             <p className="text-sm text-subtitle">Préférences enregistrées localement sur cet appareil</p>
@@ -49,7 +49,7 @@ export default function SettingsPage() {
         </div>
       </header>
 
-      <main className="flex-1 p-6 space-y-6 max-w-3xl">
+      <main className="flex-1 p-6 space-y-6 max-w-3xl overflow-x-hidden w-full">
         <Card className="surface-card backdrop-blur-sm text-foreground">
           <CardHeader>
             <div className="flex items-center gap-2">

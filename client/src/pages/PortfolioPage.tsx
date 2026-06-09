@@ -6,7 +6,7 @@ export default function PortfolioPage() {
   return (
     <PageWrapper>
       <header className="surface-header backdrop-blur-sm px-6 py-4">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between w-full max-w-full">
           <div>
             <h1 className="text-2xl font-bold text-foreground">
               Portfolio Avant/Après
@@ -16,7 +16,7 @@ export default function PortfolioPage() {
         </div>
       </header>
 
-      <main className="flex-1 p-6 flex items-center justify-center">
+      <main className="flex-1 p-6 flex items-center justify-center overflow-x-hidden w-full max-w-full">
         <Card className="w-full max-w-md text-center surface-card backdrop-blur-sm text-foreground hover-elevate">
           <CardHeader className="pb-4">
             <div className="w-16 h-16 mx-auto rounded-xl bg-black/20 backdrop-blur-md border border-border flex items-center justify-center mb-4">

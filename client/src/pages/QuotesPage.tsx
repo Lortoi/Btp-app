@@ -240,7 +240,7 @@ export default function QuotesPage() {
 
   return (
     <PageWrapper>
-      <div className="flex flex-col flex-1 min-h-0 h-full">
+      <div className="flex flex-col flex-1 min-h-0 h-full overflow-x-hidden w-full max-w-full">
         <header className="shrink-0 surface-header backdrop-blur-sm px-6 py-4">
           <h1 className="text-2xl font-bold text-foreground">Générateur de Devis</h1>
         </header>
@@ -260,7 +260,7 @@ export default function QuotesPage() {
               // #endregion
             }}
           >
-            <TabsList className="mx-4 mt-4 shrink-0 bg-gray-100 dark:bg-black/30 border border-border">
+            <TabsList className="mx-4 mt-4 shrink-0 bg-gray-100 dark:bg-black/30 border border-border overflow-x-auto whitespace-nowrap max-w-full">
               <TabsTrigger value="form" className="data-[state=active]:bg-white/20 text-foreground">
                 Formulaire
               </TabsTrigger>

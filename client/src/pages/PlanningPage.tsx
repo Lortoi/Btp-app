@@ -233,6 +233,13 @@ function getMockChantiersForDay(dayYmd: string): MockPlanningChantier[] {
   return mockChantiers.filter((c) => isYmdInRange(dayYmd, c.dateDebut, c.dateFin))
 }
 
+function mockChantierOverlapsMonth(c: MockPlanningChantier, month: number, year: number): boolean {
+  const monthStart = `${year}-${String(month + 1).padStart(2, "0")}-01`
+  const lastDay = new Date(year, month + 1, 0).getDate()
+  const monthEnd = `${year}-${String(month + 1).padStart(2, "0")}-${String(lastDay).padStart(2, "0")}`
+  return c.dateDebut <= monthEnd && c.dateFin >= monthStart
+}
+
 function formatLegendPeriod(debut: string, fin: string): string {
   const [y1, m1, d1] = debut.split("-").map(Number)
   const [y2, m2, d2] = fin.split("-").map(Number)
@@ -352,6 +359,11 @@ export default function PlanningPage() {
   const month = currentDate.getMonth();
   
   const days = useMemo(() => getDaysInMonth(year, month), [year, month]);
+
+  const mockForMonth = useMemo(
+    () => mockChantiers.filter((c) => mockChantierOverlapsMonth(c, month, year)),
+    [month, year],
+  );
 
   const monthNames = [
     'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
@@ -487,11 +499,11 @@ export default function PlanningPage() {
         </div>
       </header>
 
-      <main className="flex-1 p-6 space-y-6">
+      <main className="flex-1 p-6 space-y-6 overflow-x-hidden w-full max-w-full">
         {/* Contrôles du calendrier */}
-        <Card className="surface-card backdrop-blur-sm text-foreground">
+        <Card className="surface-card backdrop-blur-sm text-foreground max-w-full">
           <CardHeader>
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
               <div className="flex items-center gap-4">
                 <button
                   onClick={goToPreviousMonth}
@@ -542,8 +554,36 @@ export default function PlanningPage() {
           </CardHeader>
         </Card>
 
-        {/* Calendrier */}
-        <Card className="surface-card backdrop-blur-sm text-foreground">
+        {/* Vue liste — mobile */}
+        <Card className="md:hidden surface-card backdrop-blur-sm text-foreground max-w-full">
+          <CardHeader>
+            <CardTitle className="text-lg">
+              Chantiers — {monthNames[month]} {year}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {mockForMonth.length === 0 ? (
+              <p className="text-sm text-subtitle">Aucun chantier sur ce mois.</p>
+            ) : (
+              mockForMonth.map((chantier) => (
+                <div
+                  key={chantier.id}
+                  className="p-3 rounded-lg bg-black/20 border border-border w-full max-w-full"
+                  style={{ borderLeftWidth: 4, borderLeftColor: chantier.couleur }}
+                >
+                  <p className="font-semibold text-foreground">{chantier.nom}</p>
+                  <p className="text-sm text-subtitle mt-1">{chantier.client}</p>
+                  <p className="text-xs text-secondary mt-1">
+                    {formatRangeFr(chantier.dateDebut, chantier.dateFin)} — {chantier.statut}
+                  </p>
+                </div>
+              ))
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Calendrier — desktop */}
+        <Card className="hidden md:block surface-card backdrop-blur-sm text-foreground max-w-full">
           <CardContent className="p-6">
             {/* En-têtes des jours */}
             <div className="grid grid-cols-7 gap-2 mb-4">

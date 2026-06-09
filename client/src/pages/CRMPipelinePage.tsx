@@ -8,7 +8,7 @@ export default function CRMPipelinePage() {
         <h1 className="text-2xl font-bold text-foreground">CRM Pipeline</h1>
       </header>
 
-      <main className="flex-1 p-6 space-y-6">
+      <main className="flex-1 p-6 space-y-6 overflow-x-hidden w-full max-w-full">
         <CRMPipeline />
       </main>
     </PageWrapper>

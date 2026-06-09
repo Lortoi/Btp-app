@@ -257,13 +257,13 @@ export default function AIVisualizationPage() {
   return (
     <PageWrapper>
       <header className="surface-header backdrop-blur-sm border-b border-ai/25 px-6 py-4">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between w-full max-w-full">
           <div>
             <h1 className="text-2xl font-bold text-foreground">
               Visualisation IA
             </h1>
           </div>
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex items-center gap-2 overflow-x-auto whitespace-nowrap max-w-full">
             {stepBadge("upload", "1. Upload")}
             {stepBadge("configure", "2. Configuration")}
             {stepBadge("generating", "3. Génération")}
@@ -272,7 +272,7 @@ export default function AIVisualizationPage() {
         </div>
       </header>
 
-      <main className="flex-1 p-6">
+      <main className="flex-1 p-6 overflow-x-hidden w-full max-w-full">
         {step === "upload" && (
           <div className="max-w-2xl mx-auto space-y-6">
             <Card className="ai-surface-card backdrop-blur-sm text-foreground hover-elevate">

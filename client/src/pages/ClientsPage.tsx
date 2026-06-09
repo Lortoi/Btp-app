@@ -35,7 +35,7 @@ export default function ClientsPage() {
   return (
     <PageWrapper>
       <header className="surface-header backdrop-blur-sm px-6 py-4 rounded-tl-3xl">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between w-full max-w-full">
           <div>
             <h1 className="text-2xl font-bold text-foreground">
               Clients
@@ -47,7 +47,7 @@ export default function ClientsPage() {
           {!selectedClient && (
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
-                <Button className="bg-gray-100 dark:bg-white/20 backdrop-blur-md text-foreground border border-border hover:bg-gray-200 dark:hover:bg-white/30">
+                <Button className="w-full md:w-auto bg-gray-100 dark:bg-white/20 backdrop-blur-md text-foreground border border-border hover:bg-gray-200 dark:hover:bg-white/30">
                   <Plus className="h-4 w-4 mr-2" />
                   Ajouter un Client
                 </Button>
@@ -117,9 +117,9 @@ export default function ClientsPage() {
         </div>
       </header>
 
-      <main className="flex-1 p-6">
+      <main className="flex-1 p-6 overflow-x-hidden w-full max-w-full">
         {!selectedClient ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-full">
             {clients.map((client) => (
               <Card
                 key={client.id}
@@ -182,7 +182,7 @@ export default function ClientsPage() {
                 </CardContent>
               </Card>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-full">
                 {clientChantiers.map((chantier) => (
                   <Card
                     key={chantier.id}

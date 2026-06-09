@@ -275,7 +275,7 @@ export default function ImportPage() {
   return (
     <PageWrapper>
       <header className="surface-header backdrop-blur-sm px-6 py-4 rounded-tl-3xl border-b border-ai/25">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between w-full max-w-full">
           <div className="flex items-start gap-3">
             <Button
               type="button"
@@ -300,7 +300,7 @@ export default function ImportPage() {
         </div>
       </header>
 
-      <main className="flex-1 p-6 space-y-6 max-w-3xl">
+      <main className="flex-1 p-6 space-y-6 max-w-3xl overflow-x-hidden w-full">
         <Card className="ai-surface-card backdrop-blur-sm text-foreground">
           <CardHeader>
             <div className="flex items-center gap-2">

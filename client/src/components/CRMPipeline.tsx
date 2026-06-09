@@ -118,8 +118,8 @@ function prospectsPourColonne(colonne: ColonnePipeline): MockProspect[] {
 
 export function CRMPipeline() {
   return (
-    <div className="w-full">
-      <div className="flex flex-col gap-4 md:flex-row md:overflow-x-auto md:pb-2 md:gap-3">
+    <div className="w-full max-w-full overflow-x-hidden">
+      <div className="flex flex-col gap-4 md:flex-row md:overflow-x-auto md:whitespace-nowrap md:pb-2 md:gap-3">
         {COLONNES.map(({ id, titre }) => {
           const items = prospectsPourColonne(id)
           return (

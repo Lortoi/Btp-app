@@ -241,22 +241,22 @@ export default function ProjectsPage() {
   return (
     <PageWrapper>
       <header className="bg-white/80 dark:bg-black/20 backdrop-blur-xl border-b border-gray-200 dark:border-white/10 px-6 py-4 rounded-tl-3xl">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between w-full max-w-full">
           <div>
             <h1 className="text-2xl font-bold text-foreground">
               Mes Chantiers
             </h1>
           </div>
-          <div className="flex gap-2">
-            <Link href="/dashboard/clients">
-              <Button variant="outline" className="text-foreground border-gray-300 dark:border-white/20 hover:bg-white/5">
+          <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
+            <Link href="/dashboard/clients" className="w-full sm:w-auto">
+              <Button variant="outline" className="w-full text-foreground border-gray-300 dark:border-white/20 hover:bg-white/5">
                 <User className="h-4 w-4 mr-2" />
                 Clients
               </Button>
             </Link>
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
-                <Button className="bg-gray-100 dark:bg-white/20 backdrop-blur-md text-foreground border border-border hover:bg-gray-200 dark:hover:bg-white/30">
+                <Button className="w-full sm:w-auto bg-gray-100 dark:bg-white/20 backdrop-blur-md text-foreground border border-border hover:bg-gray-200 dark:hover:bg-white/30">
                   <Plus className="h-4 w-4 mr-2" />
                   Ajouter un Chantier
                 </Button>
@@ -389,9 +389,9 @@ export default function ProjectsPage() {
         </div>
       </header>
 
-      <main className="flex-1 p-6 space-y-6">
-        <div className="flex flex-row gap-4">
-          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0">
+      <main className="flex-1 p-6 space-y-6 overflow-x-hidden w-full max-w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-full">
+          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Chantiers</CardTitle>
               <Building className="h-4 w-4 text-subtitle" />
@@ -401,7 +401,7 @@ export default function ProjectsPage() {
               <p className="text-xs text-subtitle">total</p>
             </CardContent>
           </Card>
-          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0">
+          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">En cours</CardTitle>
               <HardHat className="h-4 w-4 text-subtitle" />
@@ -411,7 +411,7 @@ export default function ProjectsPage() {
               <p className="text-xs text-subtitle">chantiers actifs</p>
             </CardContent>
           </Card>
-          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0">
+          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Planifiés</CardTitle>
               <ClipboardList className="h-4 w-4 text-subtitle" />
@@ -425,11 +425,11 @@ export default function ProjectsPage() {
 
         <div>
           <h2 className="text-sm font-semibold text-subtitle mb-3">Aperçu chantiers</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-full">
             {mockChantiers.map((c) => (
               <Card
                 key={c.id}
-                className="surface-card backdrop-blur-sm text-foreground overflow-hidden flex flex-col border-l-4 shadow-none"
+                className="surface-card backdrop-blur-sm text-foreground overflow-hidden flex flex-col border-l-4 shadow-none w-full max-w-full"
                 style={{ borderLeftColor: c.couleur }}
               >
                 <CardHeader className="pb-2 space-y-0">
@@ -492,7 +492,7 @@ export default function ProjectsPage() {
         {chantiers.length > 0 && (
           <div className="space-y-3">
             <h2 className="text-sm font-semibold text-subtitle">Chantiers enregistrés</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-full">
               {chantiers.map((chantier) => (
                 <Card
                   key={chantier.id}

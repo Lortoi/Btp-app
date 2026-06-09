@@ -68,7 +68,7 @@ export default function EstimationPage() {
   return (
     <PageWrapper>
       <header className="surface-header backdrop-blur-sm border-b border-ai/25 px-6 py-4 rounded-tl-3xl">
-        <div className="flex items-start justify-between gap-4">
+        <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between w-full max-w-full">
           <div>
             <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
               <Sparkles className="h-6 w-6 text-ai-light shrink-0" />
@@ -85,8 +85,8 @@ export default function EstimationPage() {
         </div>
       </header>
 
-      <main className="flex-1 p-6">
-        <div className="max-w-5xl mx-auto">
+      <main className="flex-1 p-6 overflow-x-hidden w-full max-w-full">
+        <div className="max-w-5xl mx-auto w-full">
           <StepPanel active={step === 1}>
             <StepPhotos onNext={() => setStep(2)} />
           </StepPanel>
@@ -399,7 +399,7 @@ function StepPhotos({ onNext }: { onNext: () => void }) {
         </div>
 
         {photos.length > 0 && (
-          <div className="grid grid-cols-3 gap-3 mt-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-6 w-full max-w-full">
             {photos.map((image, index) => (
               <div key={index} className="relative group">
                 <img

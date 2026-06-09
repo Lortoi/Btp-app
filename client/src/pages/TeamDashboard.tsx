@@ -54,7 +54,7 @@ export default function TeamDashboard() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.98 }}
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="flex-1 flex flex-col relative z-10 lg:ml-64 lg:rounded-l-3xl overflow-hidden"
+            className="flex-1 flex flex-col relative z-10 lg:ml-64 lg:rounded-l-3xl overflow-hidden overflow-x-hidden w-full max-w-full"
           >
             <AppTopBar />
 
@@ -73,7 +73,7 @@ export default function TeamDashboard() {
 
             {/* Tabs Navigation */}
             <div className="surface-header backdrop-blur-sm px-6 lg:rounded-tl-3xl">
-              <div className="flex gap-2 overflow-x-auto">
+              <div className="flex gap-2 overflow-x-auto whitespace-nowrap max-w-full">
                 <Button
                   variant="ghost"
                   size="sm"
@@ -104,11 +104,11 @@ export default function TeamDashboard() {
             </div>
 
             {/* Tab Content */}
-            <main className="flex-1 p-6 space-y-6 overflow-auto">
+            <main className="flex-1 p-6 space-y-6 overflow-auto overflow-x-hidden w-full max-w-full">
               {activeTab === 'overview' && (
-                <div className="space-y-6">
+                <div className="space-y-6 w-full max-w-full">
                   {/* Stats Cards */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-full">
                     <Card className="surface-card backdrop-blur-sm text-foreground">
                       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">Mes Chantiers</CardTitle>

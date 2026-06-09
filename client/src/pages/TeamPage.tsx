@@ -194,7 +194,7 @@ export default function TeamPage() {
   return (
     <PageWrapper>
       <header className="surface-header backdrop-blur-sm px-6 py-4 rounded-tl-3xl">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between w-full max-w-full">
           <div>
             <h1 className="text-2xl font-bold text-foreground">
               Gestion de l'Équipe
@@ -202,7 +202,7 @@ export default function TeamPage() {
           </div>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-gray-100 dark:bg-white/20 backdrop-blur-md text-foreground border border-border hover:bg-gray-200 dark:hover:bg-white/30">
+              <Button className="w-full md:w-auto bg-gray-100 dark:bg-white/20 backdrop-blur-md text-foreground border border-border hover:bg-gray-200 dark:hover:bg-white/30">
                 <Plus className="h-4 w-4 mr-2" />
                 Ajouter un Membre
               </Button>
@@ -282,9 +282,9 @@ export default function TeamPage() {
         </div>
       </header>
 
-      <main className="flex-1 p-6 space-y-6">
-        <div className="flex flex-row gap-4">
-          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0">
+      <main className="flex-1 p-6 space-y-6 overflow-x-hidden w-full max-w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-full">
+          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Membres</CardTitle>
               <Users className="h-4 w-4 text-subtitle" />
@@ -294,7 +294,7 @@ export default function TeamPage() {
               <p className="text-xs text-subtitle">total</p>
             </CardContent>
           </Card>
-          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0">
+          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">En chantier</CardTitle>
               <HardHat className="h-4 w-4 text-subtitle" />
@@ -304,7 +304,7 @@ export default function TeamPage() {
               <p className="text-xs text-subtitle">sur le terrain</p>
             </CardContent>
           </Card>
-          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0">
+          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Disponibles</CardTitle>
               <Check className="h-4 w-4 text-subtitle" />
@@ -316,7 +316,7 @@ export default function TeamPage() {
           </Card>
         </div>
 
-        <Card className="surface-card backdrop-blur-sm text-foreground">
+        <Card className="surface-card backdrop-blur-sm text-foreground max-w-full">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Users className="h-5 w-5 text-subtitle" />
@@ -324,7 +324,7 @@ export default function TeamPage() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-full">
               {mockEquipe.map((m) => (
                 <Card
                   key={m.id}

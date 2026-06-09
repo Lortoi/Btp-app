@@ -70,7 +70,7 @@ export function PageWrapper({ children }: PageWrapperProps) {
           animate="animate"
           exit="exit"
           variants={contentVariants}
-          className="flex-1 flex flex-col relative z-10 lg:ml-64 overflow-hidden border-l border-[#222222]"
+          className="flex-1 flex flex-col relative z-10 lg:ml-64 overflow-hidden overflow-x-hidden w-full max-w-full border-l border-[#222222]"
         >
           {/* Top bar — menu mobile + toggle thème */}
           <AppTopBar />
