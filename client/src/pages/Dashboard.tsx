@@ -60,8 +60,8 @@ export default function Dashboard() {
         </header>
 
         {/* Tabs Navigation */}
-        <div className="surface-header backdrop-blur-sm px-6 lg:rounded-tl-3xl">
-          <div className="flex gap-2 overflow-x-auto">
+        <div className="surface-header backdrop-blur-sm px-6 lg:rounded-tl-3xl overflow-x-hidden w-full max-w-full">
+          <div className="flex gap-2 overflow-x-auto max-w-full lg:overflow-x-visible">
             <Link href="/dashboard">
               <Button
                 variant="ghost"
@@ -135,7 +135,7 @@ export default function Dashboard() {
         </div>
 
         {/* Overview Content */}
-        <main className="flex-1 p-6 space-y-6 overflow-auto">
+        <main className="flex-1 p-6 space-y-6 overflow-auto overflow-x-hidden w-full max-w-full">
           <OverviewTab />
         </main>
         </motion.div>
@@ -153,12 +153,12 @@ function OverviewTab() {
   const kpiContentClass = "lg:p-4 lg:pt-0"
 
   return (
-    <div className="space-y-4 lg:space-y-4">
-      <div className="grid grid-cols-4 gap-2 sm:gap-3 lg:gap-4">
+    <div className="space-y-4 lg:space-y-4 w-full max-w-full">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 w-full max-w-full">
         <Card
           role="button"
           tabIndex={0}
-          className="surface-card backdrop-blur-sm text-foreground cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 min-w-0"
+          className="surface-card backdrop-blur-sm text-foreground cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 min-w-0 max-w-full"
           onClick={() => setLocation('/dashboard/quotes')}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
@@ -180,7 +180,7 @@ function OverviewTab() {
         <Card
           role="button"
           tabIndex={0}
-          className="surface-card backdrop-blur-sm text-foreground cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 min-w-0"
+          className="surface-card backdrop-blur-sm text-foreground cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 min-w-0 max-w-full"
           onClick={() => setLocation('/dashboard/projects')}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
@@ -202,7 +202,7 @@ function OverviewTab() {
         <Card
           role="button"
           tabIndex={0}
-          className="surface-card backdrop-blur-sm text-foreground cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 min-w-0"
+          className="surface-card backdrop-blur-sm text-foreground cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 min-w-0 max-w-full"
           onClick={() => setLocation('/dashboard/quotes')}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
@@ -224,7 +224,7 @@ function OverviewTab() {
         <Card
           role="button"
           tabIndex={0}
-          className="surface-card backdrop-blur-sm text-foreground cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 min-w-0"
+          className="surface-card backdrop-blur-sm text-foreground cursor-pointer hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 min-w-0 max-w-full"
           onClick={() => setLocation('/dashboard/crm')}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
@@ -246,8 +246,8 @@ function OverviewTab() {
 
       <DashboardCharts />
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="surface-card backdrop-blur-sm text-foreground">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full max-w-full">
+        <Card className="surface-card backdrop-blur-sm text-foreground max-w-full">
           <CardHeader>
             <CardTitle>Actions Rapides</CardTitle>
           </CardHeader>

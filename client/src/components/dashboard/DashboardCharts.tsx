@@ -106,16 +106,16 @@ const chartTitleClass =
 
 export function DashboardCharts() {
   return (
-    <div className="space-y-3 lg:space-y-4">
-      <div className="grid grid-cols-2 gap-3 md:gap-6 lg:grid-cols-2 lg:gap-4">
-        <Card className="surface-card backdrop-blur-sm border-[#222222] bg-transparent min-w-0">
+    <div className="space-y-3 lg:space-y-4 w-full max-w-full">
+      <div className="grid grid-cols-2 gap-3 md:gap-6 lg:grid-cols-2 lg:gap-4 w-full max-w-full">
+        <Card className="surface-card backdrop-blur-sm border-[#222222] bg-transparent min-w-0 max-w-full">
           <CardHeader className={chartHeaderClass}>
             <CardTitle className={chartTitleClass}>
               Chiffre d&apos;affaires — 6 derniers mois
             </CardTitle>
           </CardHeader>
           <CardContent className={chartContentClass}>
-            <div className="w-full min-w-0" style={{ height: CHART_HEIGHT }}>
+            <div className="w-full overflow-hidden" style={{ height: CHART_HEIGHT }}>
               <ResponsiveContainer width="100%" height={CHART_HEIGHT}>
                 <LineChart data={revenueData} margin={{ top: 4, right: 4, left: -12, bottom: 0 }}>
                   <CartesianGrid stroke={gridStroke} strokeDasharray="3 3" vertical={false} />
@@ -143,14 +143,14 @@ export function DashboardCharts() {
           </CardContent>
         </Card>
 
-        <Card className="surface-card backdrop-blur-sm border-[#222222] bg-transparent min-w-0">
+        <Card className="surface-card backdrop-blur-sm border-[#222222] bg-transparent min-w-0 max-w-full">
           <CardHeader className={chartHeaderClass}>
             <CardTitle className={chartTitleClass}>
               Types de chantiers
             </CardTitle>
           </CardHeader>
           <CardContent className={chartContentClass}>
-            <div className="w-full min-w-0" style={{ height: CHART_HEIGHT }}>
+            <div className="w-full overflow-hidden" style={{ height: CHART_HEIGHT }}>
               <ResponsiveContainer width="100%" height={CHART_HEIGHT}>
                 <PieChart>
                   <Pie
@@ -184,14 +184,14 @@ export function DashboardCharts() {
         </Card>
       </div>
 
-      <Card className="surface-card backdrop-blur-sm border-[#222222] bg-transparent w-full">
+      <Card className="surface-card backdrop-blur-sm border-[#222222] bg-transparent w-full max-w-full">
         <CardHeader className={chartHeaderClass}>
           <CardTitle className="text-sm md:text-base lg:text-sm font-bold tracking-tight text-white">
             Devis — 3 derniers mois
           </CardTitle>
         </CardHeader>
         <CardContent className={chartContentClass}>
-          <div className="w-full min-w-0" style={{ height: CHART_HEIGHT }}>
+          <div className="w-full overflow-hidden" style={{ height: CHART_HEIGHT }}>
             <ResponsiveContainer width="100%" height={CHART_HEIGHT}>
               <BarChart data={devisData} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
                 <CartesianGrid stroke={gridStroke} strokeDasharray="3 3" vertical={false} />
