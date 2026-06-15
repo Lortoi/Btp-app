@@ -136,13 +136,13 @@ function formatPeriodeCourte(debutIso: string, finIso: string): string {
 function mockStatutBadgeClass(statut: MockStatutChantier): string {
   switch (statut) {
     case 'En cours':
-      return 'bg-orange-100 dark:bg-[#F5A623]/20 text-orange-700 dark:text-orange-100 border-orange-300 dark:border-[#F5A623]/40';
+      return 'bg-[#e8702a]/15 text-[#e8702a] rounded-full border-transparent';
     case 'Planifié':
-      return 'bg-blue-100 dark:bg-[#3B82F6]/20 text-blue-700 dark:text-blue-100 border-blue-300 dark:border-[#3B82F6]/40';
+      return 'bg-blue-500/15 text-blue-400 rounded-full border-transparent';
     case 'Terminé':
-      return 'bg-emerald-100 dark:bg-[#10B981]/20 text-emerald-700 dark:text-emerald-100 border-emerald-300 dark:border-[#10B981]/40';
+      return 'bg-green-500/15 text-green-400 rounded-full border-transparent';
     default:
-      return 'bg-gray-100 dark:bg-white/10 text-subtitle';
+      return 'bg-white/10 text-white/50 rounded-full border-transparent';
   }
 }
 
@@ -530,10 +530,10 @@ export default function ProjectsPage() {
                       {chantier.duree}
                     </div>
                     <div className="mt-4">
-                      <span className={`px-2 py-1 rounded text-xs ${
-                        chantier.statut === 'planifié' ? 'bg-blue-500/20 text-blue-700 dark:text-blue-300' :
-                        chantier.statut === 'en cours' ? 'bg-green-500/20 text-green-700 dark:text-green-300' :
-                        'bg-gray-500/20 text-gray-700 dark:text-gray-300'
+                      <span className={`px-2.5 py-1 rounded-full text-xs ${
+                        chantier.statut === 'planifié' ? 'bg-blue-500/15 text-blue-400' :
+                        chantier.statut === 'en cours' ? 'bg-[#e8702a]/15 text-[#e8702a]' :
+                        'bg-green-500/15 text-green-400'
                       }`}>
                         {chantier.statut}
                       </span>

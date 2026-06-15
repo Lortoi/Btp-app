@@ -14,6 +14,7 @@ import {
   AlertCircle,
 } from 'lucide-react'
 import { useChantiers } from '@/context/ChantiersContext'
+import { dashboardLayoutStyle } from '@/lib/dashboardLayoutStyle'
 
 export default function TeamDashboard() {
   const [activeTab, setActiveTab] = useState<'overview' | 'projects' | 'planning'>('overview')
@@ -42,7 +43,7 @@ export default function TeamDashboard() {
 
   return (
     <>
-      <div className="flex min-h-screen relative overflow-hidden">
+      <div className="flex relative overflow-hidden" style={dashboardLayoutStyle}>
         {/* Sidebar */}
         <TeamSidebar />
 

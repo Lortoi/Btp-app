@@ -99,7 +99,7 @@ export function AIAssistantPanel() {
                       "max-w-[88%] rounded-2xl px-3 py-2 text-sm leading-relaxed whitespace-pre-wrap",
                       msg.role === "user"
                         ? "bg-ai text-white rounded-br-md font-medium shadow-ai-glow-sm"
-                        : "bg-[#111111] border border-[#222222] text-white rounded-bl-md"
+                        : "bg-[#0f0f0f] border border-white/[0.08] text-white rounded-bl-md"
                     )}
                   >
                     {msg.content}
@@ -176,10 +176,11 @@ export function AIAssistantButton() {
       title="Assistant IA"
       aria-label="Assistant IA"
       className={cn(
-        "relative inline-flex h-9 w-9 items-center justify-center rounded-lg",
-        "bg-ai text-white border border-ai-light/50 shadow-ai-glow-sm",
-        "hover:bg-ai-light transition-colors animate-pulse hover:animate-none"
+        "relative inline-flex h-9 w-9 items-center justify-center rounded-full",
+        "bg-violet-600 text-white border border-violet-500/50",
+        "hover:bg-violet-500 transition-all duration-200 hover:scale-105"
       )}
+      style={{ boxShadow: "0 0 20px rgba(124,58,237,0.4)" }}
     >
       <Sparkles className="h-4 w-4" />
     </button>

@@ -7,7 +7,6 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 
 /** Chantiers fictifs BTP — avril / mai / juin 2026 (données mock, hors composant) */
 interface MockPlanningChantier {
@@ -251,18 +250,6 @@ function formatLegendPeriod(debut: string, fin: string): string {
   return `${d1} ${MONTH_ABBR_FR[m1 - 1]} – ${d2} ${MONTH_ABBR_FR[m2 - 1]}`
 }
 
-function barDisplayName(nom: string, isStart: boolean): string {
-  if (isStart) return nom
-  return nom.length > 20 ? `${nom.slice(0, 20)}...` : nom
-}
-
-function barRoundedClass(isStart: boolean, isEnd: boolean): string {
-  if (isStart && isEnd) return "rounded-full"
-  if (isStart) return "rounded-l-full"
-  if (isEnd) return "rounded-r-full"
-  return "rounded-none"
-}
-
 function formatRangeFr(debut: string, fin: string): string {
   const [y1, m1, d1] = debut.split("-").map(Number)
   const [y2, m2, d2] = fin.split("-").map(Number)
@@ -488,130 +475,92 @@ export default function PlanningPage() {
   
   return (
     <PageWrapper>
-      <header className="surface-header backdrop-blur-sm px-6 py-4 rounded-tl-3xl">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-foreground">
-              Planning des Chantiers
-            </h1>
-            <p className="text-sm text-subtitle">Calendrier intégré pour organiser vos interventions</p>
-          </div>
-        </div>
+      <header className="surface-header backdrop-blur-sm px-6 py-4">
+        <h1 className="text-2xl font-bold tracking-tight text-white" style={{ letterSpacing: '-0.03em' }}>
+          Planning des Chantiers
+        </h1>
       </header>
 
-      <main className="flex-1 p-6 space-y-6 overflow-x-hidden w-full max-w-full">
-        {/* Contrôles du calendrier */}
-        <Card className="surface-card backdrop-blur-sm text-foreground max-w-full">
-          <CardHeader>
-            <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-              <div className="flex items-center gap-4">
-                <button
-                  onClick={goToPreviousMonth}
-                  className="p-2 rounded-lg hover:bg-white/5 transition-colors"
-                >
-                  <Calendar className="h-5 w-5 rotate-180" />
-                </button>
-                <div className="flex items-center gap-2">
-                  <select
-                    value={month}
-                    onChange={(e) => setMonthYear(Number(e.target.value), year)}
-                    className="h-10 min-w-[140px] rounded-xl bg-black/20 backdrop-blur-md border border-gray-300 dark:border-white/20 px-4 text-sm text-foreground shadow-sm outline-none transition-colors hover:bg-white/5 focus:ring-2 focus:ring-white/30"
-                    aria-label="Mois"
-                  >
-                    {monthNames.map((mName, idx) => (
-                      <option key={mName} value={idx}>
-                        {mName}
-                      </option>
-                    ))}
-                  </select>
-                  <select
-                    value={year}
-                    onChange={(e) => setMonthYear(month, Number(e.target.value))}
-                    className="h-10 w-[110px] rounded-xl bg-black/20 backdrop-blur-md border border-gray-300 dark:border-white/20 px-4 text-sm text-foreground shadow-sm outline-none transition-colors hover:bg-white/5 focus:ring-2 focus:ring-white/30"
-                    aria-label="Année"
-                  >
-                    {Array.from({ length: 11 }, (_, i) => year - 5 + i).map((y) => (
-                      <option key={y} value={y}>
-                        {y}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <button
-                  onClick={goToNextMonth}
-                  className="p-2 rounded-lg hover:bg-white/5 transition-colors"
-                >
-                  <Calendar className="h-5 w-5" />
-                </button>
-              </div>
+      <main className="flex-1 p-4 space-y-4 overflow-x-hidden w-full max-w-full">
+
+        {/* ── Contrôles ────────────────────────────────────────── */}
+        <div className="bg-[#0d0d0d] border border-white/[0.06] rounded-2xl px-4 py-3">
+          <div className="flex flex-wrap items-center gap-3 justify-between">
+            <div className="flex items-center gap-2">
               <button
-                onClick={handleTodayClick}
-                className="px-4 py-2 rounded-lg bg-white/20 backdrop-blur-md text-foreground hover:bg-white/30 transition-colors text-sm"
+                onClick={goToPreviousMonth}
+                className="h-9 w-9 rounded-xl flex items-center justify-center bg-white/5 hover:bg-white/10 border border-white/10 text-white transition-colors"
               >
-                Aujourd'hui
+                ‹
+              </button>
+              <select
+                value={month}
+                onChange={(e) => setMonthYear(Number(e.target.value), year)}
+                className="bg-[#0f0f0f] border border-white/10 rounded-xl px-4 py-2 text-sm text-white outline-none hover:border-white/20 transition-colors appearance-none cursor-pointer"
+                aria-label="Mois"
+              >
+                {monthNames.map((mName, idx) => (
+                  <option key={mName} value={idx} className="bg-[#0f0f0f]">{mName}</option>
+                ))}
+              </select>
+              <select
+                value={year}
+                onChange={(e) => setMonthYear(month, Number(e.target.value))}
+                className="bg-[#0f0f0f] border border-white/10 rounded-xl px-4 py-2 text-sm text-white outline-none hover:border-white/20 transition-colors appearance-none cursor-pointer"
+                aria-label="Année"
+              >
+                {Array.from({ length: 11 }, (_, i) => year - 5 + i).map((y) => (
+                  <option key={y} value={y} className="bg-[#0f0f0f]">{y}</option>
+                ))}
+              </select>
+              <button
+                onClick={goToNextMonth}
+                className="h-9 w-9 rounded-xl flex items-center justify-center bg-white/5 hover:bg-white/10 border border-white/10 text-white transition-colors"
+              >
+                ›
               </button>
             </div>
-          </CardHeader>
-        </Card>
+            <button
+              onClick={handleTodayClick}
+              className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white text-sm transition-colors"
+            >
+              Aujourd'hui
+            </button>
+          </div>
+        </div>
 
-        {/* Vue liste — mobile */}
-        <Card className="md:hidden surface-card backdrop-blur-sm text-foreground max-w-full">
-          <CardHeader>
-            <CardTitle className="text-lg">
-              Chantiers — {monthNames[month]} {year}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            {mockForMonth.length === 0 ? (
-              <p className="text-sm text-subtitle">Aucun chantier sur ce mois.</p>
-            ) : (
-              mockForMonth.map((chantier) => (
-                <div
-                  key={chantier.id}
-                  className="p-3 rounded-lg bg-black/20 border border-border w-full max-w-full"
-                  style={{ borderLeftWidth: 4, borderLeftColor: chantier.couleur }}
-                >
-                  <p className="font-semibold text-foreground">{chantier.nom}</p>
-                  <p className="text-sm text-subtitle mt-1">{chantier.client}</p>
-                  <p className="text-xs text-secondary mt-1">
-                    {formatRangeFr(chantier.dateDebut, chantier.dateFin)} — {chantier.statut}
-                  </p>
-                </div>
-              ))
-            )}
-          </CardContent>
-        </Card>
+        {/* ── CALENDRIER UNIQUE (mobile + desktop) ──────────────── */}
+        <div className="w-full bg-[#0d0d0d] border border-white/[0.06] rounded-2xl overflow-hidden">
+          <div className="p-2 md:p-5">
 
-        {/* Calendrier — desktop */}
-        <Card className="hidden md:block surface-card backdrop-blur-sm text-foreground max-w-full">
-          <CardContent className="p-6">
-            {/* En-têtes des jours */}
-            <div className="grid grid-cols-7 gap-2 mb-4">
-              {dayNames.map(day => (
-                <div key={day} className="text-center text-sm font-semibold text-subtitle py-2">
+            {/* En-têtes jours */}
+            <div className="grid grid-cols-7 mb-1 md:mb-3">
+              {dayNames.map((day) => (
+                <div key={day} className="text-center font-medium text-white/30 uppercase tracking-wider py-1 md:py-2"
+                  style={{ fontSize: 10 }}>
                   {day}
                 </div>
               ))}
             </div>
-            
-            {/* Grille du calendrier */}
-            <div className="grid grid-cols-7 gap-2">
+
+            {/* Grille */}
+            <div className="grid grid-cols-7 gap-px md:gap-1">
               {days.map((day, index) => {
                 const dayYmd = dateToYmd(day.date)
                 const mockForDay = getMockChantiersForDay(dayYmd)
-                const isToday = day.isToday;
-                const dayCustomEvents = customEvents.filter((e) => e.dateKey === dateToYmd(day.date))
-                
+                const isToday = day.isToday
+                const dayCustomEvents = customEvents.filter((e) => e.dateKey === dayYmd)
+
                 return (
                   <div
                     key={index}
-                    className={`min-h-[120px] p-2 rounded-lg border ${
+                    className={`min-h-[80px] p-1 md:p-1.5 rounded-lg md:rounded-xl border cursor-pointer transition-colors ${
                       day.isCurrentMonth
                         ? isToday
-                          ? 'bg-gray-100 dark:bg-white/10 border-white/30 border-2'
-                          : 'bg-black/10 border-border'
-                        : 'bg-black/5 border-white/5 opacity-50'
-                    } cursor-pointer hover:bg-white/5 transition-colors`}
+                          ? 'bg-white/[0.06] border-white/30 ring-1 ring-white/20'
+                          : 'bg-white/[0.02] border-white/[0.05] hover:bg-white/[0.05] hover:border-white/10'
+                        : 'border-transparent opacity-25'
+                    }`}
                     role="button"
                     tabIndex={0}
                     onClick={() => openNewEvent(day.date)}
@@ -619,115 +568,117 @@ export default function PlanningPage() {
                       if (e.key === "Enter" || e.key === " ") openNewEvent(day.date)
                     }}
                   >
-                    <div className={`text-sm font-medium mb-1 ${
-                      day.isCurrentMonth ? 'text-foreground' : 'text-secondary'
-                    } ${isToday ? 'text-foreground font-bold' : ''}`}>
+                    {/* Numéro du jour */}
+                    <div className={`text-xs font-semibold mb-0.5 md:mb-1 flex items-center justify-center w-5 h-5 md:w-6 md:h-6 rounded-full ${
+                      isToday ? 'bg-white text-black' : 'text-white/60'
+                    }`}>
                       {day.date.getDate()}
                     </div>
-                    
-                    {/* Rendez-vous (démo) */}
-                    <div className="space-y-1 mb-1">
-                      {dayCustomEvents.slice(0, 2).map((event, idx) => (
+
+                    {/* Custom events (desktop uniquement pour ne pas surcharger mobile) */}
+                    <div className="hidden md:block">
+                      {dayCustomEvents.slice(0, 1).map((event) => (
                         <div
                           key={event.id}
-                          className="text-xs bg-gray-50 dark:bg-gray-800/50 backdrop-blur-md border border-border text-foreground rounded px-1 py-0.5 truncate"
-                          title={`${event.time} - ${event.title}`}
                           role="button"
                           tabIndex={0}
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            openEditEvent(event)
-                          }}
+                          className="text-xs bg-white/10 border border-white/10 text-white rounded-md px-1 py-0.5 truncate mb-0.5 cursor-pointer hover:bg-white/15 transition-colors"
+                          title={`${event.time} - ${event.title}`}
+                          onClick={(e) => { e.stopPropagation(); openEditEvent(event) }}
                           onKeyDown={(e) => {
-                            if (e.key === "Enter" || e.key === " ") {
-                              e.stopPropagation()
-                              openEditEvent(event)
-                            }
+                            if (e.key === "Enter" || e.key === " ") { e.stopPropagation(); openEditEvent(event) }
                           }}
                         >
                           {event.time} {event.title}
                         </div>
                       ))}
-                      {dayCustomEvents.length > 2 && (
-                        <div className="text-xs text-subtitle">
-                          +{dayCustomEvents.length - 2} autre(s)
-                        </div>
-                      )}
                     </div>
 
-                    {/* Chantiers mock (barres colorées) */}
-                    <div className="flex flex-col gap-0.5 mt-1">
-                      {mockForDay.map((chantier) => {
-                        const isStart = dayYmd === chantier.dateDebut
-                        const isEnd = dayYmd === chantier.dateFin
-                        const rounded = barRoundedClass(isStart, isEnd)
-                        const label = barDisplayName(chantier.nom, isStart)
-                        return (
-                          <Popover key={chantier.id}>
-                            <PopoverTrigger asChild>
-                              <button
-                                type="button"
-                                className={`w-full text-left text-xs text-foreground px-1 py-0.5 min-h-0 truncate ${rounded}`}
-                                style={{ backgroundColor: chantier.couleur }}
-                                onClick={(e) => e.stopPropagation()}
-                                onKeyDown={(e) => {
-                                  if (e.key === "Enter" || e.key === " ") e.stopPropagation()
-                                }}
-                              >
-                                {label}
-                              </button>
-                            </PopoverTrigger>
-                            <PopoverContent
-                              className="w-72 bg-white dark:bg-black/90 backdrop-blur-xl border border-border dark:border-gray-600 text-foreground shadow-xl"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              <div className="space-y-2 text-sm">
-                                <p className="font-semibold leading-tight">{chantier.nom}</p>
-                                <p className="text-subtitle">
-                                  <span className="text-secondary">Client : </span>
-                                  {chantier.client}
-                                </p>
-                                <p className="text-subtitle text-xs">
-                                  <span className="text-secondary">Période : </span>
-                                  {formatRangeFr(chantier.dateDebut, chantier.dateFin)}
-                                </p>
-                                <p className="text-xs">
-                                  <span className="text-secondary">Statut : </span>
-                                  {chantier.statut}
-                                </p>
-                              </div>
-                            </PopoverContent>
-                          </Popover>
-                        )
-                      })}
+                    {/* Barres chantiers */}
+                    <div className="flex flex-col">
+                      {mockForDay.map((chantier) => (
+                        <div
+                          key={chantier.id}
+                          title={chantier.nom}
+                          style={{
+                            backgroundColor: chantier.couleur,
+                            height: '20px',
+                            minHeight: '20px',
+                            lineHeight: '20px',
+                            fontSize: '10px',
+                            fontWeight: '500',
+                            color: 'white',
+                            padding: '0 4px',
+                            borderRadius: '3px',
+                            overflow: 'hidden',
+                            whiteSpace: 'nowrap',
+                            textOverflow: 'ellipsis',
+                            width: '100%',
+                            display: 'block',
+                            marginBottom: '2px',
+                          }}
+                        >
+                          {chantier.nom}
+                        </div>
+                      ))}
                     </div>
                   </div>
-                );
+                )
               })}
             </div>
 
-            <div className="mt-6 pt-4 border-t border-border">
-              <p className="text-xs font-semibold text-secondary uppercase tracking-wide mb-3">
-                Légende chantiers (démo)
-              </p>
-              <div className="flex flex-wrap gap-3">
-                {mockChantiers.map((c) => (
-                  <div key={c.id} className="flex items-center gap-2 text-sm text-foreground">
-                    <span
-                      className="shrink-0 w-4 h-4 rounded-sm border border-gray-300 dark:border-white/20 shadow-inner"
-                      style={{ backgroundColor: c.couleur }}
-                      aria-hidden
-                    />
-                    <span className="font-medium">{c.nom}</span>
-                    <span className="text-secondary text-xs">
-                      {formatLegendPeriod(c.dateDebut, c.dateFin)}
-                    </span>
+            {/* Légende */}
+            <div className="mt-4 pt-3 border-t border-white/[0.06]">
+              <p className="text-white/30 text-xs uppercase tracking-widest mb-2">Légende</p>
+              <div className="flex flex-wrap gap-x-3 gap-y-1.5">
+                {mockForMonth.map((c) => (
+                  <div key={c.id} className="flex items-center gap-1.5">
+                    <span className="shrink-0 w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: c.couleur }} />
+                    <span className="font-medium text-white/60 text-xs">{c.nom}</span>
+                    <span className="text-white/25 text-xs hidden md:inline">{formatLegendPeriod(c.dateDebut, c.dateFin)}</span>
                   </div>
                 ))}
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
+
+        {/* ── LISTE CHANTIERS DU MOIS (toutes tailles) ──────────── */}
+        <div className="space-y-2">
+          <p className="text-white/40 text-xs uppercase tracking-widest px-1">
+            {monthNames[month]} {year} — {mockForMonth.length} chantier{mockForMonth.length !== 1 ? 's' : ''}
+          </p>
+          {mockForMonth.length === 0 ? (
+            <p className="text-white/30 text-sm px-1">Aucun chantier sur ce mois.</p>
+          ) : (
+            mockForMonth.map((chantier) => {
+              const statutStyle =
+                chantier.statut === 'En cours'
+                  ? 'bg-[#e8702a]/15 text-[#e8702a]'
+                  : chantier.statut === 'Planifié'
+                  ? 'bg-[#7c3aed]/15 text-[#7c3aed]'
+                  : 'bg-[#22c55e]/15 text-[#22c55e]'
+              return (
+                <div
+                  key={chantier.id}
+                  className="bg-[#0f0f0f] rounded-xl border border-white/[0.06] p-4"
+                  style={{ borderLeft: `4px solid ${chantier.couleur}` }}
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <p className="font-semibold text-white text-sm truncate">{chantier.nom}</p>
+                      <p className="text-white/40 text-xs mt-0.5">{chantier.client}</p>
+                      <p className="text-white/30 text-xs mt-1">{formatRangeFr(chantier.dateDebut, chantier.dateFin)}</p>
+                    </div>
+                    <span className={`shrink-0 rounded-full text-xs px-2 py-0.5 ${statutStyle}`}>
+                      {chantier.statut}
+                    </span>
+                  </div>
+                </div>
+              )
+            })
+          )}
+        </div>
 
         <Dialog open={isNewEventOpen} onOpenChange={setIsNewEventOpen}>
           <DialogContent className="bg-black/30 backdrop-blur-xl border border-border text-foreground rounded-2xl">

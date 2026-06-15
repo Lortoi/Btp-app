@@ -15,13 +15,9 @@ export function AppTopBar({ showMobileMenu = true, title = "PLANCHAIS" }: AppTop
 
   return (
     <div className="sticky top-0 z-30 flex items-center gap-3 px-4 py-3 surface-header backdrop-blur-sm">
-      {showMobileMenu && (
-        <div className="lg:hidden">
-          <MobileMenuButton />
-        </div>
-      )}
+      {showMobileMenu && <MobileMenuButton />}
       {title ? (
-        <span className="font-semibold text-white lg:hidden">{title}</span>
+        <span className="font-bold tracking-tight text-white" style={{ letterSpacing: "-0.03em" }}>{title}</span>
       ) : null}
       <div className="ml-auto flex items-center gap-2">
         <Tooltip>
@@ -30,7 +26,7 @@ export function AppTopBar({ showMobileMenu = true, title = "PLANCHAIS" }: AppTop
               <AIAssistantButton />
             </span>
           </TooltipTrigger>
-          <TooltipContent side="bottom" className="bg-[#111111] border-ai/30 text-white">
+          <TooltipContent side="bottom" className="bg-[#1a1a1a] border-white/10 text-white rounded-xl">
             Assistant IA
           </TooltipContent>
         </Tooltip>
@@ -64,7 +60,7 @@ export function FullPageTopBar() {
               <AIAssistantButton />
             </span>
           </TooltipTrigger>
-          <TooltipContent side="bottom" className="bg-[#111111] border-ai/30 text-white">
+          <TooltipContent side="bottom" className="bg-[#1a1a1a] border-white/10 text-white rounded-xl">
             Assistant IA
           </TooltipContent>
         </Tooltip>

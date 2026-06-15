@@ -15,7 +15,8 @@ import {
   YAxis,
 } from "recharts"
 
-const ORANGE = "#F5A623"
+const ORANGE = "#e8702a"
+const AMBER = "#f59e0b"
 const GRAY = "#888888"
 const RED = "#EF4444"
 const WHITE = "#FFFFFF"
@@ -60,11 +61,11 @@ function ChartTooltip({
   if (!active || !payload?.length) return null
 
   return (
-    <div className="rounded-lg border border-[#222222] bg-[#111111] px-3 py-2 text-sm shadow-lg">
+    <div className="rounded-xl border border-white/10 bg-[#1a1a1a] px-3 py-2 text-sm shadow-lg">
       {label ? <p className="text-white font-medium mb-1">{label}</p> : null}
       <ul className="space-y-0.5">
         {payload.map((entry, i) => (
-          <li key={i} className="text-gray-400 flex items-center gap-2">
+          <li key={i} className="text-white/50 flex items-center gap-2">
             {entry.color ? (
               <span
                 className="inline-block h-2 w-2 rounded-full shrink-0"
@@ -87,7 +88,7 @@ function ChartTooltip({
 }
 
 const axisTick = { fill: GRAY, fontSize: 12 }
-const gridStroke = "#222222"
+const gridStroke = "rgba(255,255,255,0.08)"
 
 function formatEuro(value: number) {
   return new Intl.NumberFormat("fr-FR", {
@@ -108,7 +109,7 @@ export function DashboardCharts() {
   return (
     <div className="space-y-3 lg:space-y-4 w-full max-w-full">
       <div className="grid grid-cols-2 gap-3 md:gap-6 lg:grid-cols-2 lg:gap-4 w-full max-w-full">
-        <Card className="surface-card backdrop-blur-sm border-[#222222] bg-transparent min-w-0 max-w-full">
+        <Card className="surface-card backdrop-blur-sm min-w-0 max-w-full">
           <CardHeader className={chartHeaderClass}>
             <CardTitle className={chartTitleClass}>
               Chiffre d&apos;affaires — 6 derniers mois
@@ -143,7 +144,7 @@ export function DashboardCharts() {
           </CardContent>
         </Card>
 
-        <Card className="surface-card backdrop-blur-sm border-[#222222] bg-transparent min-w-0 max-w-full">
+        <Card className="surface-card backdrop-blur-sm min-w-0 max-w-full">
           <CardHeader className={chartHeaderClass}>
             <CardTitle className={chartTitleClass}>
               Types de chantiers
@@ -162,7 +163,7 @@ export function DashboardCharts() {
                     innerRadius="38%"
                     outerRadius="58%"
                     paddingAngle={2}
-                    stroke="#222222"
+                    stroke="#0f0f0f"
                     strokeWidth={2}
                   >
                     {chantierTypesData.map((entry) => (
@@ -174,7 +175,7 @@ export function DashboardCharts() {
                     verticalAlign="bottom"
                     height={32}
                     formatter={(value) => (
-                      <span className="text-gray-400 text-xs">{value}</span>
+                      <span className="text-white/50 text-xs">{value}</span>
                     )}
                   />
                 </PieChart>
@@ -184,7 +185,7 @@ export function DashboardCharts() {
         </Card>
       </div>
 
-      <Card className="surface-card backdrop-blur-sm border-[#222222] bg-transparent w-full max-w-full">
+      <Card className="surface-card backdrop-blur-sm w-full max-w-full">
         <CardHeader className={chartHeaderClass}>
           <CardTitle className="text-sm md:text-base lg:text-sm font-bold tracking-tight text-white">
             Devis — 3 derniers mois
@@ -202,7 +203,7 @@ export function DashboardCharts() {
                   verticalAlign="bottom"
                   height={32}
                   formatter={(value) => (
-                    <span className="text-gray-400 text-xs capitalize">{value}</span>
+                    <span className="text-white/50 text-xs capitalize">{value}</span>
                   )}
                 />
                 <Bar dataKey="envoyes" name="Envoyés" fill={GRAY} radius={[4, 4, 0, 0]} />

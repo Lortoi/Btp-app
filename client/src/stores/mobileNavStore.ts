@@ -24,21 +24,16 @@ export const useMobileNavStore = create<MobileNavState>((set) => ({
 }))
 
 /**
- * Effets globaux liés au drawer mobile :
+ * Effets globaux liés au drawer de navigation :
  * - Bloque le scroll du body quand le drawer est ouvert.
- * - Ferme automatiquement le drawer si on passe en lg+ (> 1024 px).
  *
  * À appeler une seule fois, le plus haut possible dans l'arbre React
  * (ex. `App.tsx`). Le hook ne rend rien.
  */
-const LG_BREAKPOINT_PX = 1024
-
 export function useMobileNavSideEffects(): void {
   const isOpen = useMobileNavStore((s) => s.isOpen)
-  const close = useMobileNavStore((s) => s.close)
 
-  // Body scroll lock (mobile uniquement). Aucun effet sur desktop car
-  // le drawer y est fermé en permanence (isOpen reste false).
+  // Body scroll lock quand le drawer est ouvert.
   useEffect(() => {
     if (typeof document === "undefined") return
     if (!isOpen) return
@@ -48,17 +43,4 @@ export function useMobileNavSideEffects(): void {
       document.body.style.overflow = previous
     }
   }, [isOpen])
-
-  // Fermeture automatique du drawer si on passe en lg+ via resize.
-  useEffect(() => {
-    if (typeof window === "undefined") return
-    const mql = window.matchMedia(`(min-width: ${LG_BREAKPOINT_PX}px)`)
-    const onChange = (e: MediaQueryListEvent | MediaQueryList) => {
-      if (e.matches) close()
-    }
-    // Init (cas où on monte déjà en desktop)
-    onChange(mql)
-    mql.addEventListener("change", onChange)
-    return () => mql.removeEventListener("change", onChange)
-  }, [close])
 }

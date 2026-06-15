@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect } from 'react'
 import { agentDebugLog } from '@/lib/agentDebugLog'
 import { AppTopBar } from '@/components/AppTopBar'
+import { dashboardLayoutStyle } from '@/lib/dashboardLayoutStyle'
 
 interface PageWrapperProps {
   children: React.ReactNode
@@ -58,7 +59,10 @@ export function PageWrapper({ children }: PageWrapperProps) {
   // #endregion
 
   return (
-    <div className="flex min-h-screen relative overflow-hidden bg-[#0A0A0A]">
+    <div
+      className="flex relative overflow-hidden"
+      style={dashboardLayoutStyle}
+    >
       {/* Sidebar - drawer < lg, fixed >= lg */}
       <Sidebar />
 
@@ -70,7 +74,7 @@ export function PageWrapper({ children }: PageWrapperProps) {
           animate="animate"
           exit="exit"
           variants={contentVariants}
-          className="flex-1 flex flex-col relative z-10 lg:ml-64 overflow-hidden overflow-x-hidden w-full max-w-full border-l border-[#222222]"
+          className="flex-1 flex flex-col relative z-10 overflow-hidden overflow-x-hidden w-full max-w-full"
         >
           {/* Top bar — menu mobile + toggle thème */}
           <AppTopBar />

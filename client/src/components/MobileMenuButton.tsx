@@ -24,7 +24,7 @@ export function MobileMenuButton({ className }: MobileMenuButtonProps) {
       aria-label={isOpen ? "Fermer le menu" : "Ouvrir le menu"}
       aria-expanded={isOpen}
       className={cn(
-        "lg:hidden inline-flex items-center justify-center h-11 w-11 rounded-xl bg-gray-100 dark:bg-white/10 hover:bg-white/20 active:bg-white/25 backdrop-blur-md border border-border text-foreground transition-colors shrink-0",
+        "inline-flex items-center justify-center h-9 w-9 rounded-xl bg-white/[0.06] hover:bg-white/10 border border-white/[0.08] text-white transition-colors shrink-0",
         className,
       )}
     >

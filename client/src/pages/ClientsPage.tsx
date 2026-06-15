@@ -214,10 +214,10 @@ export default function ClientsPage() {
                         Durée: {chantier.duree}
                       </div>
                       <div className="mt-4">
-                        <span className={`px-2 py-1 rounded text-xs ${
-                          chantier.statut === 'planifié' ? 'bg-blue-500/20 text-blue-300' :
-                          chantier.statut === 'en cours' ? 'bg-green-500/20 text-green-300' :
-                          'bg-gray-500/20 text-gray-300'
+                        <span className={`px-2.5 py-1 rounded-full text-xs ${
+                          chantier.statut === 'planifié' ? 'bg-blue-500/15 text-blue-400' :
+                          chantier.statut === 'en cours' ? 'bg-[#e8702a]/15 text-[#e8702a]' :
+                          'bg-green-500/15 text-green-400'
                         }`}>
                           {chantier.statut}
                         </span>

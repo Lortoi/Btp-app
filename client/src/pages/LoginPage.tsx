@@ -17,7 +17,14 @@ export default function LoginPage() {
   const [loadingMembers, setLoadingMembers] = useState(false)
   const [isAdminCodeDialogOpen, setIsAdminCodeDialogOpen] = useState(false)
   const [newAdminCode, setNewAdminCode] = useState("")
+  const [cursor, setCursor] = useState({ x: -999, y: -999 })
   const [, setLocation] = useLocation()
+
+  useEffect(() => {
+    const move = (e: MouseEvent) => setCursor({ x: e.clientX, y: e.clientY })
+    window.addEventListener("mousemove", move)
+    return () => window.removeEventListener("mousemove", move)
+  }, [])
 
   useEffect(() => {
     // Rediriger vers /auth si l'utilisateur n'est pas connecté
@@ -94,6 +101,13 @@ export default function LoginPage() {
 
   return (
     <section className="relative w-full min-h-screen overflow-hidden bg-transparent flex items-center justify-center">
+      <div
+        className="pointer-events-none fixed inset-0 z-0"
+        aria-hidden
+        style={{
+          background: `radial-gradient(600px at ${cursor.x}px ${cursor.y}px, rgba(124,58,237,0.18), rgba(232,112,42,0.06) 45%, transparent 80%)`,
+        }}
+      />
       <div className="relative z-10 max-w-md mx-auto px-6 w-full">
         <div className="bg-gray-100 dark:bg-white/10 dark:bg-black/20 backdrop-blur-lg rounded-2xl border border-gray-300 dark:border-white/20 p-8 shadow-2xl">
           <div className="mb-8">

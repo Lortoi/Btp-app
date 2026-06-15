@@ -7,27 +7,27 @@
   --button-outline: rgba(255, 255, 255, 0.08);
   --badge-outline: rgba(255, 255, 255, 0.05);
   --opaque-button-border-intensity: 9;
-  --elevate-1: rgba(245, 166, 35, 0.06);
-  --elevate-2: rgba(245, 166, 35, 0.12);
+  --elevate-1: rgba(232, 112, 42, 0.06);
+  --elevate-2: rgba(232, 112, 42, 0.12);
 
-  --background: 0 0% 4%;
+  --background: 0 0% 3%;
   --foreground: 0 0% 100%;
-  --border: 0 0% 13%;
-  --card: 0 0% 7%;
+  --border: 0 0% 11%;
+  --card: 0 0% 6%;
   --card-foreground: 0 0% 100%;
-  --card-border: 0 0% 13%;
-  --sidebar: 0 0% 5%;
+  --card-border: 0 0% 11%;
+  --sidebar: 0 0% 3%;
   --sidebar-foreground: 0 0% 100%;
-  --sidebar-border: 0 0% 13%;
-  --sidebar-primary: 38 91% 55%;
+  --sidebar-border: 0 0% 11%;
+  --sidebar-primary: 20 81% 54%;
   --sidebar-primary-foreground: 0 0% 4%;
   --sidebar-accent: 0 0% 10%;
   --sidebar-accent-foreground: 0 0% 100%;
-  --sidebar-ring: 38 91% 55%;
-  --popover: 0 0% 8%;
+  --sidebar-ring: 20 81% 54%;
+  --popover: 0 0% 7%;
   --popover-foreground: 0 0% 100%;
-  --popover-border: 0 0% 13%;
-  --primary: 38 91% 55%;
+  --popover-border: 0 0% 100%;
+  --primary: 20 81% 54%;
   --primary-foreground: 0 0% 4%;
   --secondary: 0 0% 10%;
   --secondary-foreground: 0 0% 100%;
@@ -38,10 +38,10 @@
   --destructive: 0 72% 45%;
   --destructive-foreground: 0 0% 100%;
   --input: 0 0% 15%;
-  --ring: 38 91% 55%;
-  --chart-1: 38 91% 55%;
+  --ring: 20 81% 54%;
+  --chart-1: 20 81% 54%;
   --chart-2: 0 0% 70%;
-  --chart-3: 38 70% 45%;
+  --chart-3: 38 95% 50%;
   --chart-4: 0 0% 40%;
   --chart-5: 38 50% 35%;
 
@@ -70,27 +70,27 @@
   --button-outline: rgba(255, 255, 255, 0.08);
   --badge-outline: rgba(255, 255, 255, 0.05);
   --opaque-button-border-intensity: 9;
-  --elevate-1: rgba(245, 166, 35, 0.06);
-  --elevate-2: rgba(245, 166, 35, 0.12);
+  --elevate-1: rgba(232, 112, 42, 0.06);
+  --elevate-2: rgba(232, 112, 42, 0.12);
 
-  --background: 0 0% 4%;
+  --background: 0 0% 3%;
   --foreground: 0 0% 100%;
-  --border: 0 0% 13%;
-  --card: 0 0% 7%;
+  --border: 0 0% 11%;
+  --card: 0 0% 6%;
   --card-foreground: 0 0% 100%;
-  --card-border: 0 0% 13%;
-  --sidebar: 0 0% 5%;
+  --card-border: 0 0% 11%;
+  --sidebar: 0 0% 3%;
   --sidebar-foreground: 0 0% 100%;
-  --sidebar-border: 0 0% 13%;
-  --sidebar-primary: 38 91% 55%;
+  --sidebar-border: 0 0% 11%;
+  --sidebar-primary: 20 81% 54%;
   --sidebar-primary-foreground: 0 0% 4%;
   --sidebar-accent: 0 0% 10%;
   --sidebar-accent-foreground: 0 0% 100%;
-  --sidebar-ring: 38 91% 55%;
-  --popover: 0 0% 8%;
+  --sidebar-ring: 20 81% 54%;
+  --popover: 0 0% 7%;
   --popover-foreground: 0 0% 100%;
-  --popover-border: 0 0% 13%;
-  --primary: 38 91% 55%;
+  --popover-border: 0 0% 11%;
+  --primary: 20 81% 54%;
   --primary-foreground: 0 0% 4%;
   --secondary: 0 0% 10%;
   --secondary-foreground: 0 0% 100%;
@@ -101,7 +101,7 @@
   --destructive: 0 72% 45%;
   --destructive-foreground: 0 0% 100%;
   --input: 0 0% 15%;
-  --ring: 38 91% 55%;
+  --ring: 20 81% 54%;
 }
 
 @layer base {
@@ -114,8 +114,37 @@
   }
 
   body {
-    @apply font-sans antialiased bg-[#0A0A0A] text-white;
+    @apply font-sans antialiased bg-[#080808] text-white;
   }
+}
+
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+    filter: blur(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.fade-up {
+  opacity: 0;
+  animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Texture grain très subtile en overlay global */
+.noise::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 9999;
 }
 
 @layer utilities {
@@ -124,51 +153,68 @@
   }
 
   .text-subtitle {
-    @apply text-gray-400;
+    @apply text-white/50;
   }
 
   .text-secondary {
-    @apply text-[#888888];
+    @apply text-white/50;
   }
 
   .text-stat {
-    @apply text-brand-light font-bold text-3xl;
+    @apply text-white font-bold text-3xl tracking-tight;
   }
 
   .surface-card {
-    @apply bg-[#111111] border border-[#222222] rounded-2xl text-white;
+    @apply bg-[#0f0f0f] border border-white/[0.08] hover:border-white/20 rounded-2xl text-white transition-colors shadow-[0_0_0_1px_rgba(255,255,255,0.05)];
   }
 
   .surface-glass {
-    @apply bg-white/5 backdrop-blur-sm border border-[#222222] rounded-2xl text-white;
+    @apply bg-white/5 backdrop-blur-sm border border-white/[0.08] hover:border-white/20 rounded-2xl text-white transition-colors;
   }
 
   .surface-header {
-    @apply bg-[#0A0A0A]/90 border-b border-[#222222] text-white;
+    @apply bg-[#080808]/90 border-b border-white/[0.08] text-white;
   }
 
   .shadow-glow-sm {
-    box-shadow: 0 0 0 1px rgba(245, 166, 35, 0.15), 0 0 12px rgba(245, 166, 35, 0.08);
+    box-shadow: 0 0 0 1px rgba(232, 112, 42, 0.15), 0 0 12px rgba(232, 112, 42, 0.08);
   }
 
   .shadow-glow {
-    box-shadow: 0 0 0 1px rgba(245, 166, 35, 0.25), 0 0 20px rgba(245, 166, 35, 0.12);
+    box-shadow: 0 0 0 1px rgba(232, 112, 42, 0.25), 0 0 20px rgba(232, 112, 42, 0.12);
   }
 
   .shadow-glow-hover {
-    @apply transition-shadow duration-200;
+    @apply transition-all duration-200;
   }
 
   .shadow-glow-hover:hover {
-    box-shadow: 0 0 0 1px rgba(245, 166, 35, 0.35), 0 0 24px rgba(245, 166, 35, 0.18);
+    @apply border-white/20;
   }
 
   .nav-active {
-    @apply bg-brand/10 border border-brand/30 text-white shadow-glow-sm;
+    @apply bg-white/[0.08] text-white rounded-xl;
+  }
+
+  .nav-inactive {
+    @apply text-white/50 hover:text-white/80 hover:bg-white/5 rounded-xl;
   }
 
   .btn-brand {
-    @apply bg-brand text-[#0A0A0A] font-medium hover:bg-brand-light transition-colors;
+    @apply bg-[#e8702a] text-white font-medium hover:bg-[#d2611f] transition-all hover:scale-[1.02] hover:shadow-lg hover:shadow-[#e8702a]/20;
+  }
+
+  /* ——— Badges & statuts ——— */
+  .badge-encours {
+    @apply bg-[#e8702a]/15 text-[#e8702a] rounded-full;
+  }
+
+  .badge-dispo {
+    @apply bg-green-500/15 text-green-400 rounded-full;
+  }
+
+  .badge-planifie {
+    @apply bg-blue-500/15 text-blue-400 rounded-full;
   }
 
   /* ——— Accent violet réservé aux fonctionnalités IA ——— */

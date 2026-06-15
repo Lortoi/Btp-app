@@ -75,13 +75,13 @@ function initialsFromNom(nom: string): string {
 function statutBadgeClass(statut: MembreStatut): string {
   switch (statut) {
     case 'Disponible':
-      return 'bg-[#10B981]/20 text-emerald-100 border-[#10B981]/30';
+      return 'bg-green-500/15 text-green-400 rounded-full border-transparent';
     case 'En chantier':
-      return 'bg-[#F5A623]/20 text-orange-100 border-[#F5A623]/30';
+      return 'bg-[#e8702a]/15 text-[#e8702a] rounded-full border-transparent';
     case 'Absent':
-      return 'bg-[#EF4444]/20 text-red-100 border-[#EF4444]/30';
+      return 'bg-red-500/15 text-red-400 rounded-full border-transparent';
     default:
-      return 'bg-gray-100 dark:bg-white/10 text-subtitle';
+      return 'bg-white/10 text-white/50 rounded-full border-transparent';
   }
 }
 
@@ -423,7 +423,7 @@ export default function TeamPage() {
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Badge className={member.status === 'actif' ? 'bg-green-500/20 text-green-300' : 'bg-gray-500/20 text-gray-300'}>
+                        <Badge className={member.status === 'actif' ? 'bg-green-500/15 text-green-400 rounded-full' : 'bg-white/10 text-white/50 rounded-full'}>
                           {member.status === 'actif' ? 'Actif' : 'Inactif'}
                         </Badge>
                         <Button
