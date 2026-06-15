@@ -54,7 +54,7 @@ function NavItem({ icon: Icon, label, path, active, iconColor, compact, onNaviga
     <Link href={path} onClick={onNavigate}>
       <span
         className={cn(
-          'flex w-full cursor-pointer items-center gap-2.5 rounded-lg transition-colors',
+          'nav-item flex w-full cursor-pointer items-center gap-2.5 rounded-lg transition-colors',
           compact ? 'py-2 px-3 text-sm' : 'h-10 gap-3 rounded-xl px-2',
           active ? 'bg-white/8' : 'hover:bg-white/5',
         )}
@@ -99,7 +99,7 @@ function SectionLabel({ children, compact, muted }: { children: React.ReactNode;
   return (
     <p
       className={cn(
-        'font-medium uppercase tracking-wide',
+        'section-label font-medium uppercase tracking-wide',
         muted ? 'text-white/30' : 'text-white/40',
         compact ? 'mb-1 mt-3 px-3 text-[10px]' : 'mb-3 mt-6 px-2 text-xs',
       )}
@@ -180,7 +180,7 @@ function SidebarContent({ compact, expanded = true, onNavigate }: SidebarContent
             type="button"
             onClick={() => handleNavigate(action.path)}
             className={cn(
-              'flex w-full items-center gap-2.5 rounded-lg text-left transition-colors hover:bg-white/5',
+              'nav-item flex w-full items-center gap-2.5 rounded-lg text-left transition-colors hover:bg-white/5',
               compact ? 'py-2 px-3 text-sm' : 'h-9 gap-3 rounded-xl px-2',
             )}
           >
@@ -243,7 +243,7 @@ function SidebarContent({ compact, expanded = true, onNavigate }: SidebarContent
         <Link href="/dashboard/settings" onClick={onNavigate}>
           <span
             className={cn(
-              'flex w-full cursor-pointer items-center gap-2.5 rounded-lg transition-colors',
+              'nav-item flex w-full cursor-pointer items-center gap-2.5 rounded-lg transition-colors',
               compact ? 'py-2 px-3 text-sm' : 'h-10 gap-3 rounded-xl px-2',
               isActive('/dashboard/settings') ? 'bg-white/8' : 'hover:bg-white/5',
             )}
@@ -259,7 +259,7 @@ function SidebarContent({ compact, expanded = true, onNavigate }: SidebarContent
           <button
             type="button"
             className={cn(
-              'flex w-full items-center gap-2.5 rounded-lg transition-colors hover:bg-white/5',
+              'nav-item flex w-full items-center gap-2.5 rounded-lg transition-colors hover:bg-white/5',
               compact ? 'py-2 px-3 text-sm' : 'h-10 gap-3 rounded-xl px-2',
             )}
           >
@@ -293,7 +293,7 @@ export default function Sidebar() {
 
       <aside
         className={cn(
-          'fixed left-0 top-0 z-50 flex h-full flex-col border-r border-white/8 bg-[#060e1f] transition-all duration-300 ease-in-out',
+          'sidebar fixed left-0 top-0 z-50 flex h-full flex-col border-r border-white/8 bg-[#060e1f] transition-all duration-300 ease-in-out',
           isOpen ? 'w-64' : 'w-0 overflow-hidden',
         )}
       >

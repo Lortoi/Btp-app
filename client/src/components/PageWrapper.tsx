@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect } from 'react'
 import { agentDebugLog } from '@/lib/agentDebugLog'
 import { AppTopBar } from '@/components/AppTopBar'
-import { dashboardLayoutStyle } from '@/lib/dashboardLayoutStyle'
+import { dashboardLayoutStyle, dashboardLayoutClass } from '@/lib/dashboardLayoutStyle'
 
 interface PageWrapperProps {
   children: React.ReactNode
@@ -59,10 +59,7 @@ export function PageWrapper({ children }: PageWrapperProps) {
   // #endregion
 
   return (
-    <div
-      className="relative min-h-screen overflow-hidden"
-      style={dashboardLayoutStyle}
-    >
+    <div className={dashboardLayoutClass} style={dashboardLayoutStyle}>
       <Sidebar />
 
       <AnimatePresence mode="wait">

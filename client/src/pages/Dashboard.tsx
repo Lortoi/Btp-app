@@ -37,7 +37,7 @@ export default function Dashboard() {
   }, [setLocation])
   
   return (
-    <div className="flex relative overflow-hidden" style={dashboardLayoutStyle}>
+  <div className="flex relative overflow-hidden dashboard-layout" style={dashboardLayoutStyle}>
       {/* Sidebar - now fixed, no animation */}
       <Sidebar />
 
@@ -310,26 +310,26 @@ function chantierStatutBadge(statut: Chantier["statut"]): string {
   }
 }
 
-const KPI_ACCENTS = [
+const KPI_CARD_STYLES: React.CSSProperties[] = [
   {
-    border: "#e8702a",
-    from: "rgba(232,112,42,0.10)",
+    borderLeft: "4px solid #e8702a",
+    background: "linear-gradient(135deg, rgba(232,112,42,0.08), transparent)",
   },
   {
-    border: "#f59e0b",
-    from: "rgba(245,158,11,0.10)",
+    borderLeft: "4px solid #f59e0b",
+    background: "linear-gradient(135deg, rgba(245,158,11,0.08), transparent)",
   },
   {
-    border: "#22c55e",
-    from: "rgba(34,197,94,0.10)",
+    borderLeft: "4px solid #22c55e",
+    background: "linear-gradient(135deg, rgba(34,197,94,0.08), transparent)",
   },
   {
-    border: "#7c3aed",
-    from: "rgba(124,58,237,0.10)",
+    borderLeft: "4px solid #7c3aed",
+    background: "linear-gradient(135deg, rgba(124,58,237,0.08), transparent)",
   },
   {
-    border: "#06b6d4",
-    from: "rgba(6,182,212,0.10)",
+    borderLeft: "4px solid #3b82f6",
+    background: "linear-gradient(135deg, rgba(59,130,246,0.08), transparent)",
   },
 ]
 
@@ -425,7 +425,7 @@ function OverviewTab() {
       <div className="space-y-4 min-w-0">
         {/* Graphique CA principal */}
         <div
-          className={`fade-up ${cardBase} p-5 md:p-6 min-h-[320px]`}
+          className={`chart-card fade-up ${cardBase} p-5 md:p-6 min-h-[320px]`}
           style={{
             animationDelay: "0.1s",
             boxShadow: "0 20px 60px rgba(232,112,42,0.10)",
@@ -628,9 +628,7 @@ function OverviewTab() {
       {/* Colonne droite : 4 KPI + chantiers récents */}
       <div className="space-y-4 min-w-0">
         <div className="grid grid-cols-1 gap-3">
-          {kpis.map((kpi, i) => {
-            const accent = KPI_ACCENTS[i]
-            return (
+          {kpis.map((kpi, i) => (
               <div
                 key={kpi.label}
                 role="button"
@@ -644,10 +642,9 @@ function OverviewTab() {
                 }}
                 style={{
                   animationDelay: `${0.15 + i * 0.1}s`,
-                  borderLeft: `4px solid ${accent.border}`,
-                  background: `linear-gradient(135deg, ${accent.from} 0%, transparent 70%)`,
+                  ...KPI_CARD_STYLES[i],
                 }}
-                className="fade-up bg-[#0a1628] border border-white/[0.08] rounded-2xl p-4 cursor-pointer hover:border-white/20 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+                className="fade-up rounded-2xl p-4 cursor-pointer transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
               >
                 <p className="text-white/40 text-xs uppercase tracking-widest">{kpi.label}</p>
                 <p className="text-3xl font-bold text-white mt-1" style={{ letterSpacing: "-0.02em" }}>
@@ -655,8 +652,7 @@ function OverviewTab() {
                 </p>
                 <p className="text-white/40 text-xs mt-1">{kpi.sub}</p>
               </div>
-            )
-          })}
+          ))}
         </div>
 
         {/* Chantiers récents */}

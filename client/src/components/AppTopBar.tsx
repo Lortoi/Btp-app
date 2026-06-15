@@ -1,6 +1,8 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useMemo } from "react"
 import { MobileMenuButton } from "@/components/MobileMenuButton"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import { AIAssistantButton } from "@/components/AIAssistantPanel"
 import { Bell, Settings, Search, Moon, Sun } from "lucide-react"
 import { useLocation } from "wouter"
@@ -15,78 +17,8 @@ function applyTheme(isLight: boolean) {
   root.style.colorScheme = isLight ? "light" : "dark"
   localStorage.setItem(THEME_STORAGE_KEY, isLight ? "light" : "dark")
 
-  let styleEl = document.getElementById("app-theme-overrides") as HTMLStyleElement | null
-  if (!styleEl) {
-    styleEl = document.createElement("style")
-    styleEl.id = "app-theme-overrides"
-    document.head.appendChild(styleEl)
-  }
-
-  styleEl.textContent = isLight
-    ? `
-      html.light,
-      html.light body {
-        background-color: #f0f4ff !important;
-        color: #111827 !important;
-      }
-
-      html.light div[style*="radial-gradient"],
-      html.light div[style*="080d1a"] {
-        background: #f0f4ff !important;
-      }
-
-      html.light .surface-header {
-        background: rgba(255, 255, 255, 0.92) !important;
-        border-color: #e5e7eb !important;
-        color: #111827 !important;
-      }
-
-      html.light .surface-card {
-        background: #ffffff !important;
-        border: 1px solid #e5e7eb !important;
-        color: #111827 !important;
-        box-shadow: none !important;
-      }
-
-      html.light .text-title,
-      html.light .text-stat {
-        color: #111827 !important;
-      }
-
-      html.light .text-subtitle,
-      html.light .text-secondary {
-        color: #6b7280 !important;
-      }
-
-      html.light .surface-header .text-white,
-      html.light .surface-header .text-white\\/30,
-      html.light .surface-header .text-white\\/40 {
-        color: #6b7280 !important;
-      }
-
-      html.light .surface-header .text-white\\/30:hover {
-        color: #374151 !important;
-      }
-
-      html.light .surface-header svg.text-white,
-      html.light .surface-header .text-white svg {
-        color: #374151 !important;
-      }
-
-      html.light .surface-header button {
-        border-color: #e5e7eb !important;
-        background: rgba(17, 24, 39, 0.04) !important;
-      }
-
-      html.light .surface-header button:hover {
-        background: rgba(17, 24, 39, 0.08) !important;
-      }
-
-      html.light .text-white:not([class*="text-[#"]):not([class*="text-red"]):not([class*="text-green"]):not([class*="text-blue"]):not([class*="text-ai"]) {
-        color: #111827 !important;
-      }
-    `
-    : ""
+  const stale = document.getElementById("app-theme-overrides")
+  if (stale) stale.remove()
 }
 
 if (typeof window !== "undefined") {
@@ -211,12 +143,183 @@ function SearchModal({ open, onClose }: SearchModalProps) {
   )
 }
 
+const iconButtonClass =
+  "rounded-xl border border-white/8 bg-white/5 p-2.5 transition-all hover:bg-white/10"
+
+type AppNotification = {
+  id: string
+  title: string
+  body: string
+  time: string
+  emoji: string
+  path: string
+  read: boolean
+}
+
+const INITIAL_NOTIFICATIONS: AppNotification[] = [
+  {
+    id: "1",
+    title: "Devis en attente",
+    body: "DEV-202604-001 — 4 850 € · Sophie Bernard",
+    time: "Il y a 2 h",
+    emoji: "📄",
+    path: "/dashboard/quotes",
+    read: false,
+  },
+  {
+    id: "2",
+    title: "Chantier en cours",
+    body: "Rénovation SDB Levallois — avancement 65 %",
+    time: "Il y a 5 h",
+    emoji: "🏗️",
+    path: "/dashboard/projects",
+    read: false,
+  },
+  {
+    id: "3",
+    title: "Nouveau prospect",
+    body: "Pierre Leroy — devis ravalement façade envoyé",
+    time: "Hier",
+    emoji: "👤",
+    path: "/dashboard/crm",
+    read: false,
+  },
+  {
+    id: "4",
+    title: "Rappel planning",
+    body: "Réfection toiture Issy — démarrage le 5 mai",
+    time: "Hier",
+    emoji: "📅",
+    path: "/dashboard/planning",
+    read: true,
+  },
+]
+
+interface NotificationsPopoverProps {
+  onNavigate: (path: string) => void
+}
+
+function NotificationsPopover({ onNavigate }: NotificationsPopoverProps) {
+  const [open, setOpen] = useState(false)
+  const [notifications, setNotifications] = useState(INITIAL_NOTIFICATIONS)
+
+  const unreadCount = useMemo(
+    () => notifications.filter((n) => !n.read).length,
+    [notifications],
+  )
+
+  const markAllRead = () => {
+    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })))
+  }
+
+  const handleNotificationClick = (notification: AppNotification) => {
+    setNotifications((prev) =>
+      prev.map((n) => (n.id === notification.id ? { ...n, read: true } : n)),
+    )
+    setOpen(false)
+    onNavigate(notification.path)
+  }
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <button
+          type="button"
+          className={cn(iconButtonClass, "relative")}
+          aria-label="Notifications"
+          aria-expanded={open}
+        >
+          <Bell className="h-4 w-4 text-white" />
+          {unreadCount > 0 && (
+            <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500" />
+          )}
+        </button>
+      </PopoverTrigger>
+      <PopoverContent
+        align="end"
+        sideOffset={8}
+        className="w-[min(360px,calc(100vw-2rem))] rounded-2xl border border-white/10 bg-[#0c1a30] p-0 text-white shadow-xl"
+      >
+        <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
+          <div>
+            <p className="text-sm font-semibold text-white">Notifications</p>
+            {unreadCount > 0 && (
+              <p className="text-xs text-white/40">
+                {unreadCount} non lue{unreadCount > 1 ? "s" : ""}
+              </p>
+            )}
+          </div>
+          {unreadCount > 0 && (
+            <button
+              type="button"
+              onClick={markAllRead}
+              className="text-xs text-[#e8702a] transition hover:text-[#e8702a]/80"
+            >
+              Tout marquer lu
+            </button>
+          )}
+        </div>
+
+        <ScrollArea className="max-h-80">
+          {notifications.length === 0 ? (
+            <p className="px-4 py-8 text-center text-sm text-white/40">Aucune notification</p>
+          ) : (
+            <ul className="py-1">
+              {notifications.map((notification) => (
+                <li key={notification.id}>
+                  <button
+                    type="button"
+                    onClick={() => handleNotificationClick(notification)}
+                    className={cn(
+                      "flex w-full gap-3 px-4 py-3 text-left transition hover:bg-white/5",
+                      !notification.read && "bg-white/[0.03]",
+                    )}
+                  >
+                    <span className="mt-0.5 text-lg leading-none">{notification.emoji}</span>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-start justify-between gap-2">
+                        <p
+                          className={cn(
+                            "truncate text-sm",
+                            notification.read ? "text-white/70" : "font-medium text-white",
+                          )}
+                        >
+                          {notification.title}
+                        </p>
+                        {!notification.read && (
+                          <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-[#e8702a]" />
+                        )}
+                      </div>
+                      <p className="mt-0.5 line-clamp-2 text-xs text-white/40">{notification.body}</p>
+                      <p className="mt-1 text-[11px] text-white/30">{notification.time}</p>
+                    </div>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </ScrollArea>
+
+        <div className="border-t border-white/10 px-4 py-2">
+          <button
+            type="button"
+            onClick={() => {
+              setOpen(false)
+              onNavigate("/dashboard/settings")
+            }}
+            className="w-full rounded-lg py-2 text-center text-xs text-white/40 transition hover:bg-white/5 hover:text-white/60"
+          >
+            Gérer les notifications
+          </button>
+        </div>
+      </PopoverContent>
+    </Popover>
+  )
+}
+
 interface AppTopBarProps {
   showMobileMenu?: boolean
 }
-
-const iconButtonClass =
-  "rounded-xl border border-white/8 bg-white/5 p-2.5 transition-all hover:bg-white/10"
 
 export function AppTopBar({ showMobileMenu = true }: AppTopBarProps) {
   const [, setLocation] = useLocation()
@@ -247,7 +350,7 @@ export function AppTopBar({ showMobileMenu = true }: AppTopBarProps) {
           type="button"
           onClick={() => setSearchOpen(true)}
           aria-label="Rechercher"
-          className="absolute left-1/2 flex w-72 -translate-x-1/2 items-center justify-between rounded-xl border border-white/10 px-4 py-2.5 transition-all duration-200 hover:border-white/20"
+          className="navbar-search absolute left-1/2 flex w-72 -translate-x-1/2 items-center justify-between rounded-xl border border-white/10 px-4 py-2.5 transition-all duration-200 hover:border-white/20"
           style={{ background: "rgba(255,255,255,0.04)" }}
         >
           <div className="flex items-center gap-2">
@@ -284,14 +387,7 @@ export function AppTopBar({ showMobileMenu = true }: AppTopBarProps) {
               Assistant IA
             </TooltipContent>
           </Tooltip>
-          <button
-            type="button"
-            className={cn(iconButtonClass, "relative")}
-            aria-label="Notifications"
-          >
-            <Bell className="h-4 w-4 text-white" />
-            <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500" />
-          </button>
+          <NotificationsPopover onNavigate={setLocation} />
           <button
             type="button"
             onClick={() => setLocation("/dashboard/settings")}

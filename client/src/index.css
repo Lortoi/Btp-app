@@ -390,3 +390,210 @@ html.reduce-motion *::after {
   border-radius: 9999px;
   background: rgba(255, 255, 255, 0.1);
 }
+
+/* ——— Mode light (html.light) ——— */
+html.light {
+  color-scheme: light;
+  color: #0f172a;
+}
+
+html.light,
+html.light body {
+  background-color: #f8faff !important;
+  color: #0f172a;
+}
+
+html.light * {
+  color: inherit;
+}
+
+html.light p,
+html.light span,
+html.light h1,
+html.light h2,
+html.light h3,
+html.light h4,
+html.light label,
+html.light div {
+  color: #0f172a;
+}
+
+html.light .text-white { color: #0f172a !important; }
+html.light .text-white\/40 { color: rgba(0, 0, 0, 0.4) !important; }
+html.light .text-white\/50 { color: rgba(0, 0, 0, 0.5) !important; }
+html.light .text-white\/60 { color: rgba(0, 0, 0, 0.6) !important; }
+html.light .text-white\/30 { color: rgba(0, 0, 0, 0.3) !important; }
+html.light .text-white\/70 { color: rgba(0, 0, 0, 0.7) !important; }
+html.light .text-white\/80 { color: rgba(0, 0, 0, 0.8) !important; }
+
+/* Garde les accents en couleur */
+html.light .text-\[\#e8702a\] { color: #e8702a !important; }
+html.light .text-\[\#7c3aed\] { color: #7c3aed !important; }
+html.light .text-\[\#22c55e\] { color: #22c55e !important; }
+html.light .text-\[\#3b82f6\] { color: #3b82f6 !important; }
+html.light .text-green-400 { color: #16a34a !important; }
+html.light .text-red-400 { color: #dc2626 !important; }
+
+/* Inputs en mode light */
+html.light input,
+html.light select,
+html.light textarea {
+  color: #0f172a !important;
+  background: #f8faff !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+html.light .dashboard-layout,
+html.light .dashboard-layout[style*="radial-gradient"] {
+  background: #f8faff !important;
+}
+
+/* Navbar */
+html.light .surface-header {
+  background: #ffffff !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  color: #111827 !important;
+}
+
+html.light .navbar-search {
+  background: #f3f4f6 !important;
+  border-color: #e5e7eb !important;
+}
+
+html.light .navbar-search span,
+html.light .navbar-search svg {
+  color: #9ca3af !important;
+}
+
+html.light .surface-header .ml-auto button {
+  border-color: #e5e7eb !important;
+  background: rgba(17, 24, 39, 0.04) !important;
+}
+
+html.light .surface-header .ml-auto button svg {
+  color: #374151 !important;
+}
+
+/* Onglets dashboard */
+html.light .surface-header .flex.gap-2.overflow-x-auto button,
+html.light .surface-header .flex.gap-2.overflow-x-auto a button {
+  color: #4b5563 !important;
+  background-color: transparent !important;
+}
+
+html.light .surface-header .flex.gap-2.overflow-x-auto button:hover,
+html.light .surface-header .flex.gap-2.overflow-x-auto a button:hover {
+  color: #374151 !important;
+  background-color: rgba(17, 24, 39, 0.05) !important;
+}
+
+html.light .surface-header .flex.gap-2.overflow-x-auto button[class*="0.08"],
+html.light .surface-header .flex.gap-2.overflow-x-auto a button[class*="0.08"] {
+  background-color: #111827 !important;
+  color: #ffffff !important;
+}
+
+/* Cards KPI & graphiques */
+html.light .surface-card,
+html.light .bg-\[\#0a1628\],
+html.light [class*="0a1628"] {
+  background: #ffffff !important;
+  border-color: #e5e7eb !important;
+  box-shadow: none !important;
+}
+
+html.light [class*="0a1628"][style*="linear-gradient"] {
+  background: #ffffff !important;
+}
+
+html.light .text-subtitle,
+html.light .text-secondary {
+  color: rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Recharts — axes & grille */
+html.light .recharts-cartesian-axis-tick-value,
+html.light .recharts-cartesian-axis-tick text,
+html.light .recharts-layer.recharts-cartesian-axis-tick text {
+  fill: #374151 !important;
+}
+
+html.light .recharts-cartesian-grid-horizontal line,
+html.light .recharts-cartesian-grid-vertical line {
+  stroke: rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Sidebar */
+html.light .sidebar,
+html.light aside {
+  background: #ffffff !important;
+  border-right: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+html.light .sidebar .nav-item {
+  color: #374151 !important;
+}
+
+html.light .sidebar .nav-item:hover {
+  background: rgba(0, 0, 0, 0.04) !important;
+}
+
+html.light .sidebar .section-label {
+  color: rgba(0, 0, 0, 0.3) !important;
+}
+
+html.light .sidebar .nav-item span {
+  color: #374151 !important;
+}
+
+/* Card graphique CA */
+html.light .chart-card,
+html.light [class*="bg-[#0"] {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Cards KPI — mode light */
+html.light .border-l-4 {
+  opacity: 1 !important;
+}
+
+html.light [style*="border-left"] {
+  opacity: 1 !important;
+}
+
+html.light [class*="from-[#e8702a]"] {
+  background: linear-gradient(135deg, rgba(232, 112, 42, 0.08), transparent) !important;
+}
+
+html.light [class*="from-[#7c3aed]"] {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), transparent) !important;
+}
+
+html.light [class*="from-[#22c55e]"] {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.08), transparent) !important;
+}
+
+html.light [class*="from-[#3b82f6]"] {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), transparent) !important;
+}
+
+html.light [class*="from-[#f59e0b]"] {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), transparent) !important;
+}
+
+html.light [class*="tracking-widest"] {
+  color: rgba(0, 0, 0, 0.4) !important;
+}
+
+html.light [class*="bg-[#e8702a]/"] {
+  background-color: rgba(232, 112, 42, 0.15) !important;
+}
+
+html.light [class*="bg-[#7c3aed]/"] {
+  background-color: rgba(124, 58, 237, 0.15) !important;
+}
+
+html.light [class*="bg-[#22c55e]/"] {
+  background-color: rgba(34, 197, 94, 0.15) !important;
+}
