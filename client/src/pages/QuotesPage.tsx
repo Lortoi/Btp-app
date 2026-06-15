@@ -194,12 +194,15 @@ export default function QuotesPage() {
       const doc = <QuotePdfDocument draft={draft} totals={totals} />
       const blob = await pdf(doc).toBlob()
       const url = URL.createObjectURL(blob)
-      const a = document.createElement("a")
-      a.href = url
       const num = sanitizeFilenamePart(draft.devis.numero || "SANS_NUM")
       const client = sanitizeFilenamePart(draft.client.nom || "Client")
-      a.download = `Devis_${num}_${client}.pdf`
-      a.click()
+      const link = document.createElement("a")
+      link.href = url
+      link.download = `Devis_${num}_${client}.pdf`
+      link.target = "_blank"
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
       URL.revokeObjectURL(url)
     } finally {
       // #region agent log
