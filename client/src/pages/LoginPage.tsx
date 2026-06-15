@@ -100,16 +100,18 @@ export default function LoginPage() {
   }
 
   return (
-    <section className="relative w-full min-h-screen overflow-hidden bg-transparent flex items-center justify-center">
-      <div
-        className="pointer-events-none fixed inset-0 z-0"
-        aria-hidden
-        style={{
-          background: `radial-gradient(600px at ${cursor.x}px ${cursor.y}px, rgba(124,58,237,0.18), rgba(232,112,42,0.06) 45%, transparent 80%)`,
-        }}
-      />
+    <section
+      className="relative w-full min-h-screen overflow-hidden flex items-center justify-center"
+      style={{
+        background: `radial-gradient(600px at ${cursor.x}px ${cursor.y}px,
+          rgba(124,58,237,0.15),
+          rgba(232,112,42,0.08) 40%,
+          transparent 70%),
+          #080d1a`,
+      }}
+    >
       <div className="relative z-10 max-w-md mx-auto px-6 w-full">
-        <div className="bg-gray-100 dark:bg-white/10 dark:bg-black/20 backdrop-blur-lg rounded-2xl border border-gray-300 dark:border-white/20 p-8 shadow-2xl">
+        <div className="bg-gray-100 dark:bg-white/10 dark:bg-[#080d1a]/20 backdrop-blur-lg rounded-2xl border border-gray-300 dark:border-white/20 p-8 shadow-2xl">
           <div className="mb-8">
             <div className="flex items-center justify-between mb-2 relative">
               <div className="flex-1"></div>
@@ -141,7 +143,7 @@ export default function LoginPage() {
                           value={newAdminCode}
                           onChange={(e) => setNewAdminCode(e.target.value)}
                           placeholder="Entrez le nouveau code"
-                          className="bg-gray-50 dark:bg-black/20 border-border text-foreground font-mono"
+                          className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground font-mono"
                           maxLength={20}
                         />
                         <p className="text-xs text-secondary">

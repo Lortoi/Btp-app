@@ -71,7 +71,7 @@ export default function SettingsPage() {
                 value={draft.nomAffiche}
                 onChange={(e) => update("nomAffiche", e.target.value)}
                 placeholder="Ex. PLANCHAIS — Bureau d&apos;études"
-                className="bg-gray-50 dark:bg-black/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
+                className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
               />
             </div>
             <div className="space-y-2">
@@ -83,7 +83,7 @@ export default function SettingsPage() {
                 value={draft.telephoneContact}
                 onChange={(e) => update("telephoneContact", e.target.value)}
                 placeholder="06 12 34 56 78"
-                className="bg-gray-50 dark:bg-black/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
+                className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
               />
             </div>
           </CardContent>

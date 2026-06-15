@@ -48,7 +48,7 @@ export function AIAssistantPanel() {
           <motion.button
             type="button"
             aria-label="Fermer l'assistant"
-            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
+            className="fixed inset-0 z-40 bg-[#080d1a]/60 backdrop-blur-sm"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -99,7 +99,7 @@ export function AIAssistantPanel() {
                       "max-w-[88%] rounded-2xl px-3 py-2 text-sm leading-relaxed whitespace-pre-wrap",
                       msg.role === "user"
                         ? "bg-ai text-white rounded-br-md font-medium shadow-ai-glow-sm"
-                        : "bg-[#0f0f0f] border border-white/[0.08] text-white rounded-bl-md"
+                        : "bg-[#0c1a30] border border-white/[0.08] text-white rounded-bl-md"
                     )}
                   >
                     {msg.content}
@@ -109,7 +109,7 @@ export function AIAssistantPanel() {
 
               {loading && (
                 <div className="flex justify-start">
-                  <div className="inline-flex items-center gap-2 rounded-2xl rounded-bl-md px-3 py-2 text-sm bg-[#111111] border border-[#222222] text-gray-400">
+                  <div className="inline-flex items-center gap-2 rounded-2xl rounded-bl-md px-3 py-2 text-sm bg-[#0e1e36] border border-[#222222] text-gray-400">
                     <Loader2 className="h-4 w-4 animate-spin text-ai-light" />
                     Réflexion en cours…
                   </div>
@@ -145,7 +145,7 @@ export function AIAssistantPanel() {
                   placeholder="Posez votre question…"
                   rows={2}
                   disabled={loading}
-                  className="min-h-[44px] max-h-28 resize-none border-ai/30 bg-[#111111] text-white placeholder:text-gray-500 focus-visible:ring-ai"
+                  className="min-h-[44px] max-h-28 resize-none border-ai/30 bg-[#0e1e36] text-white placeholder:text-gray-500 focus-visible:ring-ai"
                 />
                 <Button
                   type="button"

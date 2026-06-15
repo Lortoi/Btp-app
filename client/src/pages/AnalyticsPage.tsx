@@ -19,7 +19,7 @@ export default function AnalyticsPage() {
       <main className="flex-1 p-6 flex items-center justify-center overflow-x-hidden w-full max-w-full">
         <Card className="w-full max-w-md text-center surface-card backdrop-blur-sm text-foreground hover-elevate">
           <CardHeader className="pb-4">
-            <div className="w-16 h-16 mx-auto rounded-xl bg-black/20 backdrop-blur-md border border-border flex items-center justify-center mb-4">
+            <div className="w-16 h-16 mx-auto rounded-xl bg-[#080d1a]/20 backdrop-blur-md border border-border flex items-center justify-center mb-4">
               <BarChart3 className="h-8 w-8 text-cyan-500" />
             </div>
             <CardTitle className="text-xl text-foreground">Rapports Détaillés</CardTitle>

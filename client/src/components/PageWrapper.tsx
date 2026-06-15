@@ -37,7 +37,7 @@ const contentVariants = {
 };
 
 export function PageWrapper({ children }: PageWrapperProps) {
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
 
   // #region agent log
   useEffect(() => {
@@ -60,13 +60,11 @@ export function PageWrapper({ children }: PageWrapperProps) {
 
   return (
     <div
-      className="flex relative overflow-hidden"
+      className="relative min-h-screen overflow-hidden"
       style={dashboardLayoutStyle}
     >
-      {/* Sidebar - drawer < lg, fixed >= lg */}
       <Sidebar />
 
-      {/* Main Content - animated */}
       <AnimatePresence mode="wait">
         <motion.div
           key={location}
@@ -74,9 +72,8 @@ export function PageWrapper({ children }: PageWrapperProps) {
           animate="animate"
           exit="exit"
           variants={contentVariants}
-          className="flex-1 flex flex-col relative z-10 overflow-hidden overflow-x-hidden w-full max-w-full"
+          className="relative flex w-full flex-col overflow-hidden overflow-x-hidden"
         >
-          {/* Top bar — menu mobile + toggle thème */}
           <AppTopBar />
 
           {children}
@@ -85,4 +82,3 @@ export function PageWrapper({ children }: PageWrapperProps) {
     </div>
   )
 }
-

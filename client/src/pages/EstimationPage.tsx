@@ -410,7 +410,7 @@ function StepPhotos({ onNext }: { onNext: () => void }) {
                 <button
                   type="button"
                   onClick={() => removePhoto(index)}
-                  className="absolute top-2 right-2 bg-black/60 hover:bg-black/80 border border-border text-foreground rounded-full h-7 w-7 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="absolute top-2 right-2 bg-[#080d1a]/60 hover:bg-[#080d1a]/80 border border-border text-foreground rounded-full h-7 w-7 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
                   aria-label="Supprimer"
                 >
                   ×
@@ -547,11 +547,11 @@ function StepInfos({
                   if (clientMode === "existing") setShowClientMenu(true)
                 }}
                 placeholder="Rechercher un client…"
-                className="bg-gray-50 dark:bg-black/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
+                className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
               />
 
               {clientMode === "existing" && showClientMenu && (
-                <div className="absolute z-20 mt-2 w-full rounded-xl border border-border bg-white dark:bg-black/80 backdrop-blur-xl overflow-hidden border border-gray-200 dark:border-transparent">
+                <div className="absolute z-20 mt-2 w-full rounded-xl border border-border bg-white dark:bg-[#080d1a]/80 backdrop-blur-xl overflow-hidden border border-gray-200 dark:border-transparent">
                   {filteredClients.slice(0, 6).map((c) => (
                     <button
                       key={c.id}
@@ -598,7 +598,7 @@ function StepInfos({
                   value={newClientEmail}
                   onChange={(e) => setNewClient({ newClientEmail: e.target.value })}
                   placeholder="email@example.com"
-                  className="bg-gray-50 dark:bg-black/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
+                  className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
                   disabled={clientMode === "existing"}
                 />
               </div>
@@ -608,7 +608,7 @@ function StepInfos({
                   value={newClientPhone}
                   onChange={(e) => setNewClient({ newClientPhone: e.target.value })}
                   placeholder="06 12 34 56 78"
-                  className="bg-gray-50 dark:bg-black/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
+                  className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
                   disabled={clientMode === "existing"}
                 />
               </div>
@@ -628,7 +628,7 @@ function StepInfos({
                   type="number"
                   value={surfaceM2}
                   onChange={(e) => setChantier({ surfaceM2: e.target.value })}
-                  className="bg-gray-50 dark:bg-black/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
+                  className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
                   placeholder="Ex: 50"
                 />
               </div>
@@ -638,7 +638,7 @@ function StepInfos({
                   value={typeTravaux}
                   onValueChange={(v) => setChantier({ typeTravaux: v as any })}
                 >
-                  <SelectTrigger className="bg-gray-50 dark:bg-black/20 border-border text-foreground">
+                  <SelectTrigger className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground">
                     <SelectValue placeholder="Sélectionner" />
                   </SelectTrigger>
                   <SelectContent>
@@ -656,7 +656,7 @@ function StepInfos({
                   value={corpsMetier}
                   onValueChange={(v) => setChantier({ corpsMetier: v as any })}
                 >
-                  <SelectTrigger className="bg-gray-50 dark:bg-black/20 border-border text-foreground">
+                  <SelectTrigger className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground">
                     <SelectValue placeholder="Sélectionner" />
                   </SelectTrigger>
                   <SelectContent>
@@ -684,11 +684,11 @@ function StepInfos({
                     setChantier({ localisation: v })
                   }}
                   onFocus={() => setShowAddressMenu(true)}
-                  className="bg-gray-50 dark:bg-black/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
+                  className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
                   placeholder="Ex: Paris 75001"
                 />
                 {showAddressMenu && addressSuggestions.length > 0 && (
-                  <div className="absolute z-20 mt-2 w-full rounded-xl border border-border bg-white dark:bg-black/80 backdrop-blur-xl overflow-hidden border border-gray-200 dark:border-transparent">
+                  <div className="absolute z-20 mt-2 w-full rounded-xl border border-border bg-white dark:bg-[#080d1a]/80 backdrop-blur-xl overflow-hidden border border-gray-200 dark:border-transparent">
                     {addressSuggestions.map((sug, idx) => (
                       <button
                         key={idx}
@@ -715,7 +715,7 @@ function StepInfos({
                   type="number"
                   value={ouvriersEstimes}
                   onChange={(e) => setChantier({ ouvriersEstimes: e.target.value })}
-                  className="bg-gray-50 dark:bg-black/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
+                  className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
                   placeholder="Ex: 2"
                 />
               </div>
@@ -724,7 +724,7 @@ function StepInfos({
                 <Input
                   value={dureeEstimee}
                   onChange={(e) => setChantier({ dureeEstimee: e.target.value })}
-                  className="bg-gray-50 dark:bg-black/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
+                  className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
                   placeholder="Ex: 2 semaines"
                 />
               </div>
@@ -742,7 +742,7 @@ function StepInfos({
                     setMateriauInput("")
                   }
                 }}
-                className="bg-gray-50 dark:bg-black/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
+                className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
                 placeholder="Tape un matériau puis Entrée"
               />
               {materiauxTags.length > 0 && (
@@ -767,7 +767,7 @@ function StepInfos({
               <Textarea
                 value={notes}
                 onChange={(e) => setChantier({ notes: e.target.value })}
-                className="bg-gray-50 dark:bg-black/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
+                className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
                 rows={4}
                 placeholder="Décris le chantier, contraintes, contexte…"
               />
@@ -801,7 +801,7 @@ function StepInfos({
                 value={String(tvaRate)}
                 onValueChange={(v) => setFinancier({ tvaRate: Number(v) as TvaRate })}
               >
-                <SelectTrigger className="bg-gray-50 dark:bg-black/20 border-border text-foreground">
+                <SelectTrigger className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground">
                   <SelectValue placeholder="Sélectionner" />
                 </SelectTrigger>
                 <SelectContent>
@@ -938,7 +938,7 @@ function StepResults({
             </table>
           </div>
 
-          <div className="rounded-xl border border-border bg-gray-50 dark:bg-black/20 p-4 space-y-2">
+          <div className="rounded-xl border border-border bg-gray-50 dark:bg-[#080d1a]/20 p-4 space-y-2">
             <div className="flex justify-between text-sm">
               <span className="text-subtitle">Total HT</span>
               <span className="text-foreground tabular-nums font-medium">

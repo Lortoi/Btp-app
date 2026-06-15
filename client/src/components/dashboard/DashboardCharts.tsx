@@ -61,7 +61,7 @@ function ChartTooltip({
   if (!active || !payload?.length) return null
 
   return (
-    <div className="rounded-xl border border-white/10 bg-[#1a1a1a] px-3 py-2 text-sm shadow-lg">
+    <div className="rounded-xl border border-white/10 bg-[#0f1f3d] px-3 py-2 text-sm shadow-lg">
       {label ? <p className="text-white font-medium mb-1">{label}</p> : null}
       <ul className="space-y-0.5">
         {payload.map((entry, i) => (
@@ -163,7 +163,7 @@ export function DashboardCharts() {
                     innerRadius="38%"
                     outerRadius="58%"
                     paddingAngle={2}
-                    stroke="#0f0f0f"
+                    stroke="#0c1a30"
                     strokeWidth={2}
                   >
                     {chantierTypesData.map((entry) => (

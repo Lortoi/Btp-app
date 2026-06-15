@@ -4,7 +4,7 @@ import { CRMPipeline } from "@/components/CRMPipeline"
 export default function CRMPipelinePage() {
   return (
     <PageWrapper>
-      <header className="bg-white/80 dark:bg-black/20 backdrop-blur-xl border-b border-gray-200 dark:border-white/10 px-6 py-4 rounded-tl-3xl">
+      <header className="bg-white/80 dark:bg-[#080d1a]/20 backdrop-blur-xl border-b border-gray-200 dark:border-white/10 px-6 py-4 rounded-tl-3xl">
         <h1 className="text-2xl font-bold text-foreground">CRM Pipeline</h1>
       </header>
 

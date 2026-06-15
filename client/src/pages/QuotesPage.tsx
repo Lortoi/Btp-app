@@ -260,7 +260,7 @@ export default function QuotesPage() {
               // #endregion
             }}
           >
-            <TabsList className="mx-4 mt-4 shrink-0 bg-gray-100 dark:bg-black/30 border border-border overflow-x-auto whitespace-nowrap max-w-full">
+            <TabsList className="mx-4 mt-4 shrink-0 bg-gray-100 dark:bg-[#080d1a]/30 border border-border overflow-x-auto whitespace-nowrap max-w-full">
               <TabsTrigger value="form" className="data-[state=active]:bg-white/20 text-foreground">
                 Formulaire
               </TabsTrigger>
@@ -407,7 +407,7 @@ function QuoteForm({
                   company: { ...draft.company, raisonSociale: e.target.value },
                 })
               }
-              className="bg-gray-50 dark:bg-black/20 border-border text-foreground"
+              className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground"
             />
           </div>
           <div className="space-y-2">
@@ -421,7 +421,7 @@ function QuoteForm({
                 })
               }
             >
-              <SelectTrigger className="bg-gray-50 dark:bg-black/20 border-border text-foreground">
+              <SelectTrigger className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -446,7 +446,7 @@ function QuoteForm({
                 })
               }
               rows={3}
-              className="bg-gray-50 dark:bg-black/20 border-border text-foreground"
+              className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground"
             />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -461,7 +461,7 @@ function QuoteForm({
                     company: { ...draft.company, siret: e.target.value },
                   })
                 }
-                className="bg-gray-50 dark:bg-black/20 border-border text-foreground"
+                className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground"
               />
             </div>
             <div className="space-y-2">
@@ -475,7 +475,7 @@ function QuoteForm({
                     company: { ...draft.company, tvaIntra: e.target.value },
                   })
                 }
-                className="bg-gray-50 dark:bg-black/20 border-border text-foreground"
+                className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground"
               />
             </div>
           </div>
@@ -491,7 +491,7 @@ function QuoteForm({
                     company: { ...draft.company, capitalSocial: e.target.value },
                   })
                 }
-                className="bg-gray-50 dark:bg-black/20 border-border text-foreground"
+                className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground"
               />
             </div>
           )}
@@ -509,7 +509,7 @@ function QuoteForm({
                     },
                   })
                 }
-                className="bg-gray-50 dark:bg-black/20 border-border text-foreground"
+                className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground"
               />
             </div>
             <div className="space-y-2">
@@ -525,7 +525,7 @@ function QuoteForm({
                     },
                   })
                 }
-                className="bg-gray-50 dark:bg-black/20 border-border text-foreground"
+                className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground"
               />
             </div>
             <div className="space-y-2">
@@ -541,7 +541,7 @@ function QuoteForm({
                     },
                   })
                 }
-                className="bg-gray-50 dark:bg-black/20 border-border text-foreground"
+                className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground"
               />
             </div>
           </div>
@@ -564,7 +564,7 @@ function QuoteForm({
                   devis: { ...draft.devis, numero: e.target.value },
                 })
               }
-              className="bg-gray-50 dark:bg-black/20 border-border text-foreground font-mono"
+              className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground font-mono"
             />
           </div>
           <div className="space-y-2">
@@ -579,7 +579,7 @@ function QuoteForm({
                   devis: { ...draft.devis, dateEmission: e.target.value },
                 })
               }
-              className="bg-gray-50 dark:bg-black/20 border-border text-foreground"
+              className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground"
             />
           </div>
           <div className="space-y-2">
@@ -598,7 +598,7 @@ function QuoteForm({
                   },
                 })
               }
-              className="bg-gray-50 dark:bg-black/20 border-border text-foreground"
+              className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground"
             />
           </div>
         </CardContent>
@@ -617,7 +617,7 @@ function QuoteForm({
               onChange={(e) =>
                 setDraft({ ...draft, client: { ...draft.client, nom: e.target.value } })
               }
-              className="bg-gray-50 dark:bg-black/20 border-border text-foreground"
+              className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground"
             />
           </div>
           <div className="space-y-2">
@@ -629,7 +629,7 @@ function QuoteForm({
                 setDraft({ ...draft, client: { ...draft.client, adresse: e.target.value } })
               }
               rows={3}
-              className="bg-gray-50 dark:bg-black/20 border-border text-foreground"
+              className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground"
             />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -642,7 +642,7 @@ function QuoteForm({
                 onChange={(e) =>
                   setDraft({ ...draft, client: { ...draft.client, email: e.target.value } })
                 }
-                className="bg-gray-50 dark:bg-black/20 border-border text-foreground"
+                className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground"
               />
             </div>
             <div className="space-y-2">
@@ -653,7 +653,7 @@ function QuoteForm({
                 onChange={(e) =>
                   setDraft({ ...draft, client: { ...draft.client, phone: e.target.value } })
                 }
-                className="bg-gray-50 dark:bg-black/20 border-border text-foreground"
+                className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground"
               />
             </div>
           </div>
@@ -682,7 +682,7 @@ function QuoteForm({
               disabled={iaLoading}
               placeholder="Décrivez le chantier... ex: pose de carrelage 30m² salle de bain, fourniture comprise"
               rows={4}
-              className="bg-gray-50 dark:bg-black/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50 resize-y min-h-[100px]"
+              className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50 resize-y min-h-[100px]"
             />
           </div>
           <Button
@@ -718,14 +718,14 @@ function QuoteForm({
             return (
               <div
                 key={ligne.id}
-                className="grid grid-cols-1 lg:grid-cols-12 gap-x-4 gap-y-4 p-5 rounded-xl bg-black/20 border border-border"
+                className="grid grid-cols-1 lg:grid-cols-12 gap-x-4 gap-y-4 p-5 rounded-xl bg-[#080d1a]/20 border border-border"
               >
                 <div className="lg:col-span-4 space-y-2">
                   <Label className="text-foreground">Description</Label>
                   <Input
                     value={ligne.description}
                     onChange={(e) => updateLigne(ligne.id, { description: e.target.value })}
-                    className="bg-gray-50 dark:bg-black/20 border-border text-foreground"
+                    className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground"
                   />
                 </div>
                 <div className="lg:col-span-2 space-y-2">
@@ -738,7 +738,7 @@ function QuoteForm({
                     onChange={(e) =>
                       updateLigne(ligne.id, { quantity: parseFloat(e.target.value) || 0 })
                     }
-                    className="bg-gray-50 dark:bg-black/20 border-border text-foreground"
+                    className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground"
                   />
                 </div>
                 <div className="lg:col-span-2 space-y-2">
@@ -747,7 +747,7 @@ function QuoteForm({
                     value={ligne.unite}
                     onValueChange={(v: UnitePrestation) => updateLigne(ligne.id, { unite: v })}
                   >
-                    <SelectTrigger className="bg-gray-50 dark:bg-black/20 border-border text-foreground">
+                    <SelectTrigger className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -769,12 +769,12 @@ function QuoteForm({
                     onChange={(e) =>
                       updateLigne(ligne.id, { puHT: parseFloat(e.target.value) || 0 })
                     }
-                    className="bg-gray-50 dark:bg-black/20 border-border text-foreground"
+                    className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground"
                   />
                 </div>
                 <div className="lg:col-span-1 space-y-2">
                   <Label className="text-foreground">Total HT</Label>
-                  <div className="h-10 px-3 flex items-center rounded-md border border-border bg-black/30 text-sm font-medium">
+                  <div className="h-10 px-3 flex items-center rounded-md border border-border bg-[#080d1a]/30 text-sm font-medium">
                     {lineTotal.toFixed(2)} €
                   </div>
                 </div>
@@ -821,7 +821,7 @@ function QuoteForm({
                       })
                     }
                   >
-                    <SelectTrigger className="bg-gray-50 dark:bg-black/20 border-border text-foreground">
+                    <SelectTrigger className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -856,7 +856,7 @@ function QuoteForm({
                 })
               }
               rows={3}
-              className="bg-gray-50 dark:bg-black/20 border-border text-foreground"
+              className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground"
             />
           </div>
           <div className="space-y-2">
@@ -871,7 +871,7 @@ function QuoteForm({
                 })
               }
               rows={2}
-              className="bg-gray-50 dark:bg-black/20 border-border text-foreground"
+              className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground"
             />
           </div>
         </CardContent>
@@ -887,7 +887,7 @@ function QuoteForm({
             onChange={(e) => setDraft({ ...draft, notes: e.target.value })}
             rows={5}
             placeholder="Conditions générales, remarques…"
-            className="bg-gray-50 dark:bg-black/20 border-border text-foreground"
+            className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground"
           />
         </CardContent>
       </Card>

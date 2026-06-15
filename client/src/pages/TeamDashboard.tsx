@@ -59,7 +59,7 @@ export default function TeamDashboard() {
           >
             <AppTopBar />
 
-            <header className="bg-white/80 dark:bg-black/20 backdrop-blur-xl border-b border-border dark:border-gray-600 px-6 py-4 lg:rounded-tl-3xl">
+            <header className="bg-white/80 dark:bg-[#080d1a]/20 backdrop-blur-xl border-b border-border dark:border-gray-600 px-6 py-4 lg:rounded-tl-3xl">
               <div className="flex items-center justify-between">
                 <div>
                   <h1 className="text-2xl font-bold text-foreground dark:text-white">

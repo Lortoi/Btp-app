@@ -63,7 +63,7 @@ export default function ClientsPage() {
                       value={newClient.name}
                       onChange={(e) => setNewClient({ ...newClient, name: e.target.value })}
                       placeholder="Nom du client"
-                      className="bg-gray-50 dark:bg-black/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
+                      className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
                     />
                   </div>
                   <div>
@@ -73,7 +73,7 @@ export default function ClientsPage() {
                       value={newClient.email}
                       onChange={(e) => setNewClient({ ...newClient, email: e.target.value })}
                       placeholder="email@example.com"
-                      className="bg-gray-50 dark:bg-black/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
+                      className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
                     />
                   </div>
                   <div>
@@ -83,7 +83,7 @@ export default function ClientsPage() {
                       value={newClient.phone}
                       onChange={(e) => setNewClient({ ...newClient, phone: e.target.value })}
                       placeholder="06 12 34 56 78"
-                      className="bg-gray-50 dark:bg-black/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
+                      className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
                     />
                   </div>
                   <div className="flex justify-end gap-2">
@@ -196,7 +196,7 @@ export default function ClientsPage() {
                           className="w-full h-full object-cover"
                         />
                         {chantier.images.length > 1 && (
-                          <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-sm text-foreground px-2 py-1 rounded text-xs flex items-center gap-1">
+                          <div className="absolute top-2 right-2 bg-[#080d1a]/60 backdrop-blur-sm text-foreground px-2 py-1 rounded text-xs flex items-center gap-1">
                             <ImageIcon className="h-3 w-3" />
                             {chantier.images.length}
                           </div>

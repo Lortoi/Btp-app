@@ -50,7 +50,7 @@ export function LiquidGlassCard({
       )}
       style={{ borderRadius }}
     >
-      <div className="absolute inset-0 bg-black/10 pointer-events-none" />
+      <div className="absolute inset-0 bg-[#080d1a]/10 pointer-events-none" />
       <div className="relative z-10">{children}</div>
     </div>
   );

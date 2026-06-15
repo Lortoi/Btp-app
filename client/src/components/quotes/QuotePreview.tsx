@@ -10,7 +10,7 @@ export function QuotePreview({ draft, totals }: QuotePreviewProps) {
   const totalMap = new Map(totals.ligneTotals.map((x) => [x.id, x.totalHT]))
 
   return (
-    <div className="rounded-2xl border border-border bg-black/25 backdrop-blur-xl shadow-2xl overflow-hidden text-sm text-foreground ring-1 ring-white/5">
+    <div className="rounded-2xl border border-border bg-[#080d1a]/25 backdrop-blur-xl shadow-2xl overflow-hidden text-sm text-foreground ring-1 ring-white/5">
       {/* En-tête entreprise — même langage que les cartes dashboard */}
       <div className="relative px-6 py-5 flex gap-6 items-start border-b border-border">
         <div
@@ -67,7 +67,7 @@ export function QuotePreview({ draft, totals }: QuotePreviewProps) {
           </div>
         </div>
 
-        <div className="rounded-xl border border-border bg-black/25 backdrop-blur-sm p-4 shadow-inner">
+        <div className="rounded-xl border border-border bg-[#080d1a]/25 backdrop-blur-sm p-4 shadow-inner">
           <div className="text-xs font-semibold text-[hsl(var(--ring))] uppercase tracking-wider mb-2">
             Client
           </div>
@@ -83,7 +83,7 @@ export function QuotePreview({ draft, totals }: QuotePreviewProps) {
           )}
         </div>
 
-        <div className="overflow-x-auto rounded-xl border border-border bg-black/20">
+        <div className="overflow-x-auto rounded-xl border border-border bg-[#080d1a]/20">
           <table className="w-full text-xs">
             <thead>
               <tr className="bg-primary/90 text-primary-foreground border-b border-border">
@@ -120,7 +120,7 @@ export function QuotePreview({ draft, totals }: QuotePreviewProps) {
         </div>
 
         <div className="flex justify-end">
-          <div className="w-full max-w-xs space-y-2 text-sm rounded-xl border border-border bg-black/30 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-xs space-y-2 text-sm rounded-xl border border-border bg-[#080d1a]/30 p-4 backdrop-blur-sm">
             <div className="flex justify-between gap-4">
               <span className="text-secondary">Total HT</span>
               <span className="font-medium tabular-nums text-white">{totals.totalHT.toFixed(2)} €</span>
@@ -140,7 +140,7 @@ export function QuotePreview({ draft, totals }: QuotePreviewProps) {
           </div>
         </div>
 
-        <div className="rounded-xl border border-border bg-black/20 p-4 backdrop-blur-sm">
+        <div className="rounded-xl border border-border bg-[#080d1a]/20 p-4 backdrop-blur-sm">
           <div className="text-xs font-semibold text-[hsl(var(--ring))] uppercase tracking-wider mb-2">
             Assurance décennale
           </div>
@@ -176,7 +176,7 @@ export function QuotePreview({ draft, totals }: QuotePreviewProps) {
         </div>
 
         {draft.notes.trim() && (
-          <div className="rounded-xl border border-border bg-black/25 p-4 text-xs text-subtitle whitespace-pre-line backdrop-blur-sm">
+          <div className="rounded-xl border border-border bg-[#080d1a]/25 p-4 text-xs text-subtitle whitespace-pre-line backdrop-blur-sm">
             <div className="font-semibold text-[hsl(var(--ring))] mb-1">Notes</div>
             {draft.notes}
           </div>

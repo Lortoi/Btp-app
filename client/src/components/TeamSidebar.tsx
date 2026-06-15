@@ -42,13 +42,13 @@ export default function TeamSidebar() {
         <div
           aria-hidden
           onClick={closeMobile}
-          className="lg:hidden fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
+          className="lg:hidden fixed inset-0 z-40 bg-[#080d1a]/50 backdrop-blur-sm"
         />
       )}
 
       <div
         className={cn(
-          "fixed left-0 top-0 h-screen bg-white/90 dark:bg-black/20 backdrop-blur-xl border-r border-border dark:border-gray-600 transition-all duration-300 ease-in-out flex flex-col z-50 rounded-r-3xl",
+          "fixed left-0 top-0 h-screen bg-white/90 dark:bg-[#080d1a]/20 backdrop-blur-xl border-r border-border dark:border-gray-600 transition-all duration-300 ease-in-out flex flex-col z-50 rounded-r-3xl",
           collapsed ? "w-16" : "w-64 max-w-[80vw]",
           isMobileOpen ? "translate-x-0" : "-translate-x-full",
           "lg:translate-x-0",

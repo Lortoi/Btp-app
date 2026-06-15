@@ -99,14 +99,14 @@ export function ConnectEmailDialog({
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="vous@entreprise.fr"
-              className="bg-gray-50 dark:bg-black/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
+              className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
             />
           </div>
 
           <div className="space-y-2">
             <Label className="text-foreground">Fournisseur</Label>
             <Select value={provider} onValueChange={(v) => setProvider(v as EmailProvider)}>
-              <SelectTrigger className="bg-gray-50 dark:bg-black/20 border-border text-foreground">
+              <SelectTrigger className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="bg-white dark:bg-gray-800 border border-border text-foreground">

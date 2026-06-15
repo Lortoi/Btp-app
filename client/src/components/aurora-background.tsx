@@ -72,7 +72,7 @@ const AuroraBackground: React.FC<AuroraBackgroundProps> = ({
 
       aria-label={ariaLabel}
 
-      className={`relative flex flex-col w-screen h-screen items-center justify-center bg-black text-slate-50 overflow-hidden ${className}`}
+      className={`relative flex flex-col w-screen h-screen items-center justify-center bg-[#080d1a] text-slate-50 overflow-hidden ${className}`}
 
     >
 

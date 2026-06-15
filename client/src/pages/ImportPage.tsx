@@ -489,7 +489,7 @@ export default function ImportPage() {
               {recentImports.slice(0, 5).map((item) => (
                 <div
                   key={item.id}
-                  className="rounded-lg border border-border bg-white/50 dark:bg-black/20 p-3 space-y-2"
+                  className="rounded-lg border border-border bg-white/50 dark:bg-[#080d1a]/20 p-3 space-y-2"
                 >
                   <div className="flex items-center justify-between gap-2">
                     <div className="flex items-center gap-2 min-w-0 flex-1">

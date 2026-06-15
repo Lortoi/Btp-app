@@ -144,7 +144,7 @@ export function CRMPipeline() {
                     {items.map((p) => (
                       <div
                         key={p.id}
-                        className={`rounded-lg border border-border bg-gray-50 dark:bg-black/25 backdrop-blur-sm p-3 text-foreground ${
+                        className={`rounded-lg border border-border bg-gray-50 dark:bg-[#080d1a]/25 backdrop-blur-sm p-3 text-foreground ${
                           p.priorite === "haute" ? "border-l-[3px] border-l-[#F5A623]" : ""
                         }`}
                       >

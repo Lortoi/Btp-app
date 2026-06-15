@@ -136,7 +136,7 @@ function formatPeriodeCourte(debutIso: string, finIso: string): string {
 function mockStatutBadgeClass(statut: MockStatutChantier): string {
   switch (statut) {
     case 'En cours':
-      return 'bg-[#e8702a]/15 text-[#e8702a] rounded-full border-transparent';
+      return 'bg-[#e8702a]/20 text-[#e8702a] rounded-full border border-[#e8702a]/30';
     case 'Planifié':
       return 'bg-blue-500/15 text-blue-400 rounded-full border-transparent';
     case 'Terminé':
@@ -240,23 +240,26 @@ export default function ProjectsPage() {
 
   return (
     <PageWrapper>
-      <header className="bg-white/80 dark:bg-black/20 backdrop-blur-xl border-b border-gray-200 dark:border-white/10 px-6 py-4 rounded-tl-3xl">
+      <header className="bg-white/80 dark:bg-[#080d1a]/20 backdrop-blur-xl border-b border-gray-200 dark:border-white/10 px-6 py-4 rounded-tl-3xl">
         <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between w-full max-w-full">
           <div>
-            <h1 className="text-2xl font-bold text-foreground">
+            <h1
+              className="text-2xl text-white font-bold tracking-tight"
+              style={{ letterSpacing: '-0.03em' }}
+            >
               Mes Chantiers
             </h1>
           </div>
           <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
             <Link href="/dashboard/clients" className="w-full sm:w-auto">
-              <Button variant="outline" className="w-full text-foreground border-gray-300 dark:border-white/20 hover:bg-white/5">
+              <Button className="w-full bg-white/5 border border-white/10 hover:bg-white/10 rounded-xl text-white">
                 <User className="h-4 w-4 mr-2" />
                 Clients
               </Button>
             </Link>
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
-                <Button className="w-full sm:w-auto bg-gray-100 dark:bg-white/20 backdrop-blur-md text-foreground border border-border hover:bg-gray-200 dark:hover:bg-white/30">
+                <Button className="w-full sm:w-auto bg-[#e8702a] hover:bg-[#d2611f] text-white rounded-xl hover:shadow-lg hover:shadow-[#e8702a]/20 border-0">
                   <Plus className="h-4 w-4 mr-2" />
                   Ajouter un Chantier
                 </Button>
@@ -272,7 +275,7 @@ export default function ProjectsPage() {
                       value={newChantier.nom}
                       onChange={(e) => setNewChantier({ ...newChantier, nom: e.target.value })}
                       placeholder="Ex: Rénovation salle de bain"
-                      className="bg-gray-50 dark:bg-black/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
+                      className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
                     />
                   </div>
 
@@ -283,10 +286,10 @@ export default function ProjectsPage() {
                         value={newChantier.clientId}
                         onValueChange={(value) => setNewChantier({ ...newChantier, clientId: value })}
                       >
-                        <SelectTrigger className="bg-gray-50 dark:bg-black/20 backdrop-blur-md border-border text-foreground">
+                        <SelectTrigger className="bg-gray-50 dark:bg-[#080d1a]/20 backdrop-blur-md border-border text-foreground">
                           <SelectValue placeholder="Sélectionner un client" />
                         </SelectTrigger>
-                        <SelectContent className="bg-white dark:bg-black/20 backdrop-blur-xl border border-border text-foreground">
+                        <SelectContent className="bg-white dark:bg-[#080d1a]/20 backdrop-blur-xl border border-border text-foreground">
                           {clients.map((client) => (
                             <SelectItem key={client.id} value={client.id} className="text-foreground">
                               {client.name}
@@ -312,7 +315,7 @@ export default function ProjectsPage() {
                         type="date"
                         value={newChantier.dateDebut}
                         onChange={(e) => setNewChantier({ ...newChantier, dateDebut: e.target.value })}
-                        className="bg-gray-50 dark:bg-black/20 backdrop-blur-md border-border text-foreground"
+                        className="bg-gray-50 dark:bg-[#080d1a]/20 backdrop-blur-md border-border text-foreground"
                       />
                     </div>
                     <div>
@@ -321,7 +324,7 @@ export default function ProjectsPage() {
                         value={newChantier.duree}
                         onChange={(e) => setNewChantier({ ...newChantier, duree: e.target.value })}
                         placeholder="Ex: 2 semaines"
-                        className="bg-gray-50 dark:bg-black/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
+                        className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground placeholder:text-gray-400 dark:placeholder:text-white/50"
                       />
                     </div>
                   </div>
@@ -391,40 +394,40 @@ export default function ProjectsPage() {
 
       <main className="flex-1 p-6 space-y-6 overflow-x-hidden w-full max-w-full">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-full">
-          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full">
+          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full border-l-4 border-[#e8702a] bg-gradient-to-br from-[#e8702a]/8 to-transparent">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Chantiers</CardTitle>
-              <Building className="h-4 w-4 text-subtitle" />
+              <Building className="h-4 w-4 text-[#e8702a]" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{kpiMock.total}</div>
+              <div className="text-3xl font-bold text-white">{kpiMock.total}</div>
               <p className="text-xs text-subtitle">total</p>
             </CardContent>
           </Card>
-          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full">
+          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full border-l-4 border-[#7c3aed] bg-gradient-to-br from-[#7c3aed]/8 to-transparent">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">En cours</CardTitle>
-              <HardHat className="h-4 w-4 text-subtitle" />
+              <HardHat className="h-4 w-4 text-[#7c3aed]" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{kpiMock.enCours}</div>
+              <div className="text-3xl font-bold text-white">{kpiMock.enCours}</div>
               <p className="text-xs text-subtitle">chantiers actifs</p>
             </CardContent>
           </Card>
-          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full">
+          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full border-l-4 border-[#3b82f6] bg-gradient-to-br from-[#3b82f6]/8 to-transparent">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Planifiés</CardTitle>
-              <ClipboardList className="h-4 w-4 text-subtitle" />
+              <ClipboardList className="h-4 w-4 text-[#3b82f6]" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{kpiMock.planifie}</div>
+              <div className="text-3xl font-bold text-white">{kpiMock.planifie}</div>
               <p className="text-xs text-subtitle">à démarrer</p>
             </CardContent>
           </Card>
         </div>
 
         <div>
-          <h2 className="text-sm font-semibold text-subtitle mb-3">Aperçu chantiers</h2>
+          <h2 className="text-white/40 text-xs uppercase tracking-widest mb-3">Aperçu chantiers</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-full">
             {mockChantiers.map((c) => (
               <Card
@@ -443,23 +446,23 @@ export default function ProjectsPage() {
                 <CardContent className="space-y-3 flex-1 flex flex-col">
                   <div className="space-y-2 text-sm">
                     <div className="flex items-center gap-2 text-foreground">
-                      <User className="h-4 w-4 shrink-0 text-secondary" aria-hidden />
+                      <User className="h-4 w-4 shrink-0 text-white/40" aria-hidden />
                       <span>{c.client}</span>
                     </div>
                     <div className="flex items-center gap-2 text-foreground">
-                      <Hammer className="h-4 w-4 shrink-0 text-secondary" aria-hidden />
+                      <Hammer className="h-4 w-4 shrink-0 text-white/40" aria-hidden />
                       <span>{c.typeTravaux}</span>
                     </div>
                     <div className="flex items-center gap-2 text-foreground">
-                      <MapPin className="h-4 w-4 shrink-0 text-secondary" aria-hidden />
+                      <MapPin className="h-4 w-4 shrink-0 text-white/40" aria-hidden />
                       <span>{c.localisation}</span>
                     </div>
                     <div className="flex items-center gap-2 text-foreground">
-                      <Calendar className="h-4 w-4 shrink-0 text-secondary" aria-hidden />
+                      <Calendar className="h-4 w-4 shrink-0 text-white/40" aria-hidden />
                       <span>{formatPeriodeCourte(c.dateDebut, c.dateFin)}</span>
                     </div>
                   </div>
-                  <p className="text-lg font-bold text-[#F5A623]">{formatMontantEUR(c.montant)}</p>
+                  <p className="text-lg font-bold text-[#e8702a]">{formatMontantEUR(c.montant)}</p>
                   <div className="space-y-1">
                     <div className="flex justify-end">
                       <span className="text-xs text-secondary">{c.avancement}% réalisé</span>
@@ -506,7 +509,7 @@ export default function ProjectsPage() {
                         className="w-full h-full object-cover"
                       />
                       {chantier.images.length > 1 && (
-                        <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-sm text-white px-2 py-1 rounded text-xs flex items-center gap-1">
+                        <div className="absolute top-2 right-2 bg-[#080d1a]/60 backdrop-blur-sm text-white px-2 py-1 rounded text-xs flex items-center gap-1">
                           <ImageIcon className="h-3 w-3" />
                           {chantier.images.length}
                         </div>

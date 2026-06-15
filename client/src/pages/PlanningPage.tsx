@@ -484,7 +484,7 @@ export default function PlanningPage() {
       <main className="flex-1 p-4 space-y-4 overflow-x-hidden w-full max-w-full">
 
         {/* ── Contrôles ────────────────────────────────────────── */}
-        <div className="bg-[#0d0d0d] border border-white/[0.06] rounded-2xl px-4 py-3">
+        <div className="bg-[#0a1628] border border-white/[0.06] rounded-2xl px-4 py-3">
           <div className="flex flex-wrap items-center gap-3 justify-between">
             <div className="flex items-center gap-2">
               <button
@@ -496,21 +496,21 @@ export default function PlanningPage() {
               <select
                 value={month}
                 onChange={(e) => setMonthYear(Number(e.target.value), year)}
-                className="bg-[#0f0f0f] border border-white/10 rounded-xl px-4 py-2 text-sm text-white outline-none hover:border-white/20 transition-colors appearance-none cursor-pointer"
+                className="bg-[#0c1a30] border border-white/10 rounded-xl px-4 py-2 text-sm text-white outline-none hover:border-white/20 transition-colors appearance-none cursor-pointer"
                 aria-label="Mois"
               >
                 {monthNames.map((mName, idx) => (
-                  <option key={mName} value={idx} className="bg-[#0f0f0f]">{mName}</option>
+                  <option key={mName} value={idx} className="bg-[#0c1a30]">{mName}</option>
                 ))}
               </select>
               <select
                 value={year}
                 onChange={(e) => setMonthYear(month, Number(e.target.value))}
-                className="bg-[#0f0f0f] border border-white/10 rounded-xl px-4 py-2 text-sm text-white outline-none hover:border-white/20 transition-colors appearance-none cursor-pointer"
+                className="bg-[#0c1a30] border border-white/10 rounded-xl px-4 py-2 text-sm text-white outline-none hover:border-white/20 transition-colors appearance-none cursor-pointer"
                 aria-label="Année"
               >
                 {Array.from({ length: 11 }, (_, i) => year - 5 + i).map((y) => (
-                  <option key={y} value={y} className="bg-[#0f0f0f]">{y}</option>
+                  <option key={y} value={y} className="bg-[#0c1a30]">{y}</option>
                 ))}
               </select>
               <button
@@ -530,7 +530,7 @@ export default function PlanningPage() {
         </div>
 
         {/* ── CALENDRIER UNIQUE (mobile + desktop) ──────────────── */}
-        <div className="w-full bg-[#0d0d0d] border border-white/[0.06] rounded-2xl overflow-hidden">
+        <div className="w-full bg-[#0a1628] border border-white/[0.06] rounded-2xl overflow-hidden">
           <div className="p-2 md:p-5">
 
             {/* En-têtes jours */}
@@ -661,7 +661,7 @@ export default function PlanningPage() {
               return (
                 <div
                   key={chantier.id}
-                  className="bg-[#0f0f0f] rounded-xl border border-white/[0.06] p-4"
+                  className="bg-[#0c1a30] rounded-xl border border-white/[0.06] p-4"
                   style={{ borderLeft: `4px solid ${chantier.couleur}` }}
                 >
                   <div className="flex items-start justify-between gap-2">
@@ -681,7 +681,7 @@ export default function PlanningPage() {
         </div>
 
         <Dialog open={isNewEventOpen} onOpenChange={setIsNewEventOpen}>
-          <DialogContent className="bg-black/30 backdrop-blur-xl border border-border text-foreground rounded-2xl">
+          <DialogContent className="bg-[#080d1a]/30 backdrop-blur-xl border border-border text-foreground rounded-2xl">
             <DialogHeader>
               <DialogTitle className="text-foreground">Nouveau rendez-vous</DialogTitle>
             </DialogHeader>
@@ -705,7 +705,7 @@ export default function PlanningPage() {
                       setSelectedDate(next)
                       setCurrentDate(next)
                     }}
-                    className="bg-gray-50 dark:bg-black/20 border-border text-foreground"
+                    className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground"
                   />
                   <Button
                     type="button"
@@ -737,7 +737,7 @@ export default function PlanningPage() {
                     type="time"
                     value={newEventTime}
                     onChange={(e) => setNewEventTime(e.target.value)}
-                    className="bg-gray-50 dark:bg-black/20 border-border text-foreground"
+                    className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground"
                   />
                   <div className="grid grid-rows-2 gap-1">
                     <Button
@@ -768,7 +768,7 @@ export default function PlanningPage() {
                   type="text"
                   value={newEventTitle}
                   onChange={(e) => setNewEventTitle(e.target.value)}
-                  className="bg-gray-50 dark:bg-black/20 border-border text-foreground"
+                  className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground"
                 />
               </div>
             </div>
@@ -823,7 +823,7 @@ export default function PlanningPage() {
                     return (
                       <div
                         key={chantier.id}
-                        className="p-3 rounded-lg bg-black/20 border border-border"
+                        className="p-3 rounded-lg bg-[#080d1a]/20 border border-border"
                       >
                         <div className="flex items-start justify-between">
                           <div className="flex-1">

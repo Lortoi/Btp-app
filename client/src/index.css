@@ -10,34 +10,34 @@
   --elevate-1: rgba(232, 112, 42, 0.06);
   --elevate-2: rgba(232, 112, 42, 0.12);
 
-  --background: 0 0% 3%;
+  --background: 222 54% 7%;
   --foreground: 0 0% 100%;
-  --border: 0 0% 11%;
-  --card: 0 0% 6%;
+  --border: 222 30% 16%;
+  --card: 222 54% 10%;
   --card-foreground: 0 0% 100%;
-  --card-border: 0 0% 11%;
-  --sidebar: 0 0% 3%;
+  --card-border: 222 30% 16%;
+  --sidebar: 222 54% 7%;
   --sidebar-foreground: 0 0% 100%;
-  --sidebar-border: 0 0% 11%;
+  --sidebar-border: 222 30% 14%;
   --sidebar-primary: 20 81% 54%;
   --sidebar-primary-foreground: 0 0% 4%;
-  --sidebar-accent: 0 0% 10%;
+  --sidebar-accent: 222 40% 14%;
   --sidebar-accent-foreground: 0 0% 100%;
   --sidebar-ring: 20 81% 54%;
-  --popover: 0 0% 7%;
+  --popover: 222 54% 8%;
   --popover-foreground: 0 0% 100%;
-  --popover-border: 0 0% 100%;
+  --popover-border: 222 30% 16%;
   --primary: 20 81% 54%;
   --primary-foreground: 0 0% 4%;
-  --secondary: 0 0% 10%;
+  --secondary: 222 40% 14%;
   --secondary-foreground: 0 0% 100%;
-  --muted: 0 0% 10%;
+  --muted: 222 40% 14%;
   --muted-foreground: 0 0% 53%;
-  --accent: 0 0% 12%;
+  --accent: 222 40% 16%;
   --accent-foreground: 0 0% 100%;
   --destructive: 0 72% 45%;
   --destructive-foreground: 0 0% 100%;
-  --input: 0 0% 15%;
+  --input: 222 40% 18%;
   --ring: 20 81% 54%;
   --chart-1: 20 81% 54%;
   --chart-2: 0 0% 70%;
@@ -73,34 +73,34 @@
   --elevate-1: rgba(232, 112, 42, 0.06);
   --elevate-2: rgba(232, 112, 42, 0.12);
 
-  --background: 0 0% 3%;
+  --background: 222 54% 7%;
   --foreground: 0 0% 100%;
-  --border: 0 0% 11%;
-  --card: 0 0% 6%;
+  --border: 222 30% 16%;
+  --card: 222 54% 10%;
   --card-foreground: 0 0% 100%;
-  --card-border: 0 0% 11%;
-  --sidebar: 0 0% 3%;
+  --card-border: 222 30% 16%;
+  --sidebar: 222 54% 7%;
   --sidebar-foreground: 0 0% 100%;
-  --sidebar-border: 0 0% 11%;
+  --sidebar-border: 222 30% 14%;
   --sidebar-primary: 20 81% 54%;
   --sidebar-primary-foreground: 0 0% 4%;
-  --sidebar-accent: 0 0% 10%;
+  --sidebar-accent: 222 40% 14%;
   --sidebar-accent-foreground: 0 0% 100%;
   --sidebar-ring: 20 81% 54%;
-  --popover: 0 0% 7%;
+  --popover: 222 54% 8%;
   --popover-foreground: 0 0% 100%;
-  --popover-border: 0 0% 11%;
+  --popover-border: 222 30% 16%;
   --primary: 20 81% 54%;
   --primary-foreground: 0 0% 4%;
-  --secondary: 0 0% 10%;
+  --secondary: 222 40% 14%;
   --secondary-foreground: 0 0% 100%;
-  --muted: 0 0% 10%;
+  --muted: 222 40% 14%;
   --muted-foreground: 0 0% 53%;
-  --accent: 0 0% 12%;
+  --accent: 222 40% 16%;
   --accent-foreground: 0 0% 100%;
   --destructive: 0 72% 45%;
   --destructive-foreground: 0 0% 100%;
-  --input: 0 0% 15%;
+  --input: 222 40% 18%;
   --ring: 20 81% 54%;
 }
 
@@ -114,7 +114,7 @@
   }
 
   body {
-    @apply font-sans antialiased bg-[#080808] text-white;
+    @apply font-sans antialiased bg-[#080d1a] text-white;
   }
 }
 
@@ -165,7 +165,7 @@
   }
 
   .surface-card {
-    @apply bg-[#0f0f0f] border border-white/[0.08] hover:border-white/20 rounded-2xl text-white transition-colors shadow-[0_0_0_1px_rgba(255,255,255,0.05)];
+    @apply bg-[#0a1628] border border-white/[0.08] hover:border-white/20 rounded-2xl text-white transition-colors shadow-[0_0_0_1px_rgba(255,255,255,0.05)];
   }
 
   .surface-glass {
@@ -173,7 +173,7 @@
   }
 
   .surface-header {
-    @apply bg-[#080808]/90 border-b border-white/[0.08] text-white;
+    @apply bg-[#060e1f]/90 border-b border-white/[0.06] text-white;
   }
 
   .shadow-glow-sm {
@@ -219,7 +219,7 @@
 
   /* ——— Accent violet réservé aux fonctionnalités IA ——— */
   .ai-surface-card {
-    @apply bg-[#111111] border border-ai/30 rounded-2xl text-white shadow-ai-glow-sm;
+    @apply bg-[#0e1e36] border border-ai/30 rounded-2xl text-white shadow-ai-glow-sm;
   }
 
   .ai-surface-glass {
@@ -328,4 +328,65 @@ html.reduce-motion *::after {
   animation-iteration-count: 1 !important;
   transition-duration: 0.05s !important;
   scroll-behavior: auto !important;
+}
+
+/* ——— Recharts Brush styling ——— */
+.recharts-brush-traveller rect {
+  fill: #e8702a !important;
+  rx: 6px !important;
+  ry: 6px !important;
+  width: 12px !important;
+}
+
+.recharts-brush-slide {
+  fill: rgba(232, 112, 42, 0.15) !important;
+}
+
+.recharts-brush-texts text {
+  display: none !important;
+}
+
+/* ——— CA Timeline range input ——— */
+.ca-timeline-range {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+}
+
+.ca-timeline-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #7c3aed;
+  box-shadow: 0 0 10px #7c3aed, 0 0 20px rgba(124, 58, 237, 0.4);
+  cursor: grab;
+  border: none;
+  margin-top: -5px;
+}
+
+.ca-timeline-range::-webkit-slider-thumb:active {
+  cursor: grabbing;
+  box-shadow: 0 0 14px #7c3aed, 0 0 28px rgba(124, 58, 237, 0.5);
+}
+
+.ca-timeline-range::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #7c3aed;
+  box-shadow: 0 0 10px #7c3aed, 0 0 20px rgba(124, 58, 237, 0.4);
+  cursor: grab;
+  border: none;
+}
+
+.ca-timeline-range::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 9999px;
+}
+
+.ca-timeline-range::-moz-range-track {
+  height: 4px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.1);
 }

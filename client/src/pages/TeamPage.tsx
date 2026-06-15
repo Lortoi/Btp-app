@@ -75,9 +75,9 @@ function initialsFromNom(nom: string): string {
 function statutBadgeClass(statut: MembreStatut): string {
   switch (statut) {
     case 'Disponible':
-      return 'bg-green-500/15 text-green-400 rounded-full border-transparent';
+      return 'bg-[#22c55e]/20 text-[#22c55e] rounded-full border border-[#22c55e]/30';
     case 'En chantier':
-      return 'bg-[#e8702a]/15 text-[#e8702a] rounded-full border-transparent';
+      return 'bg-[#7c3aed]/20 text-[#7c3aed] rounded-full border border-[#7c3aed]/30';
     case 'Absent':
       return 'bg-red-500/15 text-red-400 rounded-full border-transparent';
     default:
@@ -196,13 +196,16 @@ export default function TeamPage() {
       <header className="surface-header backdrop-blur-sm px-6 py-4 rounded-tl-3xl">
         <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between w-full max-w-full">
           <div>
-            <h1 className="text-2xl font-bold text-foreground">
+            <h1
+              className="text-2xl text-white font-bold tracking-tight"
+              style={{ letterSpacing: '-0.03em' }}
+            >
               Gestion de l'Équipe
             </h1>
           </div>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-              <Button className="w-full md:w-auto bg-gray-100 dark:bg-white/20 backdrop-blur-md text-foreground border border-border hover:bg-gray-200 dark:hover:bg-white/30">
+              <Button className="w-full md:w-auto bg-[#e8702a] hover:bg-[#d2611f] text-white rounded-xl hover:shadow-lg hover:shadow-[#e8702a]/20 border-0">
                 <Plus className="h-4 w-4 mr-2" />
                 Ajouter un Membre
               </Button>
@@ -218,17 +221,17 @@ export default function TeamPage() {
                     id="name"
                     value={newMember.name}
                     onChange={(e) => setNewMember(prev => ({ ...prev, name: e.target.value }))}
-                    className="bg-gray-50 dark:bg-black/20 border-border text-foreground"
+                    className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground"
                     placeholder="Jean Dupont"
                   />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="role" className="text-foreground">Rôle</Label>
                   <Select value={newMember.role} onValueChange={(value) => setNewMember(prev => ({ ...prev, role: value }))}>
-                    <SelectTrigger className="w-full bg-gray-50 dark:bg-black/20 border-border text-foreground">
+                    <SelectTrigger className="w-full bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground">
                       <SelectValue placeholder="Sélectionner un rôle" />
                     </SelectTrigger>
-                    <SelectContent className="bg-white dark:bg-black/30 backdrop-blur-lg border border-border text-foreground">
+                    <SelectContent className="bg-white dark:bg-[#080d1a]/30 backdrop-blur-lg border border-border text-foreground">
                       <SelectItem value="Chef de chantier">Chef de chantier</SelectItem>
                       <SelectItem value="Ouvrier">Ouvrier</SelectItem>
                       <SelectItem value="Commercial">Commercial</SelectItem>
@@ -244,7 +247,7 @@ export default function TeamPage() {
                     type="email"
                     value={newMember.email}
                     onChange={(e) => setNewMember(prev => ({ ...prev, email: e.target.value }))}
-                    className="bg-gray-50 dark:bg-black/20 border-border text-foreground"
+                    className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground"
                     placeholder="jean.dupont@planchais.fr"
                   />
                 </div>
@@ -254,7 +257,7 @@ export default function TeamPage() {
                     id="phone"
                     value={newMember.phone}
                     onChange={(e) => setNewMember(prev => ({ ...prev, phone: e.target.value }))}
-                    className="bg-gray-50 dark:bg-black/20 border-border text-foreground"
+                    className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground"
                     placeholder="06 12 34 56 78"
                   />
                 </div>
@@ -264,7 +267,7 @@ export default function TeamPage() {
                     id="login_code"
                     value={newMember.login_code}
                     onChange={(e) => setNewMember(prev => ({ ...prev, login_code: e.target.value }))}
-                    className="bg-gray-50 dark:bg-black/20 border-border text-foreground font-mono"
+                    className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground font-mono"
                     placeholder="Entrez le code de connexion"
                     maxLength={10}
                     required
@@ -284,33 +287,33 @@ export default function TeamPage() {
 
       <main className="flex-1 p-6 space-y-6 overflow-x-hidden w-full max-w-full">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-full">
-          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full">
+          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full border-l-4 border-[#e8702a] bg-gradient-to-br from-[#e8702a]/8 to-transparent">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Membres</CardTitle>
-              <Users className="h-4 w-4 text-subtitle" />
+              <Users className="h-4 w-4 text-[#e8702a]" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{kpiStats.total} membres</div>
+              <div className="text-3xl font-bold text-white">{kpiStats.total}</div>
               <p className="text-xs text-subtitle">total</p>
             </CardContent>
           </Card>
-          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full">
+          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full border-l-4 border-[#7c3aed] bg-gradient-to-br from-[#7c3aed]/8 to-transparent">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">En chantier</CardTitle>
-              <HardHat className="h-4 w-4 text-subtitle" />
+              <HardHat className="h-4 w-4 text-[#7c3aed]" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{kpiStats.enChantier} en chantier</div>
+              <div className="text-3xl font-bold text-white">{kpiStats.enChantier}</div>
               <p className="text-xs text-subtitle">sur le terrain</p>
             </CardContent>
           </Card>
-          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full">
+          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full border-l-4 border-[#22c55e] bg-gradient-to-br from-[#22c55e]/8 to-transparent">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Disponibles</CardTitle>
-              <Check className="h-4 w-4 text-subtitle" />
+              <Check className="h-4 w-4 text-[#22c55e]" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{kpiStats.disponibles} disponibles</div>
+              <div className="text-3xl font-bold text-white">{kpiStats.disponibles}</div>
               <p className="text-xs text-subtitle">prêts à affecter</p>
             </CardContent>
           </Card>
@@ -352,11 +355,11 @@ export default function TeamPage() {
                   </CardHeader>
                   <CardContent className="space-y-4 flex-1 flex flex-col">
                     <div className="flex items-center gap-2 text-sm text-foreground">
-                      <Phone className="h-4 w-4 shrink-0 text-secondary" aria-hidden />
+                      <Phone className="h-4 w-4 shrink-0 text-white/40" aria-hidden />
                       <span>{m.telephone}</span>
                     </div>
                     <div>
-                      <p className="text-xs font-semibold text-secondary uppercase tracking-wide mb-2">
+                      <p className="text-white/40 text-xs uppercase tracking-widest mb-2">
                         Chantiers assignés
                       </p>
                       {m.chantiers.length > 0 ? (
@@ -364,7 +367,7 @@ export default function TeamPage() {
                           {m.chantiers.map((c) => (
                             <span
                               key={c}
-                              className="inline-block text-xs px-2 py-1 rounded-md bg-gray-100 dark:bg-white/10 text-foreground border border-border"
+                              className="inline-block text-xs px-2 py-1 rounded-lg bg-white/5 border border-white/10 text-white/70"
                             >
                               {c}
                             </span>
@@ -395,7 +398,7 @@ export default function TeamPage() {
                   {members.map((member) => (
                     <div
                       key={member.id}
-                      className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800/50 backdrop-blur-md border border-border rounded-lg hover:bg-black/30 transition-colors"
+                      className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800/50 backdrop-blur-md border border-border rounded-lg hover:bg-[#080d1a]/30 transition-colors"
                     >
                       <div className="flex items-center gap-4 flex-1">
                         <div className="w-12 h-12 rounded-full bg-gray-100 dark:bg-white/10 backdrop-blur-md flex items-center justify-center">
@@ -464,7 +467,7 @@ export default function TeamPage() {
                     id="edit-name"
                     value={editingMember.name}
                     onChange={(e) => setEditingMember(prev => prev ? { ...prev, name: e.target.value } : null)}
-                    className="bg-gray-50 dark:bg-black/20 border-border text-foreground"
+                    className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground"
                   />
                 </div>
                 <div className="space-y-2">
@@ -473,10 +476,10 @@ export default function TeamPage() {
                     value={editingMember.role} 
                     onValueChange={(value) => setEditingMember(prev => prev ? { ...prev, role: value } : null)}
                   >
-                    <SelectTrigger className="w-full bg-gray-50 dark:bg-black/20 border-border text-foreground">
+                    <SelectTrigger className="w-full bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-white dark:bg-black/30 backdrop-blur-lg border border-border text-foreground">
+                    <SelectContent className="bg-white dark:bg-[#080d1a]/30 backdrop-blur-lg border border-border text-foreground">
                       <SelectItem value="Chef de chantier">Chef de chantier</SelectItem>
                       <SelectItem value="Ouvrier">Ouvrier</SelectItem>
                       <SelectItem value="Commercial">Commercial</SelectItem>
@@ -492,7 +495,7 @@ export default function TeamPage() {
                     type="email"
                     value={editingMember.email}
                     onChange={(e) => setEditingMember(prev => prev ? { ...prev, email: e.target.value } : null)}
-                    className="bg-gray-50 dark:bg-black/20 border-border text-foreground"
+                    className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground"
                   />
                 </div>
                 <div className="space-y-2">
@@ -501,7 +504,7 @@ export default function TeamPage() {
                     id="edit-phone"
                     value={editingMember.phone || ''}
                     onChange={(e) => setEditingMember(prev => prev ? { ...prev, phone: e.target.value } : null)}
-                    className="bg-gray-50 dark:bg-black/20 border-border text-foreground"
+                    className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground"
                   />
                 </div>
                 <div className="space-y-2">
@@ -510,7 +513,7 @@ export default function TeamPage() {
                     id="edit-login_code"
                     value={editingMember.login_code}
                     onChange={(e) => setEditingMember(prev => prev ? { ...prev, login_code: e.target.value } : null)}
-                    className="bg-gray-50 dark:bg-black/20 border-border text-foreground font-mono"
+                    className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground font-mono"
                     maxLength={10}
                   />
                 </div>
@@ -520,10 +523,10 @@ export default function TeamPage() {
                     value={editingMember.status} 
                     onValueChange={(value) => setEditingMember(prev => prev ? { ...prev, status: value as 'actif' | 'inactif' } : null)}
                   >
-                    <SelectTrigger className="w-full bg-gray-50 dark:bg-black/20 border-border text-foreground">
+                    <SelectTrigger className="w-full bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-white dark:bg-black/30 backdrop-blur-lg border border-border text-foreground">
+                    <SelectContent className="bg-white dark:bg-[#080d1a]/30 backdrop-blur-lg border border-border text-foreground">
                       <SelectItem value="actif">Actif</SelectItem>
                       <SelectItem value="inactif">Inactif</SelectItem>
                     </SelectContent>
@@ -554,7 +557,7 @@ export default function TeamPage() {
               <Input
                 value={inviteLink || ''}
                 readOnly
-                className="bg-gray-50 dark:bg-black/20 border-border text-foreground font-mono text-sm"
+                className="bg-gray-50 dark:bg-[#080d1a]/20 border-border text-foreground font-mono text-sm"
               />
               <Button
                 onClick={() => {

@@ -150,16 +150,16 @@ const ORANGE = "#e8702a"
 type CaPeriod = "1 an" | "6 mois" | "3 mois" | "1 mois"
 
 const caData = [
-  { mois: "Juin", ca: 14200 },
-  { mois: "Juil", ca: 15800 },
-  { mois: "Août", ca: 17100 },
-  { mois: "Sept", ca: 18500 },
-  { mois: "Oct", ca: 19800 },
-  { mois: "Nov", ca: 20900 },
-  { mois: "Déc", ca: 22000 },
-  { mois: "Jan", ca: 28500 },
-  { mois: "Fév", ca: 31000 },
-  { mois: "Mar", ca: 38500 },
+  { mois: "Juin", ca: 12400 },
+  { mois: "Juil", ca: 10800 },
+  { mois: "Août", ca: 9200 },
+  { mois: "Sept", ca: 15600 },
+  { mois: "Oct", ca: 19300 },
+  { mois: "Nov", ca: 22700 },
+  { mois: "Déc", ca: 18900 },
+  { mois: "Jan", ca: 24500 },
+  { mois: "Fév", ca: 29800 },
+  { mois: "Mar", ca: 35200 },
   { mois: "Avr", ca: 43600 },
   { mois: "Mai", ca: 51600 },
 ]
@@ -171,6 +171,19 @@ const PERIOD_POINTS: Record<CaPeriod, number> = {
   "6 mois": 6,
   "3 mois": 3,
   "1 mois": 1,
+}
+
+const PERIOD_TO_SLIDER: Record<CaPeriod, number> = {
+  "1 an":   0,
+  "6 mois": 6,
+  "3 mois": 9,
+  "1 mois": 11,
+}
+
+function sliderIndexToPeriod(idx: number): CaPeriod | null {
+  const entry = (Object.entries(PERIOD_TO_SLIDER) as Array<[CaPeriod, number]>)
+    .find(([, v]) => v === idx)
+  return entry ? entry[0] : null
 }
 
 function sumCa(data: typeof caData) {
@@ -190,6 +203,47 @@ function formatGrowth(current: number, previous: number) {
   const pct = ((current - previous) / previous) * 100
   const sign = pct >= 0 ? "+" : ""
   return `${sign}${pct.toFixed(1).replace(".", ",")}%`
+}
+
+const MOIS_LABEL_FULL: Record<string, string> = {
+  Juin: "15 Juin 2025",
+  Juil: "15 Juillet 2025",
+  Août: "15 Août 2025",
+  Sept: "15 Septembre 2025",
+  Oct: "15 Octobre 2025",
+  Nov: "15 Novembre 2025",
+  Déc: "15 Décembre 2025",
+  Jan: "15 Janvier 2026",
+  Fév: "15 Février 2026",
+  Mar: "15 Mars 2026",
+  Avr: "15 Avril 2026",
+  Mai: "15 Mai 2026",
+}
+
+function getCaVariation(index: number, data: typeof caData) {
+  if (index <= 0) {
+    return { text: "—", color: "rgba(255,255,255,0.5)" }
+  }
+  const current = data[index]?.ca ?? 0
+  const previous = data[index - 1]?.ca ?? 0
+  if (current === previous) {
+    return { text: "—", color: "rgba(255,255,255,0.5)" }
+  }
+  const pct = ((current - previous) / previous) * 100
+  const formatted = `${pct >= 0 ? "+" : ""}${pct.toFixed(1).replace(".", ",")}%`
+  if (current > previous) {
+    return { text: `↑ ${formatted}`, color: "#22c55e" }
+  }
+  return { text: `↓ ${formatted}`, color: "#ef4444" }
+}
+
+function getColor(index: number, total: number) {
+  if (total <= 1) return "rgb(232,112,42)"
+  const ratio = index / (total - 1)
+  const r = Math.round(232 + (124 - 232) * ratio)
+  const g = Math.round(112 + (58 - 112) * ratio)
+  const b = Math.round(42 + (237 - 42) * ratio)
+  return `rgb(${r},${g},${b})`
 }
 
 function getCaPeriodView(period: CaPeriod) {
@@ -300,7 +354,7 @@ function MiniTooltip({
   if (!active || !payload?.length) return null
   const v = payload[0]?.value ?? 0
   return (
-    <div className="rounded-xl border border-white/10 bg-[#1a1a1a] px-3 py-2 text-sm shadow-lg">
+    <div className="rounded-xl border border-white/10 bg-[#0f1f3d] px-3 py-2 text-sm shadow-lg">
       {label ? <p className="text-white/50 text-xs mb-0.5">{label}</p> : null}
       <p className="text-white font-semibold">
         {euro ? formatEuro(v) : v.toLocaleString("fr-FR")}
@@ -312,15 +366,17 @@ function MiniTooltip({
 const axisTick = { fill: "#888888", fontSize: 12 }
 const gridStroke = "rgba(255,255,255,0.08)"
 const cardBase =
-  "bg-[#0d0d0d] border border-white/[0.06] rounded-2xl hover:border-white/15 transition-all duration-200"
+  "bg-[#0a1628] border border-white/[0.06] rounded-2xl hover:border-white/15 transition-all duration-200"
 
 // Overview Tab Component
 function OverviewTab() {
   const [, setLocation] = useLocation()
   const { chantiers } = useChantiers()
   const [period, setPeriod] = useState<CaPeriod>("6 mois")
+  const [sliderIndex, setSliderIndex] = useState(PERIOD_TO_SLIDER["6 mois"])
 
-  const { displayedCaData, headlineValue, subtitle } = getCaPeriodView(period)
+  const { headlineValue, subtitle } = getCaPeriodView(period)
+  const displayedCaData = caData.slice(sliderIndex)
 
   const recentChantiers = useMemo(
     () =>
@@ -390,7 +446,10 @@ function OverviewTab() {
                 <button
                   key={p}
                   type="button"
-                  onClick={() => setPeriod(p)}
+                  onClick={() => {
+                    setPeriod(p)
+                    setSliderIndex(PERIOD_TO_SLIDER[p])
+                  }}
                   className={`rounded-full px-3 py-1 text-xs transition-colors ${
                     period === p
                       ? "bg-[#e8702a]/15 text-[#e8702a]"
@@ -403,34 +462,123 @@ function OverviewTab() {
             </div>
           </div>
 
-          <div className="mt-4 -mx-1" style={{ height: 240 }}>
+          <div className="mt-4 -mx-1" style={{ height: 260 }}>
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={displayedCaData} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
                 <defs>
+                  <linearGradient id="strokeGradient" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stopColor="#e8702a" />
+                    <stop offset="100%" stopColor="#7c3aed" />
+                  </linearGradient>
                   <linearGradient id="caGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor={ORANGE} stopOpacity={0.3} />
-                    <stop offset="100%" stopColor={ORANGE} stopOpacity={0} />
+                    <stop offset="0%" stopColor="#e8702a" stopOpacity={0.3} />
+                    <stop offset="100%" stopColor="#7c3aed" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid stroke={gridStroke} strokeDasharray="3 3" vertical={false} />
-                <XAxis dataKey="mois" axisLine={false} tickLine={false} tick={axisTick} />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                <XAxis
+                  dataKey="mois"
+                  tick={{ fill: 'rgba(255,255,255,0.5)', fontSize: 12 }}
+                  stroke="transparent"
+                  tickLine={{ stroke: 'rgba(255,255,255,0.15)', strokeWidth: 1 }}
+                  axisLine={{ stroke: 'rgba(255,255,255,0.08)' }}
+                />
                 <YAxis
                   axisLine={false}
                   tickLine={false}
-                  tick={axisTick}
+                  tick={{ fill: 'rgba(255,255,255,0.5)', fontSize: 12 }}
+                  stroke="transparent"
                   tickFormatter={(v) => `${Math.round(v / 1000)}k`}
                   width={44}
                 />
-                <Tooltip content={<MiniTooltip euro />} />
+                <Tooltip
+                  content={({ active, payload, label }) => {
+                    if (active && payload && payload.length) {
+                      const index = displayedCaData.findIndex((d) => d.mois === label)
+                      const safeIndex = index >= 0 ? index : 0
+                      const amountColor = getColor(safeIndex, displayedCaData.length)
+                      const variation = getCaVariation(safeIndex, displayedCaData)
+                      return (
+                        <div style={{
+                          backgroundColor: 'rgba(10,22,40,0.95)',
+                          border: '1px solid rgba(255,255,255,0.1)',
+                          borderRadius: '12px',
+                          padding: '12px 16px',
+                          backdropFilter: 'blur(10px)',
+                        }}>
+                          <p style={{
+                            color: 'white',
+                            fontSize: '16px',
+                            fontWeight: '700',
+                            marginBottom: '4px',
+                          }}>{MOIS_LABEL_FULL[String(label)] || label}</p>
+                          <p style={{
+                            color: variation.color,
+                            fontSize: '13px',
+                            fontWeight: '600',
+                            marginBottom: '6px',
+                          }}>{variation.text}</p>
+                          <p style={{
+                            color: amountColor,
+                            fontSize: '20px',
+                            fontWeight: '800',
+                          }}>
+                            {Number(payload[0]?.value ?? 0).toLocaleString('fr-FR')} €
+                          </p>
+                        </div>
+                      )
+                    }
+                    return null
+                  }}
+                />
                 <Area
                   type="monotone"
                   dataKey="ca"
-                  stroke={ORANGE}
-                  strokeWidth={2}
+                  stroke="url(#strokeGradient)"
+                  strokeWidth={2.5}
                   fill="url(#caGradient)"
+                  dot={false}
+                  activeDot={{
+                    r: 6,
+                    fill: '#7c3aed',
+                    stroke: 'rgba(124,58,237,0.4)',
+                    strokeWidth: 8,
+                  }}
                 />
               </AreaChart>
             </ResponsiveContainer>
+          </div>
+
+          {/* Timeline — input range natif */}
+          <div className="mt-3 px-1">
+            <div className="relative">
+              <input
+                type="range"
+                min={0}
+                max={caData.length - 1}
+                value={sliderIndex}
+                onChange={(e) => {
+                  const idx = Number(e.target.value)
+                  setSliderIndex(idx)
+                  const snapped = sliderIndexToPeriod(idx)
+                  if (snapped) setPeriod(snapped)
+                }}
+                className="ca-timeline-range w-full cursor-pointer"
+                style={{
+                  height: '4px',
+                  background: `linear-gradient(to right, #e8702a ${(sliderIndex / (caData.length - 1)) * 100}%, rgba(255,255,255,0.1) ${(sliderIndex / (caData.length - 1)) * 100}%)`,
+                  borderRadius: '9999px',
+                  outline: 'none',
+                  appearance: 'none',
+                  WebkitAppearance: 'none',
+                }}
+              />
+            </div>
+            <div className="flex justify-between mt-2">
+              {caData.map((d) => (
+                <span key={d.mois} className="text-[10px] text-white/25">{d.mois}</span>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -448,7 +596,7 @@ function OverviewTab() {
                 <Tooltip
                   cursor={{ fill: "rgba(255,255,255,0.04)" }}
                   contentStyle={{
-                    background: "#1a1a1a",
+                    background: "#0f1f3d",
                     border: "1px solid rgba(255,255,255,0.10)",
                     borderRadius: "12px",
                     fontSize: "12px",
@@ -499,7 +647,7 @@ function OverviewTab() {
                   borderLeft: `4px solid ${accent.border}`,
                   background: `linear-gradient(135deg, ${accent.from} 0%, transparent 70%)`,
                 }}
-                className="fade-up bg-[#0d0d0d] border border-white/[0.08] rounded-2xl p-4 cursor-pointer hover:border-white/20 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+                className="fade-up bg-[#0a1628] border border-white/[0.08] rounded-2xl p-4 cursor-pointer hover:border-white/20 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
               >
                 <p className="text-white/40 text-xs uppercase tracking-widest">{kpi.label}</p>
                 <p className="text-3xl font-bold text-white mt-1" style={{ letterSpacing: "-0.02em" }}>

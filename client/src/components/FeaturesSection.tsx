@@ -9,37 +9,37 @@ export default function FeaturesSection() {
       icon: <FileText className="h-8 w-8 text-subtitle" />,
       title: "Générateur de Devis",
       description: "Créez des devis professionnels en quelques clics. Templates personnalisables pour piscines, paysage, menuiserie et plus.",
-      color: "bg-black/20 backdrop-blur-md border border-border",
+      color: "bg-[#080d1a]/20 backdrop-blur-md border border-border",
     },
     {
       icon: <Wand2 className="h-8 w-8 text-subtitle" />,
       title: "Visualisation IA",
       description: "Uploadez une photo du terrain, sélectionnez votre projet et l'IA génère un rendu professionnel pour impressionner vos clients.",
-      color: "bg-black/20 backdrop-blur-md border border-border",
+      color: "bg-[#080d1a]/20 backdrop-blur-md border border-border",
     },
     {
       icon: <Users className="h-8 w-8 text-subtitle" />,
       title: "Gestion des Prospects",
       description: "CRM intégré pour suivre vos leads, organiser vos rendez-vous et transformer vos prospects en clients fidèles.",
-      color: "bg-black/20 backdrop-blur-md border border-border",
+      color: "bg-[#080d1a]/20 backdrop-blur-md border border-border",
     },
     {
       icon: <Calendar className="h-8 w-8 text-subtitle" />,
       title: "Planning Chantiers",
       description: "Calendrier intelligent pour planifier vos interventions, suivre l'avancement et respecter vos délais.",
-      color: "bg-black/20 backdrop-blur-md border border-border",
+      color: "bg-[#080d1a]/20 backdrop-blur-md border border-border",
     },
     {
       icon: <Euro className="h-8 w-8 text-subtitle" />,
       title: "Suivi Paiements",
       description: "Facturation automatique, suivi des encaissements et relances clients pour optimiser votre trésorerie.",
-      color: "bg-black/20 backdrop-blur-md border border-border",
+      color: "bg-[#080d1a]/20 backdrop-blur-md border border-border",
     },
     {
       icon: <Camera className="h-8 w-8 text-subtitle" />,
       title: "Portfolio Avant/Après",
       description: "Showcasez vos réalisations avec des portfolios automatiques. Génération PDF pour présenter vos références.",
-      color: "bg-black/20 backdrop-blur-md border border-border",
+      color: "bg-[#080d1a]/20 backdrop-blur-md border border-border",
     },
   ];
 
