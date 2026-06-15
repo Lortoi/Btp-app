@@ -20,6 +20,7 @@ import {
   Copy,
 } from 'lucide-react';
 import { useState, useEffect, useMemo } from 'react';
+import { useCardHover } from '@/hooks/useCardHover';
 import { fetchTeamMembers, createTeamMember, updateTeamMember, deleteTeamMember, type TeamMember } from '@/lib/supabase';
 
 type MembreStatut = 'Disponible' | 'En chantier' | 'Absent';
@@ -72,18 +73,74 @@ function initialsFromNom(nom: string): string {
   return nom.slice(0, 2).toUpperCase();
 }
 
-function statutBadgeClass(statut: MembreStatut): string {
+function statutBadgeStyle(statut: MembreStatut): React.CSSProperties {
+  const base: React.CSSProperties = {
+    borderRadius: '9999px',
+    padding: '2px 10px',
+    fontSize: '12px',
+    fontWeight: 500,
+    whiteSpace: 'nowrap',
+  };
   switch (statut) {
     case 'Disponible':
-      return 'bg-[#22c55e]/20 text-[#22c55e] rounded-full border border-[#22c55e]/30';
+      return {
+        ...base,
+        background: 'rgba(34,197,94,0.15)',
+        color: '#4ade80',
+        border: '1px solid rgba(34,197,94,0.3)',
+      };
     case 'En chantier':
-      return 'bg-[#7c3aed]/20 text-[#7c3aed] rounded-full border border-[#7c3aed]/30';
+      return {
+        ...base,
+        background: 'rgba(124,58,237,0.15)',
+        color: '#a78bfa',
+        border: '1px solid rgba(124,58,237,0.3)',
+      };
     case 'Absent':
-      return 'bg-red-500/15 text-red-400 rounded-full border-transparent';
+      return {
+        ...base,
+        background: 'rgba(239,68,68,0.15)',
+        color: '#f87171',
+        border: '1px solid rgba(239,68,68,0.3)',
+      };
     default:
-      return 'bg-white/10 text-white/50 rounded-full border-transparent';
+      return base;
   }
 }
+
+const CHANTIER_PILL_STYLE: React.CSSProperties = {
+  background: 'rgba(255,255,255,0.06)',
+  border: '1px solid rgba(255,255,255,0.1)',
+  borderRadius: '6px',
+  padding: '2px 8px',
+  fontSize: '12px',
+};
+
+const PROFILE_BUTTON_STYLE: React.CSSProperties = {
+  background: 'linear-gradient(135deg, rgba(124,58,237,0.2), rgba(124,58,237,0.05))',
+  border: '1px solid rgba(124,58,237,0.3)',
+  color: '#a78bfa',
+  borderRadius: '8px',
+  width: '100%',
+  padding: '8px',
+  cursor: 'pointer',
+  transition: 'border-color 0.15s',
+};
+
+const KPI_CARD_STYLES: React.CSSProperties[] = [
+  {
+    borderLeft: '4px solid #3b82f6',
+    background: 'linear-gradient(135deg, rgba(59,130,246,0.08), transparent)',
+  },
+  {
+    borderLeft: '4px solid #7c3aed',
+    background: 'linear-gradient(135deg, rgba(124,58,237,0.08), transparent)',
+  },
+  {
+    borderLeft: '4px solid #22c55e',
+    background: 'linear-gradient(135deg, rgba(34,197,94,0.08), transparent)',
+  },
+];
 
 export default function TeamPage() {
   const [members, setMembers] = useState<TeamMember[]>([]);
@@ -98,6 +155,7 @@ export default function TeamPage() {
     phone: '',
     login_code: ''
   });
+  const { getHoverProps, getHoverStyle } = useCardHover();
 
   const kpiStats = useMemo(() => {
     const enChantier = mockEquipe.filter((m) => m.statut === 'En chantier').length;
@@ -287,30 +345,51 @@ export default function TeamPage() {
 
       <main className="flex-1 p-6 space-y-6 overflow-x-hidden w-full max-w-full">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-full">
-          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full border-l-4 border-[#e8702a] bg-gradient-to-br from-[#e8702a]/8 to-transparent">
+          <Card
+            className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full"
+            {...getHoverProps('kpi_membres')}
+            style={{
+              ...KPI_CARD_STYLES[0],
+              ...getHoverStyle('kpi_membres', '#3b82f6'),
+            }}
+          >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Membres</CardTitle>
-              <Users className="h-4 w-4 text-[#e8702a]" />
+              <Users className="h-4 w-4 text-subtitle" />
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold text-white">{kpiStats.total}</div>
               <p className="text-xs text-subtitle">total</p>
             </CardContent>
           </Card>
-          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full border-l-4 border-[#7c3aed] bg-gradient-to-br from-[#7c3aed]/8 to-transparent">
+          <Card
+            className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full"
+            {...getHoverProps('kpi_en_chantier')}
+            style={{
+              ...KPI_CARD_STYLES[1],
+              ...getHoverStyle('kpi_en_chantier', '#7c3aed'),
+            }}
+          >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">En chantier</CardTitle>
-              <HardHat className="h-4 w-4 text-[#7c3aed]" />
+              <HardHat className="h-4 w-4 text-subtitle" />
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold text-white">{kpiStats.enChantier}</div>
               <p className="text-xs text-subtitle">sur le terrain</p>
             </CardContent>
           </Card>
-          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full border-l-4 border-[#22c55e] bg-gradient-to-br from-[#22c55e]/8 to-transparent">
+          <Card
+            className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full"
+            {...getHoverProps('kpi_disponibles')}
+            style={{
+              ...KPI_CARD_STYLES[2],
+              ...getHoverStyle('kpi_disponibles', '#22c55e'),
+            }}
+          >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Disponibles</CardTitle>
-              <Check className="h-4 w-4 text-[#22c55e]" />
+              <Check className="h-4 w-4 text-subtitle" />
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold text-white">{kpiStats.disponibles}</div>
@@ -319,7 +398,11 @@ export default function TeamPage() {
           </Card>
         </div>
 
-        <Card className="surface-card backdrop-blur-sm text-foreground max-w-full">
+        <Card
+          className="surface-card backdrop-blur-sm text-foreground max-w-full"
+          {...getHoverProps('team_list_wrapper')}
+          style={getHoverStyle('team_list_wrapper', '#3b82f6')}
+        >
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Users className="h-5 w-5 text-subtitle" />
@@ -327,66 +410,64 @@ export default function TeamPage() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-full">
-              {mockEquipe.map((m) => (
+            <div className="grid grid-cols-2 gap-4 w-full max-w-full">
+              {mockEquipe.map((m, index) => (
                 <Card
                   key={m.id}
-                  className="relative bg-gray-50 dark:bg-gray-800/50 backdrop-blur-md border border-border text-foreground overflow-hidden flex flex-col"
+                  className="surface-card backdrop-blur-sm text-foreground overflow-hidden p-4"
+                  {...getHoverProps(`member_${index}`)}
+                  style={getHoverStyle(`member_${index}`, m.couleurAvatar)}
                 >
-                  <Badge
-                    className={`absolute top-3 right-3 border ${statutBadgeClass(m.statut)}`}
-                    variant="outline"
-                  >
-                    {m.statut}
-                  </Badge>
-                  <CardHeader className="pb-2 pr-24">
-                    <div className="flex items-start gap-4">
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex min-w-0 items-center gap-3">
                       <div
-                        className="shrink-0 w-14 h-14 rounded-full flex items-center justify-center text-sm font-bold text-foreground shadow-inner"
-                        style={{ backgroundColor: m.couleurAvatar }}
+                        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white"
+                        style={{
+                          backgroundColor: m.couleurAvatar,
+                          boxShadow: `0 0 0 2px ${m.couleurAvatar}`,
+                        }}
                       >
                         {initialsFromNom(m.nom)}
                       </div>
-                      <div className="min-w-0 pt-0.5">
-                        <p className="font-bold text-foreground leading-tight">{m.nom}</p>
-                        <p className="text-sm text-secondary mt-1">{m.role}</p>
+                      <div className="min-w-0">
+                        <p className="truncate font-bold leading-tight text-foreground">{m.nom}</p>
+                        <p className="truncate text-sm text-secondary">{m.role}</p>
                       </div>
                     </div>
-                  </CardHeader>
-                  <CardContent className="space-y-4 flex-1 flex flex-col">
+                    <span style={statutBadgeStyle(m.statut)}>{m.statut}</span>
+                  </div>
+
+                  <div className="mt-3 space-y-2">
                     <div className="flex items-center gap-2 text-sm text-foreground">
-                      <Phone className="h-4 w-4 shrink-0 text-white/40" aria-hidden />
+                      <Phone className="h-4 w-4 shrink-0 text-subtitle" aria-hidden />
                       <span>{m.telephone}</span>
                     </div>
-                    <div>
-                      <p className="text-white/40 text-xs uppercase tracking-widest mb-2">
-                        Chantiers assignés
-                      </p>
-                      {m.chantiers.length > 0 ? (
-                        <div className="flex flex-wrap gap-2">
-                          {m.chantiers.map((c) => (
-                            <span
-                              key={c}
-                              className="inline-block text-xs px-2 py-1 rounded-lg bg-white/5 border border-white/10 text-white/70"
-                            >
-                              {c}
-                            </span>
-                          ))}
-                        </div>
-                      ) : (
-                        <p className="text-sm text-secondary italic">Aucun chantier assigné</p>
-                      )}
-                    </div>
-                    <div className="pt-2 mt-auto">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        className="w-full text-foreground border-gray-300 dark:border-white/20 hover:bg-white/5"
-                      >
-                        Voir le profil
-                      </Button>
-                    </div>
-                  </CardContent>
+                    {m.chantiers.length > 0 ? (
+                      <div className="flex flex-wrap gap-1.5">
+                        {m.chantiers.map((c) => (
+                          <span key={c} style={CHANTIER_PILL_STYLE}>
+                            {c}
+                          </span>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-xs text-secondary italic">Aucun chantier assigné</p>
+                    )}
+                  </div>
+
+                  <button
+                    type="button"
+                    style={PROFILE_BUTTON_STYLE}
+                    className="mt-3 text-sm font-medium"
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = 'rgba(124,58,237,0.6)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = 'rgba(124,58,237,0.3)';
+                    }}
+                  >
+                    Voir le profil
+                  </button>
                 </Card>
               ))}
             </div>
@@ -395,9 +476,11 @@ export default function TeamPage() {
               <div className="border-t border-border pt-6 space-y-2">
                 <p className="text-sm font-medium text-gray-900 dark:text-subtitle">Membres enregistrés</p>
                 <div className="space-y-2">
-                  {members.map((member) => (
+                  {members.map((member, index) => (
                     <div
                       key={member.id}
+                      {...getHoverProps(`member_registered_${index}`)}
+                      style={getHoverStyle(`member_registered_${index}`, '#3b82f6')}
                       className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800/50 backdrop-blur-md border border-border rounded-lg hover:bg-[#080d1a]/30 transition-colors"
                     >
                       <div className="flex items-center gap-4 flex-1">

@@ -1,4 +1,5 @@
 import { PageWrapper } from "@/components/PageWrapper"
+import { useCardHover } from "@/hooks/useCardHover"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -329,6 +330,7 @@ function StepPhotos({ onNext }: { onNext: () => void }) {
   const photos = useEstimationStore((s) => s.photos)
   const addPhotos = useEstimationStore((s) => s.addPhotos)
   const removePhoto = useEstimationStore((s) => s.removePhoto)
+  const { getHoverProps, getHoverStyle } = useCardHover()
 
   const onDrop = (e: React.DragEvent) => {
     e.preventDefault()
@@ -342,7 +344,11 @@ function StepPhotos({ onNext }: { onNext: () => void }) {
   }
 
   return (
-    <Card className="surface-card backdrop-blur-sm text-foreground">
+    <Card
+      className="surface-card backdrop-blur-sm text-foreground"
+      {...getHoverProps("estimation_photos")}
+      style={getHoverStyle("estimation_photos", "#7c3aed")}
+    >
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Upload className="h-5 w-5 text-subtitle" />
@@ -516,9 +522,14 @@ function StepInfos({
 
   const requiredOk =
     surfaceM2.trim() && typeTravaux && corpsMetier && localisation.trim()
+  const { getHoverProps, getHoverStyle } = useCardHover()
 
   return (
-    <Card className="surface-card backdrop-blur-sm text-foreground">
+    <Card
+      className="surface-card backdrop-blur-sm text-foreground"
+      {...getHoverProps("estimation_infos")}
+      style={getHoverStyle("estimation_infos", "#7c3aed")}
+    >
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Sparkles className="h-5 w-5 text-ai-light" />
@@ -887,10 +898,15 @@ function StepResults({
     const id = useEstimationStore.getState().clientId
     return clients.find((c) => c.id === id)?.name ?? ""
   }, [clients])
+  const { getHoverProps, getHoverStyle } = useCardHover()
 
   if (!results) {
     return (
-      <Card className="surface-card backdrop-blur-sm text-foreground">
+      <Card
+        className="surface-card backdrop-blur-sm text-foreground"
+        {...getHoverProps("estimation_results_empty")}
+        style={getHoverStyle("estimation_results_empty", "#7c3aed")}
+      >
         <CardHeader>
           <CardTitle>Résultats</CardTitle>
         </CardHeader>
@@ -901,7 +917,11 @@ function StepResults({
 
   return (
     <div className="space-y-6">
-      <Card className="surface-card backdrop-blur-sm text-foreground">
+      <Card
+        className="surface-card backdrop-blur-sm text-foreground"
+        {...getHoverProps("estimation_results")}
+        style={getHoverStyle("estimation_results", "#e8702a")}
+      >
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <CheckCircle2 className="h-5 w-5 text-green-400" />

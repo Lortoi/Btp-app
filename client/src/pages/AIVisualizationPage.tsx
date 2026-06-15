@@ -1,4 +1,5 @@
 import { useState, useRef } from "react"
+import { useCardHover } from "@/hooks/useCardHover"
 import { useLocation } from "wouter"
 import { PageWrapper } from "@/components/PageWrapper"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -64,6 +65,7 @@ export default function AIVisualizationPage() {
   const [report, setReport] = useState<ChantierVisionReport | null>(null)
   const [error, setError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const { getHoverProps, getHoverStyle } = useCardHover()
 
   const resolvedWorkLabel = selectedWorkType
     ? workTypeLabel(selectedWorkType, customWorkType)
@@ -275,7 +277,11 @@ export default function AIVisualizationPage() {
       <main className="flex-1 p-6 overflow-x-hidden w-full max-w-full">
         {step === "upload" && (
           <div className="max-w-2xl mx-auto space-y-6">
-            <Card className="ai-surface-card backdrop-blur-sm text-foreground hover-elevate">
+            <Card
+              className="ai-surface-card backdrop-blur-sm text-foreground hover-elevate"
+              {...getHoverProps("ai_upload")}
+              style={getHoverStyle("ai_upload", "#7c3aed")}
+            >
               <CardHeader className="text-center">
                 <div className="w-16 h-16 mx-auto rounded-xl bg-ai/10 backdrop-blur-md border border-ai/30 flex items-center justify-center mb-4">
                   <ImageIcon className="h-8 w-8 text-ai-light" />
@@ -320,7 +326,11 @@ export default function AIVisualizationPage() {
               </div>
             )}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card className="ai-surface-card backdrop-blur-sm text-foreground hover-elevate">
+              <Card
+                className="ai-surface-card backdrop-blur-sm text-foreground hover-elevate"
+                {...getHoverProps("ai_preview")}
+                style={getHoverStyle("ai_preview", "#7c3aed")}
+              >
                 <CardHeader>
                   <CardTitle>Photo du chantier</CardTitle>
                 </CardHeader>
@@ -344,7 +354,11 @@ export default function AIVisualizationPage() {
               </Card>
 
               <div className="space-y-6">
-                <Card className="ai-surface-card backdrop-blur-sm text-foreground hover-elevate">
+                <Card
+                  className="ai-surface-card backdrop-blur-sm text-foreground hover-elevate"
+                  {...getHoverProps("ai_work_types")}
+                  style={getHoverStyle("ai_work_types", "#7c3aed")}
+                >
                   <CardHeader>
                     <CardTitle>Type de travaux</CardTitle>
                     <p className="text-sm text-subtitle">
@@ -352,9 +366,11 @@ export default function AIVisualizationPage() {
                     </p>
                   </CardHeader>
                   <CardContent className="grid grid-cols-1 gap-3">
-                    {CHANTIER_WORK_TYPES.map((type) => (
+                    {CHANTIER_WORK_TYPES.map((type, index) => (
                       <div
                         key={type.id}
+                        {...getHoverProps(`work_type_${index}`)}
+                        style={getHoverStyle(`work_type_${index}`, "#7c3aed")}
                         className={`p-3 rounded-lg border cursor-pointer transition-all text-foreground ${
                           selectedWorkType === type.id
                             ? "border-ai bg-ai/10"
@@ -373,7 +389,11 @@ export default function AIVisualizationPage() {
                 </Card>
 
                 {selectedWorkType === "autre" && (
-                  <Card className="ai-surface-card backdrop-blur-sm text-foreground">
+                  <Card
+                    className="ai-surface-card backdrop-blur-sm text-foreground"
+                    {...getHoverProps("ai_custom_work")}
+                    style={getHoverStyle("ai_custom_work", "#7c3aed")}
+                  >
                     <CardContent className="pt-6">
                       <Label htmlFor="custom-work">Précisez le type de travaux</Label>
                       <Input
@@ -389,7 +409,11 @@ export default function AIVisualizationPage() {
                 )}
 
                 {selectedWorkType && (
-                  <Card className="ai-surface-card backdrop-blur-sm text-foreground hover-elevate">
+                  <Card
+                    className="ai-surface-card backdrop-blur-sm text-foreground hover-elevate"
+                    {...getHoverProps("ai_goal")}
+                    style={getHoverStyle("ai_goal", "#7c3aed")}
+                  >
                     <CardHeader>
                       <CardTitle>Objectif en une phrase</CardTitle>
                       <p className="text-sm text-subtitle">
@@ -427,7 +451,11 @@ export default function AIVisualizationPage() {
 
         {step === "generating" && (
           <div className="max-w-2xl mx-auto space-y-6">
-            <Card className="hover-elevate text-center ai-surface-card backdrop-blur-sm">
+            <Card
+              className="hover-elevate text-center ai-surface-card backdrop-blur-sm"
+              {...getHoverProps("ai_generating")}
+              style={getHoverStyle("ai_generating", "#7c3aed")}
+            >
               <CardHeader>
                 <div className="w-16 h-16 mx-auto rounded-xl bg-ai/10 border border-ai/30 flex items-center justify-center mb-4">
                   <RefreshCw className="h-8 w-8 text-ai-light animate-spin" />
@@ -451,7 +479,11 @@ export default function AIVisualizationPage() {
 
         {step === "result" && uploadedImage && report && (
           <div className="max-w-6xl mx-auto space-y-6">
-            <Card className="ai-surface-card backdrop-blur-sm text-foreground hover-elevate">
+            <Card
+              className="ai-surface-card backdrop-blur-sm text-foreground hover-elevate"
+              {...getHoverProps("ai_results")}
+              style={getHoverStyle("ai_results", "#e8702a")}
+            >
               <CardHeader className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-center gap-3">
                   <CheckCircle className="h-6 w-6 text-ai-light shrink-0" />

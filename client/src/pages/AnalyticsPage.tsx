@@ -1,8 +1,11 @@
 import { PageWrapper } from '@/components/PageWrapper';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BarChart3 } from 'lucide-react';
+import { useCardHover } from '@/hooks/useCardHover';
 
 export default function AnalyticsPage() {
+  const { getHoverProps, getHoverStyle } = useCardHover();
+
   return (
     <PageWrapper>
       <header className="surface-header backdrop-blur-sm px-6 py-4">
@@ -17,7 +20,11 @@ export default function AnalyticsPage() {
       </header>
 
       <main className="flex-1 p-6 flex items-center justify-center overflow-x-hidden w-full max-w-full">
-        <Card className="w-full max-w-md text-center surface-card backdrop-blur-sm text-foreground hover-elevate">
+        <Card
+          className="w-full max-w-md text-center surface-card backdrop-blur-sm text-foreground hover-elevate"
+          {...getHoverProps('analytics_coming_soon')}
+          style={getHoverStyle('analytics_coming_soon', '#7c3aed')}
+        >
           <CardHeader className="pb-4">
             <div className="w-16 h-16 mx-auto rounded-xl bg-[#080d1a]/20 backdrop-blur-md border border-border flex items-center justify-center mb-4">
               <BarChart3 className="h-8 w-8 text-cyan-500" />

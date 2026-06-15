@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar, Building, Clock, User } from 'lucide-react';
 import { useChantiers } from '@/context/ChantiersContext';
 import { useState, useMemo } from 'react';
+import { useCardHover } from '@/hooks/useCardHover';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -341,6 +342,7 @@ export default function PlanningPage() {
   const [newEventTitle, setNewEventTitle] = useState("Rendez-vous")
   const [customEvents, setCustomEvents] = useState<Array<{ id: string; dateKey: string; time: string; title: string }>>([])
   const [editingEventId, setEditingEventId] = useState<string | null>(null)
+  const { getHoverProps, getHoverStyle } = useCardHover();
   
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -484,7 +486,11 @@ export default function PlanningPage() {
       <main className="flex-1 p-4 space-y-4 overflow-x-hidden w-full max-w-full">
 
         {/* ── Contrôles ────────────────────────────────────────── */}
-        <div className="bg-[#0a1628] border border-white/[0.06] rounded-2xl px-4 py-3">
+        <div
+          className="bg-[#0a1628] border border-white/[0.06] rounded-2xl px-4 py-3"
+          {...getHoverProps('planning_toolbar')}
+          style={getHoverStyle('planning_toolbar', '#3b82f6')}
+        >
           <div className="flex flex-wrap items-center gap-3 justify-between">
             <div className="flex items-center gap-2">
               <button
@@ -530,7 +536,11 @@ export default function PlanningPage() {
         </div>
 
         {/* ── CALENDRIER UNIQUE (mobile + desktop) ──────────────── */}
-        <div className="w-full bg-[#0a1628] border border-white/[0.06] rounded-2xl overflow-hidden">
+        <div
+          className="w-full bg-[#0a1628] border border-white/[0.06] rounded-2xl overflow-hidden"
+          {...getHoverProps('planning_calendar')}
+          style={getHoverStyle('planning_calendar', '#3b82f6')}
+        >
           <div className="p-2 md:p-5">
 
             {/* En-têtes jours */}
@@ -554,6 +564,8 @@ export default function PlanningPage() {
                 return (
                   <div
                     key={index}
+                    {...getHoverProps(`planning_day_${index}`)}
+                    style={getHoverStyle(`planning_day_${index}`, '#3b82f6')}
                     className={`min-h-[80px] p-1 md:p-1.5 rounded-lg md:rounded-xl border cursor-pointer transition-colors ${
                       day.isCurrentMonth
                         ? isToday
@@ -797,7 +809,11 @@ export default function PlanningPage() {
 
         {/* Liste des chantiers du mois */}
         {chantiers.length > 0 && (
-          <Card className="surface-card backdrop-blur-sm text-foreground">
+          <Card
+            className="surface-card backdrop-blur-sm text-foreground"
+            {...getHoverProps('planning_chantiers_mois')}
+            style={getHoverStyle('planning_chantiers_mois', '#3b82f6')}
+          >
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
                 <Building className="h-5 w-5" />
@@ -816,13 +832,15 @@ export default function PlanningPage() {
                       (startDate <= new Date(year, month + 1, 0) && endDate >= new Date(year, month, 1))
                     );
                   })
-                  .map(chantier => {
+                  .map((chantier, chantierIndex) => {
                     const startDate = new Date(chantier.dateDebut);
                     const endDate = calculateEndDate(chantier.dateDebut, chantier.duree);
                     
                     return (
                       <div
                         key={chantier.id}
+                        {...getHoverProps(`planning_chantier_${chantierIndex}`)}
+                        style={getHoverStyle(`planning_chantier_${chantierIndex}`, '#f59e0b')}
                         className="p-3 rounded-lg bg-[#080d1a]/20 border border-border"
                       >
                         <div className="flex items-start justify-between">

@@ -19,6 +19,7 @@ import {
   ClipboardList,
 } from 'lucide-react';
 import { useState, useCallback, useEffect, useMemo } from 'react';
+import { useCardHover } from '@/hooks/useCardHover';
 import { Link, useLocation } from 'wouter';
 import { useChantiers, Chantier, Client } from '@/context/ChantiersContext';
 import { Badge } from '@/components/ui/badge';
@@ -158,6 +159,7 @@ export default function ProjectsPage() {
     images: [] as string[]
   });
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
+  const { getHoverProps, getHoverStyle } = useCardHover();
 
   const handleImageUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -394,7 +396,11 @@ export default function ProjectsPage() {
 
       <main className="flex-1 p-6 space-y-6 overflow-x-hidden w-full max-w-full">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-full">
-          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full border-l-4 border-[#e8702a] bg-gradient-to-br from-[#e8702a]/8 to-transparent">
+          <Card
+            className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full border-l-4 border-[#e8702a] bg-gradient-to-br from-[#e8702a]/8 to-transparent"
+            {...getHoverProps('kpi_chantiers')}
+            style={getHoverStyle('kpi_chantiers', '#f59e0b')}
+          >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Chantiers</CardTitle>
               <Building className="h-4 w-4 text-[#e8702a]" />
@@ -404,7 +410,11 @@ export default function ProjectsPage() {
               <p className="text-xs text-subtitle">total</p>
             </CardContent>
           </Card>
-          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full border-l-4 border-[#7c3aed] bg-gradient-to-br from-[#7c3aed]/8 to-transparent">
+          <Card
+            className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full border-l-4 border-[#7c3aed] bg-gradient-to-br from-[#7c3aed]/8 to-transparent"
+            {...getHoverProps('kpi_en_cours')}
+            style={getHoverStyle('kpi_en_cours', '#f59e0b')}
+          >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">En cours</CardTitle>
               <HardHat className="h-4 w-4 text-[#7c3aed]" />
@@ -414,7 +424,11 @@ export default function ProjectsPage() {
               <p className="text-xs text-subtitle">chantiers actifs</p>
             </CardContent>
           </Card>
-          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full border-l-4 border-[#3b82f6] bg-gradient-to-br from-[#3b82f6]/8 to-transparent">
+          <Card
+            className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full border-l-4 border-[#3b82f6] bg-gradient-to-br from-[#3b82f6]/8 to-transparent"
+            {...getHoverProps('kpi_planifies')}
+            style={getHoverStyle('kpi_planifies', '#3b82f6')}
+          >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Planifiés</CardTitle>
               <ClipboardList className="h-4 w-4 text-[#3b82f6]" />
@@ -429,11 +443,15 @@ export default function ProjectsPage() {
         <div>
           <h2 className="text-white/40 text-xs uppercase tracking-widest mb-3">Aperçu chantiers</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-full">
-            {mockChantiers.map((c) => (
+            {mockChantiers.map((c, index) => (
               <Card
                 key={c.id}
                 className="surface-card backdrop-blur-sm text-foreground overflow-hidden flex flex-col border-l-4 shadow-none w-full max-w-full"
-                style={{ borderLeftColor: c.couleur }}
+                {...getHoverProps(`chantier_mock_${index}`)}
+                style={{
+                  borderLeftColor: c.couleur,
+                  ...getHoverStyle(`chantier_mock_${index}`, '#f59e0b'),
+                }}
               >
                 <CardHeader className="pb-2 space-y-0">
                   <div className="flex items-start justify-between gap-2 pr-0">
@@ -496,10 +514,12 @@ export default function ProjectsPage() {
           <div className="space-y-3">
             <h2 className="text-sm font-semibold text-subtitle">Chantiers enregistrés</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-full">
-              {chantiers.map((chantier) => (
+              {chantiers.map((chantier, index) => (
                 <Card
                   key={chantier.id}
-                  className="surface-card backdrop-blur-sm text-foreground hover:shadow-lg transition-shadow cursor-pointer"
+                  className="surface-card backdrop-blur-sm text-foreground"
+                  {...getHoverProps(`chantier_${index}`)}
+                  style={getHoverStyle(`chantier_${index}`, '#f59e0b')}
                 >
                   {chantier.images.length > 0 && (
                     <div className="relative h-48 overflow-hidden rounded-t-lg">

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react"
+import { useCardHover } from "@/hooks/useCardHover"
 import { pdf } from "@react-pdf/renderer"
 import { PageWrapper } from "@/components/PageWrapper"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -313,6 +314,7 @@ function QuoteForm({
   const [iaChantierDesc, setIaChantierDesc] = useState("")
   const [iaLoading, setIaLoading] = useState(false)
   const [iaError, setIaError] = useState<string | null>(null)
+  const { getHoverProps, getHoverStyle } = useCardHover()
 
   const handleGenerateIaPrestations = async () => {
     const description = iaChantierDesc.trim()
@@ -353,7 +355,11 @@ function QuoteForm({
 
   return (
     <div className="space-y-6 pb-8">
-      <Card className="surface-card backdrop-blur-sm text-foreground">
+      <Card
+        className="surface-card backdrop-blur-sm text-foreground"
+        {...getHoverProps("quote_company")}
+        style={getHoverStyle("quote_company", "#7c3aed")}
+      >
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Building2 className="h-5 w-5" />
@@ -548,7 +554,11 @@ function QuoteForm({
         </CardContent>
       </Card>
 
-      <Card className="surface-card backdrop-blur-sm text-foreground">
+      <Card
+        className="surface-card backdrop-blur-sm text-foreground"
+        {...getHoverProps("quote_devis")}
+        style={getHoverStyle("quote_devis", "#22c55e")}
+      >
         <CardHeader>
           <CardTitle>Devis</CardTitle>
         </CardHeader>
@@ -604,7 +614,11 @@ function QuoteForm({
         </CardContent>
       </Card>
 
-      <Card className="surface-card backdrop-blur-sm text-foreground">
+      <Card
+        className="surface-card backdrop-blur-sm text-foreground"
+        {...getHoverProps("quote_client")}
+        style={getHoverStyle("quote_client", "#3b82f6")}
+      >
         <CardHeader>
           <CardTitle>Client</CardTitle>
         </CardHeader>
@@ -660,7 +674,11 @@ function QuoteForm({
         </CardContent>
       </Card>
 
-      <Card className="ai-surface-card backdrop-blur-sm text-foreground">
+      <Card
+        className="ai-surface-card backdrop-blur-sm text-foreground"
+        {...getHoverProps("quote_ia")}
+        style={getHoverStyle("quote_ia", "#7c3aed")}
+      >
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Wand2 className="h-5 w-5 shrink-0 text-ai-light" />
@@ -697,7 +715,11 @@ function QuoteForm({
         </CardContent>
       </Card>
 
-      <Card className="surface-card backdrop-blur-sm text-foreground">
+      <Card
+        className="surface-card backdrop-blur-sm text-foreground"
+        {...getHoverProps("quote_lignes")}
+        style={getHoverStyle("quote_lignes", "#22c55e")}
+      >
         <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-x-6 gap-y-3 space-y-0 p-6 pb-5">
           <CardTitle className="text-xl md:text-2xl tracking-tight">
             Prestations
@@ -797,7 +819,11 @@ function QuoteForm({
         </CardContent>
       </Card>
 
-      <Card className="surface-card backdrop-blur-sm text-foreground">
+      <Card
+        className="surface-card backdrop-blur-sm text-foreground"
+        {...getHoverProps("quote_financier")}
+        style={getHoverStyle("quote_financier", "#e8702a")}
+      >
         <CardHeader>
           <CardTitle>Financier</CardTitle>
         </CardHeader>
@@ -877,7 +903,11 @@ function QuoteForm({
         </CardContent>
       </Card>
 
-      <Card className="surface-card backdrop-blur-sm text-foreground">
+      <Card
+        className="surface-card backdrop-blur-sm text-foreground"
+        {...getHoverProps("quote_notes")}
+        style={getHoverStyle("quote_notes", "#7c3aed")}
+      >
         <CardHeader>
           <CardTitle>Notes</CardTitle>
         </CardHeader>

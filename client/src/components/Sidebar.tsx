@@ -21,9 +21,9 @@ import {
 import AccountDialog from './AccountDialog';
 
 const AI_TOOLS = [
-  { icon: Upload, label: 'Import factures', path: '/dashboard/import', iconColor: '#7c3aed' },
-  { icon: Calculator, label: 'Estimation automatique', path: '/dashboard/estimation', iconColor: '#7c3aed' },
-  { icon: Wand2, label: 'Visualisation IA', path: '/dashboard/ai-visualization', iconColor: '#7c3aed' },
+  { icon: Upload, label: 'Import factures', path: '/dashboard/import', iconColor: '#7c3aed', hoverId: 'import_factures' },
+  { icon: Calculator, label: 'Estimation automatique', path: '/dashboard/estimation', iconColor: '#7c3aed', hoverId: 'estimation_automatique' },
+  { icon: Wand2, label: 'Visualisation IA', path: '/dashboard/ai-visualization', iconColor: '#7c3aed', hoverId: 'visualisation_ia' },
 ] as const;
 
 const NAV_ICON_COLORS: Record<string, string> = {
@@ -45,11 +45,47 @@ interface NavItemProps {
   path: string;
   active: boolean;
   iconColor: string;
+  hoverId: string;
+  hoveredItem: string | null;
+  setHoveredItem: (id: string | null) => void;
   compact?: boolean;
   onNavigate?: () => void;
 }
 
-function NavItem({ icon: Icon, label, path, active, iconColor, compact, onNavigate }: NavItemProps) {
+function getNavItemHoverStyle(
+  hoverId: string,
+  hoveredItem: string | null,
+  active: boolean,
+): React.CSSProperties {
+  if (active) {
+    return { cursor: 'pointer' };
+  }
+
+  const isHovered = hoveredItem === hoverId;
+  return {
+    background: isHovered
+      ? 'linear-gradient(135deg, rgba(124,58,237,0.12), rgba(124,58,237,0.04))'
+      : 'transparent',
+    borderLeft: isHovered ? '2px solid #7c3aed' : '2px solid transparent',
+    transform: isHovered ? 'translateX(4px)' : 'translateX(0)',
+    transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+    borderRadius: '8px',
+    cursor: 'pointer',
+  };
+}
+
+function NavItem({
+  icon: Icon,
+  label,
+  path,
+  active,
+  iconColor,
+  hoverId,
+  hoveredItem,
+  setHoveredItem,
+  compact,
+  onNavigate,
+}: NavItemProps) {
   return (
     <Link href={path} onClick={onNavigate}>
       <span
@@ -58,6 +94,9 @@ function NavItem({ icon: Icon, label, path, active, iconColor, compact, onNaviga
           compact ? 'py-2 px-3 text-sm' : 'h-10 gap-3 rounded-xl px-2',
           active ? 'bg-white/8' : 'hover:bg-white/5',
         )}
+        onMouseEnter={() => setHoveredItem(hoverId)}
+        onMouseLeave={() => setHoveredItem(null)}
+        style={getNavItemHoverStyle(hoverId, hoveredItem, active)}
       >
         <Icon className="h-4 w-4 shrink-0" style={{ color: iconColor }} />
         <span className={cn('truncate', compact ? 'text-sm' : 'text-sm', active ? 'text-white' : 'text-white/60')}>
@@ -112,6 +151,7 @@ function SectionLabel({ children, compact, muted }: { children: React.ReactNode;
 function SidebarContent({ compact, expanded = true, onNavigate }: SidebarContentProps) {
   const [location, setLocation] = useLocation();
   const [aiMenuOpen, setAiMenuOpen] = useState(false);
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const aiMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -126,20 +166,20 @@ function SidebarContent({ compact, expanded = true, onNavigate }: SidebarContent
   }, [aiMenuOpen]);
 
   const menuItems = [
-    { icon: Home, label: "Vue d'ensemble", path: '/dashboard' },
-    { icon: Building, label: 'Mes Chantiers', path: '/dashboard/projects' },
-    { icon: Calendar, label: 'Planning', path: '/dashboard/planning' },
-    { icon: Workflow, label: 'CRM Pipeline', path: '/dashboard/crm' },
-    { icon: FileText, label: 'Générateur de Devis', path: '/dashboard/quotes' },
-    { icon: Wand2, label: 'Visualisation IA', path: '/dashboard/ai-visualization' },
-    { icon: Users, label: 'Équipe', path: '/dashboard/team' },
-    { icon: User, label: 'Clients', path: '/dashboard/clients' },
-    { icon: Upload, label: 'Import factures', path: '/dashboard/import' },
-    { icon: Calculator, label: 'Estimation automatique', path: '/dashboard/estimation' },
+    { icon: Home, label: "Vue d'ensemble", path: '/dashboard', hoverId: 'vue_ensemble' },
+    { icon: Building, label: 'Mes Chantiers', path: '/dashboard/projects', hoverId: 'mes_chantiers' },
+    { icon: Calendar, label: 'Planning', path: '/dashboard/planning', hoverId: 'planning' },
+    { icon: Workflow, label: 'CRM Pipeline', path: '/dashboard/crm', hoverId: 'crm_pipeline' },
+    { icon: FileText, label: 'Générateur de Devis', path: '/dashboard/quotes', hoverId: 'generateur_devis' },
+    { icon: Wand2, label: 'Visualisation IA', path: '/dashboard/ai-visualization', hoverId: 'visualisation_ia' },
+    { icon: Users, label: 'Équipe', path: '/dashboard/team', hoverId: 'equipe' },
+    { icon: User, label: 'Clients', path: '/dashboard/clients', hoverId: 'clients' },
+    { icon: Upload, label: 'Import factures', path: '/dashboard/import', hoverId: 'import_factures' },
+    { icon: Calculator, label: 'Estimation automatique', path: '/dashboard/estimation', hoverId: 'estimation_automatique' },
   ];
 
   const quickActions = [
-    { icon: FileText, label: 'Nouveau Devis', path: '/dashboard/quotes', iconColor: '#e8702a' },
+    { icon: FileText, label: 'Nouveau Devis', path: '/dashboard/quotes', iconColor: '#e8702a', hoverId: 'nouveau_devis' as const },
     { icon: Building, label: 'Ajouter Chantier', path: '/dashboard/projects?openDialog=true', iconColor: '#e8702a' },
   ];
 
@@ -168,6 +208,9 @@ function SidebarContent({ compact, expanded = true, onNavigate }: SidebarContent
             path={item.path}
             active={isActive(item.path)}
             iconColor={NAV_ICON_COLORS[item.path] ?? '#e8702a'}
+            hoverId={item.hoverId}
+            hoveredItem={hoveredItem}
+            setHoveredItem={setHoveredItem}
             compact={compact}
             onNavigate={onNavigate}
           />
@@ -183,6 +226,13 @@ function SidebarContent({ compact, expanded = true, onNavigate }: SidebarContent
               'nav-item flex w-full items-center gap-2.5 rounded-lg text-left transition-colors hover:bg-white/5',
               compact ? 'py-2 px-3 text-sm' : 'h-9 gap-3 rounded-xl px-2',
             )}
+            {...('hoverId' in action && action.hoverId
+              ? {
+                  onMouseEnter: () => setHoveredItem(action.hoverId),
+                  onMouseLeave: () => setHoveredItem(null),
+                  style: getNavItemHoverStyle(action.hoverId, hoveredItem, false),
+                }
+              : {})}
           >
             <action.icon className="h-4 w-4 shrink-0" style={{ color: action.iconColor }} />
             <span className="truncate text-sm text-white/60">{action.label}</span>
@@ -200,6 +250,9 @@ function SidebarContent({ compact, expanded = true, onNavigate }: SidebarContent
             path={tool.path}
             active={isActive(tool.path)}
             iconColor={tool.iconColor}
+            hoverId={tool.hoverId}
+            hoveredItem={hoveredItem}
+            setHoveredItem={setHoveredItem}
             compact={compact}
             onNavigate={onNavigate}
           />
@@ -215,6 +268,9 @@ function SidebarContent({ compact, expanded = true, onNavigate }: SidebarContent
               'flex w-full items-center gap-2.5 rounded-lg border border-violet-500/20 bg-violet-600/10 transition-colors hover:bg-violet-600/20',
               compact ? 'py-2 px-3 text-sm' : 'rounded-xl px-2 py-2',
             )}
+            onMouseEnter={() => setHoveredItem('outils_ia')}
+            onMouseLeave={() => setHoveredItem(null)}
+            style={getNavItemHoverStyle('outils_ia', hoveredItem, false)}
           >
             <Sparkles className="h-4 w-4 shrink-0 text-[#7c3aed]" />
             <span className="text-sm text-[#7c3aed]">Outils IA</span>
@@ -247,6 +303,9 @@ function SidebarContent({ compact, expanded = true, onNavigate }: SidebarContent
               compact ? 'py-2 px-3 text-sm' : 'h-10 gap-3 rounded-xl px-2',
               isActive('/dashboard/settings') ? 'bg-white/8' : 'hover:bg-white/5',
             )}
+            onMouseEnter={() => setHoveredItem('parametres')}
+            onMouseLeave={() => setHoveredItem(null)}
+            style={getNavItemHoverStyle('parametres', hoveredItem, isActive('/dashboard/settings'))}
           >
             <Settings className="h-4 w-4 shrink-0 text-white/40" />
             <span className={cn('text-sm', isActive('/dashboard/settings') ? 'text-white' : 'text-white/60')}>
@@ -262,6 +321,9 @@ function SidebarContent({ compact, expanded = true, onNavigate }: SidebarContent
               'nav-item flex w-full items-center gap-2.5 rounded-lg transition-colors hover:bg-white/5',
               compact ? 'py-2 px-3 text-sm' : 'h-10 gap-3 rounded-xl px-2',
             )}
+            onMouseEnter={() => setHoveredItem('compte')}
+            onMouseLeave={() => setHoveredItem(null)}
+            style={getNavItemHoverStyle('compte', hoveredItem, false)}
           >
             <UserCircle className="h-4 w-4 shrink-0 text-white/40" />
             <span className="text-sm text-white/60">Compte</span>
