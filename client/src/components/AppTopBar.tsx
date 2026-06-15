@@ -350,21 +350,29 @@ export function AppTopBar({ showMobileMenu = true }: AppTopBarProps) {
           type="button"
           onClick={() => setSearchOpen(true)}
           aria-label="Rechercher"
-          className="navbar-search absolute left-1/2 flex h-10 w-10 -translate-x-1/2 items-center justify-center rounded-xl border border-white/10 transition-all duration-200 hover:border-white/20 sm:h-auto sm:w-auto sm:max-w-[calc(100vw-24rem)] sm:py-2.5 lg:max-w-[min(400px,calc(100vw-20rem))]"
+          className="navbar-search absolute left-1/2 -translate-x-1/2 rounded-xl border border-white/10 transition-all duration-200 hover:border-white/20"
           style={{ background: "rgba(255,255,255,0.04)" }}
         >
+          <div className="flex h-10 w-10 items-center justify-center sm:hidden">
+            <Search size={16} className="text-white/40" aria-hidden />
+          </div>
           <div
-            className="flex w-full items-center justify-center sm:relative sm:justify-start"
-            style={{ position: "relative", alignItems: "center" }}
+            className="hidden sm:flex sm:max-w-[calc(100vw-24rem)] lg:max-w-[min(400px,calc(100vw-20rem))]"
+            style={{
+              position: "relative",
+              alignItems: "center",
+              paddingTop: "10px",
+              paddingBottom: "10px",
+            }}
           >
             <Search
               size={16}
-              className="pointer-events-none text-white/40 sm:absolute"
+              className="pointer-events-none absolute text-white/40"
               style={{ left: "10px" }}
               aria-hidden
             />
             <div
-              className="hidden w-full sm:flex"
+              className="flex w-full"
               style={{
                 alignItems: "center",
                 justifyContent: "space-between",
