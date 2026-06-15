@@ -144,7 +144,26 @@ function SearchModal({ open, onClose }: SearchModalProps) {
 }
 
 const iconButtonClass =
-  "rounded-xl border border-white/8 bg-white/5 p-2.5 transition-all hover:bg-white/10"
+  "flex shrink-0 items-center justify-center rounded-xl border border-white/8 bg-white/5 p-0 transition-all hover:bg-white/10"
+
+const iconButtonStyle: React.CSSProperties = {
+  width: "clamp(28px, 8vw, 36px)",
+  height: "clamp(28px, 8vw, 36px)",
+}
+
+const iconGroupStyle: React.CSSProperties = {
+  display: "flex",
+  alignItems: "center",
+  gap: "clamp(4px, 2vw, 12px)",
+}
+
+const headerBarStyle: React.CSSProperties = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  flexWrap: "nowrap",
+  overflow: "hidden",
+}
 
 type AppNotification = {
   id: string
@@ -226,6 +245,7 @@ function NotificationsPopover({ onNavigate }: NotificationsPopoverProps) {
         <button
           type="button"
           className={cn(iconButtonClass, "relative")}
+          style={iconButtonStyle}
           aria-label="Notifications"
           aria-expanded={open}
         >
@@ -343,15 +363,22 @@ export function AppTopBar({ showMobileMenu = true }: AppTopBarProps) {
 
   return (
     <>
-      <div className="surface-header relative sticky top-0 z-30 flex items-center gap-3 px-4 py-3 backdrop-blur-sm">
+      <div
+        className="surface-header relative sticky top-0 z-30 gap-3 px-4 py-3 backdrop-blur-sm"
+        style={headerBarStyle}
+      >
         {showMobileMenu && <MobileMenuButton />}
 
         <button
           type="button"
           onClick={() => setSearchOpen(true)}
           aria-label="Rechercher"
-          className="navbar-search absolute left-1/2 flex w-28 -translate-x-1/2 items-center justify-center rounded-xl border border-white/10 px-3 py-2 transition-all duration-200 hover:border-white/20 sm:w-48 sm:justify-between sm:px-4 sm:py-2.5 md:w-60 lg:w-72"
-          style={{ background: "rgba(255,255,255,0.04)" }}
+          className="navbar-search absolute left-1/2 flex -translate-x-1/2 items-center justify-center rounded-xl border border-white/10 px-3 py-2 transition-all duration-200 hover:border-white/20 sm:justify-between sm:px-4 sm:py-2.5"
+          style={{
+            background: "rgba(255,255,255,0.04)",
+            width: "clamp(120px, 40vw, 400px)",
+            maxWidth: "clamp(120px, 40vw, 400px)",
+          }}
         >
           <div className="flex items-center gap-2">
             <Search size={14} className="text-white/40" />
@@ -364,11 +391,12 @@ export function AppTopBar({ showMobileMenu = true }: AppTopBarProps) {
           </div>
         </button>
 
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto min-w-0 shrink-0" style={iconGroupStyle}>
           <button
             type="button"
             onClick={toggleTheme}
             className={iconButtonClass}
+            style={iconButtonStyle}
             aria-label={isLight ? "Passer en mode sombre" : "Passer en mode clair"}
           >
             {isLight ? (
@@ -379,7 +407,10 @@ export function AppTopBar({ showMobileMenu = true }: AppTopBarProps) {
           </button>
           <Tooltip>
             <TooltipTrigger asChild>
-              <span className="inline-flex">
+              <span
+                className="inline-flex shrink-0 [&>button]:!h-[clamp(28px,8vw,36px)] [&>button]:!w-[clamp(28px,8vw,36px)]"
+                style={iconButtonStyle}
+              >
                 <AIAssistantButton />
               </span>
             </TooltipTrigger>
@@ -392,6 +423,7 @@ export function AppTopBar({ showMobileMenu = true }: AppTopBarProps) {
             type="button"
             onClick={() => setLocation("/dashboard/settings")}
             className={iconButtonClass}
+            style={iconButtonStyle}
             aria-label="Paramètres"
           >
             <Settings className="h-4 w-4 text-white" />
