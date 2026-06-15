@@ -350,17 +350,33 @@ export function AppTopBar({ showMobileMenu = true }: AppTopBarProps) {
           type="button"
           onClick={() => setSearchOpen(true)}
           aria-label="Rechercher"
-          className="navbar-search absolute left-1/2 flex w-72 -translate-x-1/2 items-center justify-between rounded-xl border border-white/10 px-4 py-2.5 transition-all duration-200 hover:border-white/20"
+          className="navbar-search absolute left-1/2 flex w-full max-w-[130px] -translate-x-1/2 rounded-xl border border-white/10 py-2.5 transition-all duration-200 hover:border-white/20 sm:max-w-[400px]"
           style={{ background: "rgba(255,255,255,0.04)" }}
         >
-          <div className="flex items-center gap-2">
-            <Search size={14} className="text-white/40" />
-            <span className="text-sm text-white/30">Rechercher...</span>
-          </div>
-          <div className="flex items-center gap-1 rounded-lg border border-white/10 bg-white/8 px-2 py-1">
-            <span className="text-xs text-white/30">⌘</span>
-            <span className="text-xs text-white/30">+</span>
-            <span className="text-xs text-white/30">K</span>
+          <div style={{ position: "relative", display: "flex", alignItems: "center", width: "100%" }}>
+            <Search
+              size={16}
+              className="pointer-events-none absolute text-white/40"
+              style={{ left: "10px" }}
+              aria-hidden
+            />
+            <div
+              style={{
+                display: "flex",
+                width: "100%",
+                alignItems: "center",
+                justifyContent: "space-between",
+                paddingLeft: "34px",
+                paddingRight: "12px",
+              }}
+            >
+              <span className="truncate text-sm text-white/30">Rechercher...</span>
+              <div className="flex shrink-0 items-center gap-1 rounded-lg border border-white/10 bg-white/8 px-2 py-1">
+                <span className="text-xs text-white/30">⌘</span>
+                <span className="text-xs text-white/30">+</span>
+                <span className="text-xs text-white/30">K</span>
+              </div>
+            </div>
           </div>
         </button>
 
