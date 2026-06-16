@@ -685,8 +685,8 @@ export default function PlanningPage() {
           className="w-full overflow-hidden"
           {...getHoverProps('planning_calendar')}
           style={{
-            borderLeft: "4px solid #7c3aed",
-            background: "linear-gradient(135deg, rgba(124,58,237,0.08), transparent)",
+            borderLeft: "2px solid rgba(124,58,237,0.4)",
+            background: "transparent",
             borderRadius: "12px",
             ...getHoverStyle('planning_calendar', '#3b82f6'),
           }}

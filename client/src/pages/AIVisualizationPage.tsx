@@ -4,7 +4,6 @@ import { useLocation } from "wouter"
 import { PageWrapper } from "@/components/PageWrapper"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -50,6 +49,33 @@ interface UploadedImage {
 
 type Step = "upload" | "configure" | "generating" | "result"
 
+const STEPS: { id: Step; label: string }[] = [
+  { id: "upload", label: "1. Upload" },
+  { id: "configure", label: "2. Configuration" },
+  { id: "generating", label: "3. Génération" },
+  { id: "result", label: "4. Résultat" },
+]
+
+const activeStepStyle: React.CSSProperties = {
+  background: "linear-gradient(135deg, #7c3aed, #6d28d9)",
+  color: "white",
+  border: "none",
+  borderRadius: "20px",
+  padding: "6px 16px",
+  fontSize: "13px",
+  fontWeight: 500,
+}
+
+const inactiveStepStyle: React.CSSProperties = {
+  background: "rgba(124,58,237,0.08)",
+  border: "1px solid rgba(124,58,237,0.2)",
+  borderRadius: "20px",
+  padding: "6px 16px",
+  fontSize: "13px",
+  color: "rgba(255,255,255,0.4)",
+  cursor: "pointer",
+}
+
 function isAcceptedMediaType(type: string): type is AcceptedMediaType {
   return (ACCEPTED_TYPES as readonly string[]).includes(type)
 }
@@ -64,6 +90,7 @@ export default function AIVisualizationPage() {
   const [goalDescription, setGoalDescription] = useState("")
   const [report, setReport] = useState<ChantierVisionReport | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [dropHover, setDropHover] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { getHoverProps, getHoverStyle } = useCardHover()
 
@@ -243,19 +270,6 @@ export default function AIVisualizationPage() {
     setLocation("/dashboard/quotes")
   }
 
-  const stepBadge = (s: Step, label: string) => (
-    <Badge
-      variant={step === s ? "default" : "secondary"}
-      className={
-        step === s
-          ? "bg-ai hover:bg-ai text-white border-ai"
-          : "border-ai/20"
-      }
-    >
-      {label}
-    </Badge>
-  )
-
   return (
     <PageWrapper>
       <header className="surface-header backdrop-blur-sm border-b border-ai/25 px-6 py-4">
@@ -265,11 +279,18 @@ export default function AIVisualizationPage() {
               Visualisation IA
             </h1>
           </div>
-          <div className="flex items-center gap-2 overflow-x-auto whitespace-nowrap max-w-full">
-            {stepBadge("upload", "1. Upload")}
-            {stepBadge("configure", "2. Configuration")}
-            {stepBadge("generating", "3. Génération")}
-            {stepBadge("result", "4. Résultat")}
+          <div
+            className="overflow-x-auto whitespace-nowrap max-w-full"
+            style={{ display: "flex", gap: "8px", marginBottom: "24px" }}
+          >
+            {STEPS.map((s) => (
+              <span
+                key={s.id}
+                style={step === s.id ? activeStepStyle : inactiveStepStyle}
+              >
+                {s.label}
+              </span>
+            ))}
           </div>
         </div>
       </header>
@@ -277,44 +298,132 @@ export default function AIVisualizationPage() {
       <main className="flex-1 p-6 overflow-x-hidden w-full max-w-full">
         {step === "upload" && (
           <div className="max-w-2xl mx-auto space-y-6">
-            <Card
-              className="ai-surface-card backdrop-blur-sm text-foreground hover-elevate"
+            <div
               {...getHoverProps("ai_upload")}
-              style={getHoverStyle("ai_upload", "#7c3aed")}
+              style={{
+                borderLeft: "4px solid #7c3aed",
+                background:
+                  "linear-gradient(135deg, rgba(124,58,237,0.08), transparent)",
+                borderRadius: "16px",
+                padding: "32px",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "24px",
+                ...getHoverStyle("ai_upload", "#7c3aed"),
+              }}
             >
-              <CardHeader className="text-center">
-                <div className="w-16 h-16 mx-auto rounded-xl bg-ai/10 backdrop-blur-md border border-ai/30 flex items-center justify-center mb-4">
-                  <ImageIcon className="h-8 w-8 text-ai-light" />
-                </div>
-                <CardTitle>Uploadez une photo du chantier</CardTitle>
-                <p className="text-subtitle">
+              <div
+                style={{
+                  width: "80px",
+                  height: "80px",
+                  borderRadius: "20px",
+                  background:
+                    "linear-gradient(135deg, rgba(124,58,237,0.2), rgba(124,58,237,0.05))",
+                  border: "1px solid rgba(124,58,237,0.3)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "36px",
+                }}
+              >
+                <ImageIcon style={{ width: 36, height: 36, color: "#a78bfa" }} />
+              </div>
+              <div style={{ textAlign: "center" }}>
+                <h2
+                  style={{
+                    fontSize: "22px",
+                    fontWeight: 700,
+                    color: "var(--foreground)",
+                    margin: 0,
+                  }}
+                >
+                  Uploadez une photo du chantier
+                </h2>
+                <p
+                  style={{
+                    fontSize: "14px",
+                    color: "var(--muted-foreground)",
+                    marginTop: "8px",
+                  }}
+                >
                   Photo claire de l&apos;espace à rénover pour une analyse précise
                 </p>
-              </CardHeader>
-              <CardContent>
-                <div
-                  className="border-2 border-dashed border-ai/30 rounded-lg p-8 text-center hover:border-ai-light/60 transition-colors cursor-pointer bg-ai-muted dark:bg-ai-muted"
-                  onClick={() => fileInputRef.current?.click()}
-                  data-testid="upload-zone"
+              </div>
+              <div
+                onClick={() => fileInputRef.current?.click()}
+                onMouseEnter={() => setDropHover(true)}
+                onMouseLeave={() => setDropHover(false)}
+                data-testid="upload-zone"
+                style={{
+                  width: "100%",
+                  background: dropHover
+                    ? "rgba(124,58,237,0.1)"
+                    : "rgba(124,58,237,0.06)",
+                  border: `2px dashed ${dropHover ? "rgba(124,58,237,0.8)" : "rgba(124,58,237,0.4)"}`,
+                  borderRadius: "14px",
+                  padding: "40px 24px",
+                  textAlign: "center",
+                  cursor: "pointer",
+                  transition: "all 0.2s ease",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: "12px",
+                }}
+              >
+                <Upload style={{ color: "#a78bfa", width: 36, height: 36 }} />
+                <p
+                  style={{
+                    fontSize: "16px",
+                    fontWeight: 500,
+                    margin: 0,
+                    color: "var(--foreground)",
+                  }}
                 >
-                  <Upload className="h-12 w-12 mx-auto text-ai-light mb-4" />
-                  <p className="text-lg font-medium mb-2 text-foreground">
-                    Cliquez pour sélectionner une photo
-                  </p>
-                  <p className="text-sm text-subtitle">
-                    JPG, PNG, WEBP · Max 10 Mo
-                  </p>
-                </div>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/jpeg,image/png,image/webp"
-                  onChange={handleImageUpload}
-                  className="hidden"
-                  data-testid="file-input"
-                />
-              </CardContent>
-            </Card>
+                  Cliquez pour sélectionner une photo
+                </p>
+                <p
+                  style={{
+                    fontSize: "12px",
+                    color: "var(--muted-foreground)",
+                    margin: 0,
+                  }}
+                >
+                  JPG, PNG, WEBP · Max 10 Mo
+                </p>
+              </div>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                onChange={handleImageUpload}
+                className="hidden"
+                data-testid="file-input"
+              />
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                style={{
+                  background: "linear-gradient(135deg, #7c3aed, #6d28d9)",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "10px",
+                  padding: "12px 28px",
+                  cursor: "pointer",
+                  fontWeight: 500,
+                  fontSize: "15px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  marginTop: "8px",
+                  boxShadow: "0 4px 20px rgba(124,58,237,0.3)",
+                }}
+              >
+                <Upload style={{ width: 18, height: 18 }} />
+                Sélectionner une photo
+              </button>
+            </div>
           </div>
         )}
 

@@ -426,6 +426,30 @@ html.light body {
   --tw-bg-opacity: 1;
 }
 
+html.light * [style*="background: rgb(255"],
+html.light * [style*="background-color: rgb(255"],
+html.light * [style*="background: white"],
+html.light * [style*="background: #fff"],
+html.light * [style*="background: #ffffff"],
+html.light * [style*="background-color: white"],
+html.light * [style*="background-color: #fff"],
+html.light * [style*="background-color: #ffffff"] {
+  background-color: hsl(205, 55%, 88%) !important;
+}
+
+html.light .bg-white,
+html.light .bg-background,
+html.light [class*="bg-white"],
+html.light [class*="bg-popover"],
+html.light .surface-card,
+html.light .surface-glass,
+html.light .rounded-2xl:not([style*="background: linear"]):not([style*="rgba"]),
+html.light .rounded-xl:not([style*="background: linear"]):not([style*="rgba"]),
+html.light .rounded-lg:not([style*="background: linear"]):not([style*="rgba"]) {
+  background-color: hsl(205, 55%, 88%) !important;
+  border-color: hsl(205, 40%, 78%) !important;
+}
+
 html.light * {
   color: inherit;
 }
@@ -461,26 +485,26 @@ html.light .text-red-400 { color: #dc2626 !important; }
 html.light input,
 html.light select,
 html.light textarea {
+  background: hsl(205, 50%, 91%) !important;
+  border-color: hsl(205, 40%, 78%) !important;
   color: #0f172a !important;
-  background: #f8faff !important;
-  border-color: rgba(0, 0, 0, 0.12) !important;
 }
 
 html.light .dashboard-layout,
 html.light .dashboard-layout[style*="radial-gradient"] {
-  background: hsl(205, 70%, 85%) !important;
+  background: hsl(205, 65%, 83%) !important;
 }
 
 /* Navbar */
 html.light .surface-header {
-  background: hsl(205, 60%, 90%) !important;
+  background: hsl(205, 58%, 86%) !important;
   border-bottom: 1px solid #e5e7eb !important;
   color: #111827 !important;
 }
 
 html.light .navbar-search {
-  background: #f3f4f6 !important;
-  border-color: #e5e7eb !important;
+  background: hsl(205, 50%, 91%) !important;
+  border-color: hsl(205, 40%, 78%) !important;
 }
 
 html.light .navbar-search span,
@@ -526,7 +550,7 @@ html.light [class*="0a1628"] {
 }
 
 html.light [class*="0a1628"][style*="linear-gradient"] {
-  background: #ffffff !important;
+  background: hsl(205, 55%, 88%) !important;
 }
 
 html.light .text-subtitle,
@@ -551,7 +575,7 @@ html.light .sidebar,
 html.light aside,
 html.light [data-sidebar],
 html.light nav {
-  background: hsl(205, 58%, 87%) !important;
+  background: hsl(205, 55%, 85%) !important;
   border-right: 1px solid hsl(205, 40%, 78%) !important;
 }
 
@@ -574,7 +598,7 @@ html.light .sidebar .nav-item span {
 /* Card graphique CA */
 html.light .chart-card,
 html.light [class*="bg-[#0"] {
-  background: #ffffff !important;
+  background: hsl(205, 55%, 88%) !important;
   border: 1px solid rgba(0, 0, 0, 0.08) !important;
 }
 
