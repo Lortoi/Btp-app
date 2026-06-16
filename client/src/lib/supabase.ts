@@ -429,3 +429,104 @@ export async function createCrmProspect(
   }
 }
 
+// Clients & chantiers (planning)
+export interface ClientRow {
+  id: string;
+  nom: string;
+  email: string | null;
+  telephone: string | null;
+}
+
+export type ChantierStatutDb = 'planifie' | 'en_cours' | 'termine';
+
+export interface ChantierRow {
+  id: string;
+  user_id: string;
+  client_id: string | null;
+  nom: string;
+  date_debut: string | null;
+  date_fin: string | null;
+  couleur: string | null;
+  statut: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ChantierRowWithClient extends ChantierRow {
+  clients: { nom: string } | null;
+}
+
+export interface CreateChantierInput {
+  nom: string;
+  client_id: string;
+  date_debut: string;
+  date_fin: string;
+  couleur: string;
+  statut: ChantierStatutDb;
+}
+
+export async function fetchClients(): Promise<ClientRow[]> {
+  try {
+    const userId = await getCurrentUserId();
+    if (!userId) return [];
+
+    const { data, error } = await supabase
+      .from('clients')
+      .select('id, nom, email, telephone')
+      .eq('user_id', userId)
+      .order('nom', { ascending: true });
+
+    if (error) throw error;
+    return data || [];
+  } catch (error) {
+    console.error('Error fetching clients:', error);
+    return [];
+  }
+}
+
+export async function fetchChantiers(): Promise<ChantierRowWithClient[]> {
+  try {
+    const userId = await getCurrentUserId();
+    if (!userId) return [];
+
+    const { data, error } = await supabase
+      .from('chantiers')
+      .select('*, clients(nom)')
+      .eq('user_id', userId)
+      .order('date_debut', { ascending: true });
+
+    if (error) throw error;
+    return (data || []) as ChantierRowWithClient[];
+  } catch (error) {
+    console.error('Error fetching chantiers:', error);
+    return [];
+  }
+}
+
+export async function createChantier(input: CreateChantierInput): Promise<ChantierRow | null> {
+  try {
+    const userId = await getCurrentUserId();
+    if (!userId) throw new Error('User not authenticated');
+
+    const { data, error } = await supabase
+      .from('chantiers')
+      .insert({
+        user_id: userId,
+        nom: input.nom,
+        client_id: input.client_id,
+        date_debut: input.date_debut,
+        date_fin: input.date_fin,
+        couleur: input.couleur,
+        statut: input.statut,
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.error('Error creating chantier:', error);
+    return null;
+  }
+}
+

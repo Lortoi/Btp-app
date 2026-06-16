@@ -2,12 +2,27 @@ import { PageWrapper } from '@/components/PageWrapper';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar, Building, Clock, User } from 'lucide-react';
 import { useChantiers } from '@/context/ChantiersContext';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import { useCardHover } from '@/hooks/useCardHover';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import {
+  createChantier,
+  fetchChantiers,
+  fetchClients,
+  type ChantierRowWithClient,
+  type ChantierStatutDb,
+  type ClientRow,
+} from "@/lib/supabase"
 
 /** Chantiers fictifs BTP — avril / mai / juin 2026 (données mock, hors composant) */
 interface MockPlanningChantier {
@@ -229,15 +244,48 @@ function isYmdInRange(dayYmd: string, debut: string, fin: string): boolean {
   return dayYmd >= debut && dayYmd <= fin
 }
 
-function getMockChantiersForDay(dayYmd: string): MockPlanningChantier[] {
-  return mockChantiers.filter((c) => isYmdInRange(dayYmd, c.dateDebut, c.dateFin))
-}
 
 function mockChantierOverlapsMonth(c: MockPlanningChantier, month: number, year: number): boolean {
   const monthStart = `${year}-${String(month + 1).padStart(2, "0")}-01`
   const lastDay = new Date(year, month + 1, 0).getDate()
   const monthEnd = `${year}-${String(month + 1).padStart(2, "0")}-${String(lastDay).padStart(2, "0")}`
   return c.dateDebut <= monthEnd && c.dateFin >= monthStart
+}
+
+const PLANNING_STATUTS = ["Planifié", "En cours", "Terminé"] as const
+type PlanningStatutLabel = (typeof PLANNING_STATUTS)[number]
+
+function statutDbToLabel(statut: string): PlanningStatutLabel {
+  if (statut === "en_cours") return "En cours"
+  if (statut === "termine") return "Terminé"
+  return "Planifié"
+}
+
+function statutLabelToDb(statut: PlanningStatutLabel): ChantierStatutDb {
+  if (statut === "En cours") return "en_cours"
+  if (statut === "Terminé") return "termine"
+  return "planifie"
+}
+
+function chantierRowToPlanning(c: ChantierRowWithClient): MockPlanningChantier {
+  return {
+    id: c.id,
+    nom: c.nom,
+    dateDebut: c.date_debut?.slice(0, 10) ?? "",
+    dateFin: c.date_fin?.slice(0, 10) ?? "",
+    couleur: c.couleur ?? "#f59e0b",
+    client: c.clients?.nom ?? "—",
+    statut: statutDbToLabel(c.statut),
+  }
+}
+
+const defaultChantierForm = {
+  nom: "",
+  clientId: "",
+  dateDebut: "",
+  dateFin: "",
+  couleur: "#f59e0b",
+  statut: "Planifié" as PlanningStatutLabel,
 }
 
 function formatLegendPeriod(debut: string, fin: string): string {
@@ -337,6 +385,11 @@ export default function PlanningPage() {
   const { getHoverProps, getHoverStyle } = useCardHover();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [isNewEventOpen, setIsNewEventOpen] = useState(false)
+  const [isChantierModalOpen, setIsChantierModalOpen] = useState(false)
+  const [dbChantiers, setDbChantiers] = useState<MockPlanningChantier[]>([])
+  const [dbClients, setDbClients] = useState<ClientRow[]>([])
+  const [chantierForm, setChantierForm] = useState(defaultChantierForm)
+  const [chantierSubmitting, setChantierSubmitting] = useState(false)
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [datePickerKey, setDatePickerKey] = useState(0)
   const [newEventTime, setNewEventTime] = useState("11:30")
@@ -349,10 +402,65 @@ export default function PlanningPage() {
   
   const days = useMemo(() => getDaysInMonth(year, month), [year, month]);
 
-  const mockForMonth = useMemo(
-    () => mockChantiers.filter((c) => mockChantierOverlapsMonth(c, month, year)),
-    [month, year],
+  const allPlanningChantiers = useMemo(
+    () => [...mockChantiers, ...dbChantiers],
+    [dbChantiers],
   );
+
+  const loadPlanningChantiers = useCallback(async () => {
+    const rows = await fetchChantiers()
+    setDbChantiers(rows.map(chantierRowToPlanning))
+  }, [])
+
+  const loadDbClients = useCallback(async () => {
+    setDbClients(await fetchClients())
+  }, [])
+
+  useEffect(() => {
+    void loadPlanningChantiers()
+  }, [loadPlanningChantiers])
+
+  useEffect(() => {
+    if (isChantierModalOpen) void loadDbClients()
+  }, [isChantierModalOpen, loadDbClients])
+
+  const getChantiersForDay = useCallback(
+    (dayYmd: string) =>
+      allPlanningChantiers.filter((c) => isYmdInRange(dayYmd, c.dateDebut, c.dateFin)),
+    [allPlanningChantiers],
+  )
+
+  const mockForMonth = useMemo(
+    () => allPlanningChantiers.filter((c) => mockChantierOverlapsMonth(c, month, year)),
+    [allPlanningChantiers, month, year],
+  );
+
+  const handleChantierSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!chantierForm.nom.trim() || !chantierForm.clientId || !chantierForm.dateDebut || !chantierForm.dateFin) {
+      return
+    }
+
+    setChantierSubmitting(true)
+    try {
+      const created = await createChantier({
+        nom: chantierForm.nom.trim(),
+        client_id: chantierForm.clientId,
+        date_debut: chantierForm.dateDebut,
+        date_fin: chantierForm.dateFin,
+        couleur: chantierForm.couleur,
+        statut: statutLabelToDb(chantierForm.statut),
+      })
+
+      if (created) {
+        setIsChantierModalOpen(false)
+        setChantierForm(defaultChantierForm)
+        await loadPlanningChantiers()
+      }
+    } finally {
+      setChantierSubmitting(false)
+    }
+  }
 
   const monthNames = [
     'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
@@ -477,10 +585,44 @@ export default function PlanningPage() {
   
   return (
     <PageWrapper>
-      <header className="surface-header backdrop-blur-sm px-6 py-4">
+      <header
+        className="surface-header backdrop-blur-sm px-6 py-4"
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         <h1 className="text-2xl font-bold tracking-tight text-white" style={{ letterSpacing: '-0.03em' }}>
           Planning des Chantiers
         </h1>
+        <button
+          type="button"
+          onClick={() => setIsChantierModalOpen(true)}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            background: "linear-gradient(135deg, rgba(124,58,237,0.2), rgba(124,58,237,0.05))",
+            border: "1px solid rgba(124,58,237,0.4)",
+            borderRadius: "10px",
+            padding: "8px 16px",
+            color: "#a78bfa",
+            fontSize: "14px",
+            fontWeight: 500,
+            cursor: "pointer",
+            transition: "all 0.2s ease",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = "rgba(124,58,237,0.8)"
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = "rgba(124,58,237,0.4)"
+          }}
+        >
+          <span style={{ fontSize: "18px", lineHeight: 1 }}>+</span>
+          Ajouter un chantier
+        </button>
       </header>
 
       <main className="flex-1 p-4 space-y-4 overflow-x-hidden w-full max-w-full">
@@ -557,7 +699,7 @@ export default function PlanningPage() {
             <div className="grid grid-cols-7 gap-px md:gap-1">
               {days.map((day, index) => {
                 const dayYmd = dateToYmd(day.date)
-                const mockForDay = getMockChantiersForDay(dayYmd)
+                const mockForDay = getChantiersForDay(dayYmd)
                 const isToday = day.isToday
                 const dayCustomEvents = customEvents.filter((e) => e.dateKey === dayYmd)
 
@@ -804,6 +946,123 @@ export default function PlanningPage() {
                 <Button onClick={addCustomEvent}>Ajouter</Button>
               )}
             </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={isChantierModalOpen} onOpenChange={setIsChantierModalOpen}>
+          <DialogContent className="surface-card backdrop-blur-sm text-foreground rounded-2xl sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle className="text-foreground">Ajouter un chantier</DialogTitle>
+            </DialogHeader>
+
+            <form onSubmit={handleChantierSubmit} className="grid gap-4 py-2">
+              <div className="space-y-2">
+                <Label htmlFor="chantier-nom" className="text-foreground">Nom chantier</Label>
+                <Input
+                  id="chantier-nom"
+                  required
+                  value={chantierForm.nom}
+                  onChange={(e) => setChantierForm((prev) => ({ ...prev, nom: e.target.value }))}
+                  placeholder="Rénovation salle de bain"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="chantier-client" className="text-foreground">Client</Label>
+                <Select
+                  value={chantierForm.clientId}
+                  onValueChange={(value) => setChantierForm((prev) => ({ ...prev, clientId: value }))}
+                >
+                  <SelectTrigger id="chantier-client">
+                    <SelectValue placeholder={dbClients.length ? "Choisir un client" : "Aucun client en base"} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {dbClients.map((client) => (
+                      <SelectItem key={client.id} value={client.id}>
+                        {client.nom}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="chantier-debut" className="text-foreground">Date début</Label>
+                  <Input
+                    id="chantier-debut"
+                    type="date"
+                    required
+                    value={chantierForm.dateDebut}
+                    onChange={(e) => setChantierForm((prev) => ({ ...prev, dateDebut: e.target.value }))}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="chantier-fin" className="text-foreground">Date fin</Label>
+                  <Input
+                    id="chantier-fin"
+                    type="date"
+                    required
+                    value={chantierForm.dateFin}
+                    onChange={(e) => setChantierForm((prev) => ({ ...prev, dateFin: e.target.value }))}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="chantier-couleur" className="text-foreground">Couleur</Label>
+                <div className="flex items-center gap-3">
+                  <Input
+                    id="chantier-couleur"
+                    type="color"
+                    value={chantierForm.couleur}
+                    onChange={(e) => setChantierForm((prev) => ({ ...prev, couleur: e.target.value }))}
+                    className="h-10 w-14 cursor-pointer p-1"
+                  />
+                  <span className="text-sm text-subtitle">{chantierForm.couleur}</span>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="chantier-statut" className="text-foreground">Statut</Label>
+                <Select
+                  value={chantierForm.statut}
+                  onValueChange={(value: PlanningStatutLabel) =>
+                    setChantierForm((prev) => ({ ...prev, statut: value }))
+                  }
+                >
+                  <SelectTrigger id="chantier-statut">
+                    <SelectValue placeholder="Choisir un statut" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {PLANNING_STATUTS.map((statut) => (
+                      <SelectItem key={statut} value={statut}>
+                        {statut}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <DialogFooter className="pt-2">
+                <button
+                  type="submit"
+                  disabled={chantierSubmitting || !chantierForm.clientId}
+                  style={{
+                    background: "linear-gradient(135deg, #7c3aed, #6d28d9)",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "8px",
+                    padding: "10px 20px",
+                    cursor: chantierSubmitting || !chantierForm.clientId ? "not-allowed" : "pointer",
+                    fontWeight: 500,
+                    opacity: chantierSubmitting || !chantierForm.clientId ? 0.7 : 1,
+                  }}
+                >
+                  {chantierSubmitting ? "Enregistrement…" : "Ajouter le chantier"}
+                </button>
+              </DialogFooter>
+            </form>
           </DialogContent>
         </Dialog>
 
