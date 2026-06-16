@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { useCardHover } from '@/hooks/useCardHover'
 import { useLocation } from "wouter"
 import { AnimatePresence, motion } from "framer-motion"
 import { Button } from '@/components/ui/button'
@@ -15,11 +16,9 @@ import {
 } from 'lucide-react'
 import { useChantiers } from '@/context/ChantiersContext'
 import { dashboardLayoutStyle } from '@/lib/dashboardLayoutStyle'
-import { useCardHover } from '@/hooks/useCardHover'
 
 export default function TeamDashboard() {
   const [activeTab, setActiveTab] = useState<'overview' | 'projects' | 'planning'>('overview')
-  const { getHoverProps, getHoverStyle } = useCardHover()
   const [location] = useLocation()
   const { chantiers } = useChantiers()
   const [teamMember, setTeamMember] = useState<any>(null)
@@ -42,6 +41,7 @@ export default function TeamDashboard() {
   const myChantiers = chantiers.filter(c => c.statut !== 'terminé')
   const chantiersEnCours = chantiers.filter(c => c.statut === 'en cours')
   const chantiersPlanifies = chantiers.filter(c => c.statut === 'planifié')
+  const { getHoverProps, getHoverStyle } = useCardHover()
 
   return (
     <>
@@ -114,8 +114,8 @@ export default function TeamDashboard() {
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-full">
                     <Card
                       className="surface-card backdrop-blur-sm text-foreground"
-                      {...getHoverProps('team_dash_kpi_total')}
-                      style={getHoverStyle('team_dash_kpi_total', '#f59e0b')}
+                      {...getHoverProps('team_kpi_chantiers')}
+                      style={getHoverStyle('team_kpi_chantiers', '#f59e0b')}
                     >
                       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">Mes Chantiers</CardTitle>
@@ -129,8 +129,8 @@ export default function TeamDashboard() {
 
                     <Card
                       className="surface-card backdrop-blur-sm text-foreground"
-                      {...getHoverProps('team_dash_kpi_encours')}
-                      style={getHoverStyle('team_dash_kpi_encours', '#f59e0b')}
+                      {...getHoverProps('team_kpi_en_cours')}
+                      style={getHoverStyle('team_kpi_en_cours', '#f59e0b')}
                     >
                       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">En Cours</CardTitle>
@@ -144,8 +144,8 @@ export default function TeamDashboard() {
 
                     <Card
                       className="surface-card backdrop-blur-sm text-foreground"
-                      {...getHoverProps('team_dash_kpi_planifies')}
-                      style={getHoverStyle('team_dash_kpi_planifies', '#f59e0b')}
+                      {...getHoverProps('team_kpi_planifies')}
+                      style={getHoverStyle('team_kpi_planifies', '#3b82f6')}
                     >
                       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">Planifiés</CardTitle>
@@ -161,8 +161,8 @@ export default function TeamDashboard() {
                   {/* Mes Chantiers Récents */}
                   <Card
                     className="surface-card backdrop-blur-sm text-foreground"
-                    {...getHoverProps('team_dash_recent')}
-                    style={getHoverStyle('team_dash_recent', '#f59e0b')}
+                    {...getHoverProps('team_recent')}
+                    style={getHoverStyle('team_recent', '#f59e0b')}
                   >
                     <CardHeader>
                       <CardTitle>Mes Chantiers Récents</CardTitle>
@@ -172,9 +172,11 @@ export default function TeamDashboard() {
                         <p className="text-subtitle text-center py-4">Aucun chantier assigné</p>
                       ) : (
                         <div className="space-y-3">
-                          {myChantiers.slice(0, 5).map((chantier) => (
+                          {myChantiers.slice(0, 5).map((chantier, index) => (
                             <div
                               key={chantier.id}
+                              {...getHoverProps(`team_recent_${index}`)}
+                              style={getHoverStyle(`team_recent_${index}`, '#f59e0b')}
                               className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 backdrop-blur-md border border-border rounded-lg"
                             >
                               <div>
@@ -201,8 +203,8 @@ export default function TeamDashboard() {
               {activeTab === 'projects' && (
                 <Card
                   className="surface-card backdrop-blur-sm text-foreground"
-                  {...getHoverProps('team_dash_projects')}
-                  style={getHoverStyle('team_dash_projects', '#f59e0b')}
+                  {...getHoverProps('team_projects')}
+                  style={getHoverStyle('team_projects', '#f59e0b')}
                 >
                   <CardHeader>
                     <CardTitle>Mes Chantiers</CardTitle>
@@ -215,12 +217,12 @@ export default function TeamDashboard() {
                       </div>
                     ) : (
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {myChantiers.map((chantier) => (
+                        {myChantiers.map((chantier, index) => (
                           <Card
                             key={chantier.id}
                             className="bg-gray-50 dark:bg-gray-800/50 backdrop-blur-lg border border-border text-foreground"
-                            {...getHoverProps(`team_dash_chantier_${chantier.id}`)}
-                            style={getHoverStyle(`team_dash_chantier_${chantier.id}`, '#f59e0b')}
+                            {...getHoverProps(`team_chantier_${index}`)}
+                            style={getHoverStyle(`team_chantier_${index}`, '#f59e0b')}
                           >
                             <CardHeader>
                               <CardTitle className="text-lg">{chantier.nom}</CardTitle>
@@ -255,8 +257,8 @@ export default function TeamDashboard() {
               {activeTab === 'planning' && (
                 <Card
                   className="surface-card backdrop-blur-sm text-foreground"
-                  {...getHoverProps('team_dash_planning')}
-                  style={getHoverStyle('team_dash_planning', '#3b82f6')}
+                  {...getHoverProps('team_planning')}
+                  style={getHoverStyle('team_planning', '#3b82f6')}
                 >
                   <CardHeader>
                     <CardTitle>Mon Planning</CardTitle>

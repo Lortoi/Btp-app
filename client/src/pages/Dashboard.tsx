@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react"
+import { useCardHover } from "@/hooks/useCardHover"
 import { AnimatePresence, motion } from "framer-motion"
 import {
   Area,
@@ -24,7 +25,6 @@ import {
 import { Link, useLocation } from 'wouter'
 import { dashboardLayoutStyle } from "@/lib/dashboardLayoutStyle"
 import { useChantiers, type Chantier } from "@/context/ChantiersContext"
-import { useCardHover } from '@/hooks/useCardHover'
 
 export default function Dashboard() {
   const [location, setLocation] = useLocation();
@@ -311,28 +311,31 @@ function chantierStatutBadge(statut: Chantier["statut"]): string {
   }
 }
 
-const KPI_CARD_STYLES: React.CSSProperties[] = [
-  {
-    borderLeft: "4px solid #e8702a",
-    background: "linear-gradient(135deg, rgba(232,112,42,0.08), transparent)",
-  },
-  {
-    borderLeft: "4px solid #f59e0b",
-    background: "linear-gradient(135deg, rgba(245,158,11,0.08), transparent)",
-  },
-  {
-    borderLeft: "4px solid #22c55e",
-    background: "linear-gradient(135deg, rgba(34,197,94,0.08), transparent)",
-  },
-  {
-    borderLeft: "4px solid #7c3aed",
-    background: "linear-gradient(135deg, rgba(124,58,237,0.08), transparent)",
-  },
-  {
-    borderLeft: "4px solid #3b82f6",
-    background: "linear-gradient(135deg, rgba(59,130,246,0.08), transparent)",
-  },
-]
+const KPI_CARD_CONFIG = {
+  ca: { border: "#e8702a", rgb: "232,112,42" },
+  chantiers: { border: "#f59e0b", rgb: "245,158,11" },
+  devis: { border: "#22c55e", rgb: "34,197,94" },
+  conversion: { border: "#7c3aed", rgb: "124,58,237" },
+  clients: { border: "#3b82f6", rgb: "59,130,246" },
+} as const
+
+type KpiCardId = keyof typeof KPI_CARD_CONFIG
+
+function getKpiBaseStyle(id: KpiCardId): React.CSSProperties {
+  const { border, rgb } = KPI_CARD_CONFIG[id]
+  return {
+    borderLeft: `4px solid ${border}`,
+    background: `linear-gradient(135deg, rgba(${rgb},0.08), transparent)`,
+  }
+}
+
+const KPI_HOVER_COLORS: Record<KpiCardId, string> = {
+  ca: "#e8702a",
+  chantiers: "#f59e0b",
+  devis: "#22c55e",
+  conversion: "#7c3aed",
+  clients: "#3b82f6",
+}
 
 function chantierMontant(chantier: Chantier): number {
   const weeks = parseInt(chantier.duree, 10) || 1
@@ -369,15 +372,13 @@ const gridStroke = "rgba(255,255,255,0.08)"
 const cardBase =
   "bg-[#0a1628] border border-white/[0.06] rounded-2xl hover:border-white/15 transition-all duration-200"
 
-const KPI_HOVER_COLORS = ['#e8702a', '#f59e0b', '#22c55e', '#7c3aed', '#3b82f6'] as const
-
 // Overview Tab Component
 function OverviewTab() {
   const [, setLocation] = useLocation()
   const { chantiers } = useChantiers()
-  const { getHoverProps, getHoverStyle } = useCardHover()
   const [period, setPeriod] = useState<CaPeriod>("6 mois")
   const [sliderIndex, setSliderIndex] = useState(PERIOD_TO_SLIDER["6 mois"])
+  const { getHoverProps, getHoverStyle, hoveredCard } = useCardHover()
 
   const { headlineValue, subtitle } = getCaPeriodView(period)
   const displayedCaData = caData.slice(sliderIndex)
@@ -390,36 +391,41 @@ function OverviewTab() {
     [chantiers],
   )
 
-  const kpis = [
+  const kpis: { label: string; value: string; sub: string; path: string; hoverKey: KpiCardId }[] = [
     {
       label: "Chiffre d'affaires",
       value: formatEuro(headlineValue),
       sub: subtitle,
       path: "/dashboard",
+      hoverKey: "ca",
     },
     {
       label: "Chantiers actifs",
       value: "4",
       sub: "2 en cours",
       path: "/dashboard/projects",
+      hoverKey: "chantiers",
     },
     {
       label: "Devis en attente",
       value: "3",
       sub: "Réponses attendues",
       path: "/dashboard/quotes",
+      hoverKey: "devis",
     },
     {
       label: "Taux de conversion",
       value: "67%",
       sub: "devis → chantiers",
       path: "/dashboard/crm",
+      hoverKey: "conversion",
     },
     {
       label: "Clients",
       value: "4",
       sub: "au total",
       path: "/dashboard/clients",
+      hoverKey: "clients",
     },
   ]
 
@@ -430,10 +436,13 @@ function OverviewTab() {
         {/* Graphique CA principal */}
         <div
           className={`chart-card fade-up ${cardBase} p-5 md:p-6 min-h-[320px]`}
-          {...getHoverProps('chart_ca')}
+          {...getHoverProps("chart_ca")}
           style={{
             animationDelay: "0.1s",
-            ...getHoverStyle('chart_ca', '#e8702a'),
+            ...getHoverStyle("chart_ca", "#e8702a"),
+            ...(hoveredCard !== "chart_ca"
+              ? { boxShadow: "0 20px 60px rgba(232,112,42,0.10)" }
+              : {}),
           }}
         >
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
@@ -590,8 +599,11 @@ function OverviewTab() {
         {/* Graphique Devis */}
         <div
           className={`fade-up ${cardBase} p-5 md:p-6`}
-          {...getHoverProps('chart_devis')}
-          style={{ animationDelay: "0.2s", ...getHoverStyle('chart_devis', '#22c55e') }}
+          {...getHoverProps("chart_devis")}
+          style={{
+            animationDelay: "0.2s",
+            ...getHoverStyle("chart_devis", "#22c55e"),
+          }}
         >
           <p className="text-white/50 text-xs uppercase tracking-widest mb-4">
             Devis — 3 derniers mois
@@ -643,19 +655,19 @@ function OverviewTab() {
                 role="button"
                 tabIndex={0}
                 onClick={() => setLocation(kpi.path)}
+                {...getHoverProps(kpi.hoverKey)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault()
                     setLocation(kpi.path)
                   }
                 }}
-                {...getHoverProps(`kpi_${i}`)}
                 style={{
                   animationDelay: `${0.15 + i * 0.1}s`,
-                  ...KPI_CARD_STYLES[i],
-                  ...getHoverStyle(`kpi_${i}`, KPI_HOVER_COLORS[i]),
+                  ...getKpiBaseStyle(kpi.hoverKey),
+                  ...getHoverStyle(kpi.hoverKey, KPI_HOVER_COLORS[kpi.hoverKey]),
                 }}
-                className="fade-up rounded-2xl p-4 cursor-pointer transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+                className="fade-up rounded-2xl p-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
               >
                 <p className="text-white/40 text-xs uppercase tracking-widest">{kpi.label}</p>
                 <p className="text-3xl font-bold text-white mt-1" style={{ letterSpacing: "-0.02em" }}>
@@ -669,8 +681,11 @@ function OverviewTab() {
         {/* Chantiers récents */}
         <div
           className={`fade-up ${cardBase} p-5`}
-          {...getHoverProps('recent_chantiers')}
-          style={{ animationDelay: "0.55s", ...getHoverStyle('recent_chantiers', '#f59e0b') }}
+          {...getHoverProps("recent_chantiers")}
+          style={{
+            animationDelay: "0.55s",
+            ...getHoverStyle("recent_chantiers", "#f59e0b"),
+          }}
         >
           <div className="flex items-center justify-between mb-1">
             <p className="text-white/50 text-xs uppercase tracking-widest">
@@ -685,11 +700,13 @@ function OverviewTab() {
             </button>
           </div>
           <div>
-            {recentChantiers.map((chantier) => (
+            {recentChantiers.map((chantier, index) => (
               <button
                 key={chantier.id}
                 type="button"
                 onClick={() => setLocation("/dashboard/projects")}
+                {...getHoverProps(`recent_chantier_${index}`)}
+                style={getHoverStyle(`recent_chantier_${index}`, "#f59e0b")}
                 className="w-full flex justify-between items-center gap-2 py-3 border-b border-white/5 last:border-b-0 text-left"
               >
                 <div className="min-w-0 flex-1">
@@ -711,8 +728,11 @@ function OverviewTab() {
         {/* Actions rapides */}
         <div
           className={`fade-up ${cardBase} p-5 space-y-2`}
-          {...getHoverProps('quick_actions')}
-          style={{ animationDelay: "0.5s", ...getHoverStyle('quick_actions', '#7c3aed') }}
+          {...getHoverProps("quick_actions")}
+          style={{
+            animationDelay: "0.5s",
+            ...getHoverStyle("quick_actions", "#7c3aed"),
+          }}
         >
           <p className="text-white/50 text-xs uppercase tracking-widest mb-2">Actions rapides</p>
           <Button

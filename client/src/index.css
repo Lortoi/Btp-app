@@ -395,11 +395,11 @@ html.reduce-motion *::after {
 html.light {
   color-scheme: light;
   color: #0f172a;
+  background: #dde1e7 !important;
 }
 
-html.light,
 html.light body {
-  background-color: #f8faff !important;
+  background: #dde1e7 !important;
   color: #0f172a;
 }
 

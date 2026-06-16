@@ -1,4 +1,5 @@
 import { PageWrapper } from "@/components/PageWrapper"
+import { useCardHover } from "@/hooks/useCardHover"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -17,7 +18,6 @@ import { useChantiers } from "@/context/ChantiersContext"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { motion } from "framer-motion"
 import { useLocation } from "wouter"
-import { useCardHover } from '@/hooks/useCardHover'
 import {
   ArrowLeft,
   ArrowRight,
@@ -326,11 +326,11 @@ function ProgressSteps({ step }: { step: EstimationStep }) {
 }
 
 function StepPhotos({ onNext }: { onNext: () => void }) {
-  const { getHoverProps, getHoverStyle } = useCardHover()
   const [isDragging, setIsDragging] = useState(false)
   const photos = useEstimationStore((s) => s.photos)
   const addPhotos = useEstimationStore((s) => s.addPhotos)
   const removePhoto = useEstimationStore((s) => s.removePhoto)
+  const { getHoverProps, getHoverStyle } = useCardHover()
 
   const onDrop = (e: React.DragEvent) => {
     e.preventDefault()
@@ -346,8 +346,8 @@ function StepPhotos({ onNext }: { onNext: () => void }) {
   return (
     <Card
       className="surface-card backdrop-blur-sm text-foreground"
-      {...getHoverProps('estimation_photos')}
-      style={getHoverStyle('estimation_photos', '#f59e0b')}
+      {...getHoverProps("estimation_photos")}
+      style={getHoverStyle("estimation_photos", "#7c3aed")}
     >
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
@@ -450,7 +450,6 @@ function StepInfos({
   onBack: () => void
   onLaunchAnalysis: () => void
 }) {
-  const { getHoverProps, getHoverStyle } = useCardHover()
   const clientMode = useEstimationStore((s) => s.clientMode)
   const setClientMode = useEstimationStore((s) => s.setClientMode)
   const clientId = useEstimationStore((s) => s.clientId)
@@ -523,12 +522,13 @@ function StepInfos({
 
   const requiredOk =
     surfaceM2.trim() && typeTravaux && corpsMetier && localisation.trim()
+  const { getHoverProps, getHoverStyle } = useCardHover()
 
   return (
     <Card
       className="surface-card backdrop-blur-sm text-foreground"
-      {...getHoverProps('estimation_infos')}
-      style={getHoverStyle('estimation_infos', '#7c3aed')}
+      {...getHoverProps("estimation_infos")}
+      style={getHoverStyle("estimation_infos", "#7c3aed")}
     >
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
@@ -890,7 +890,6 @@ function StepResults({
   onSaveChantier: () => void
   onGenerateDevis: () => void
 }) {
-  const { getHoverProps, getHoverStyle } = useCardHover()
   const results = useEstimationStore((s) => s.results)
   const margePct = useEstimationStore((s) => s.margePct)
   const tvaRate = useEstimationStore((s) => s.tvaRate)
@@ -899,13 +898,14 @@ function StepResults({
     const id = useEstimationStore.getState().clientId
     return clients.find((c) => c.id === id)?.name ?? ""
   }, [clients])
+  const { getHoverProps, getHoverStyle } = useCardHover()
 
   if (!results) {
     return (
       <Card
         className="surface-card backdrop-blur-sm text-foreground"
-        {...getHoverProps('estimation_results_empty')}
-        style={getHoverStyle('estimation_results_empty', '#22c55e')}
+        {...getHoverProps("estimation_results_empty")}
+        style={getHoverStyle("estimation_results_empty", "#7c3aed")}
       >
         <CardHeader>
           <CardTitle>Résultats</CardTitle>
@@ -919,8 +919,8 @@ function StepResults({
     <div className="space-y-6">
       <Card
         className="surface-card backdrop-blur-sm text-foreground"
-        {...getHoverProps('estimation_results')}
-        style={getHoverStyle('estimation_results', '#22c55e')}
+        {...getHoverProps("estimation_results")}
+        style={getHoverStyle("estimation_results", "#e8702a")}
       >
         <CardHeader>
           <CardTitle className="flex items-center gap-2">

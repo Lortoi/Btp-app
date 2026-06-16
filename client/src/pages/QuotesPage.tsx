@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react"
+import { useCardHover } from "@/hooks/useCardHover"
 import { pdf } from "@react-pdf/renderer"
 import { PageWrapper } from "@/components/PageWrapper"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -35,7 +36,6 @@ import {
 } from "@/components/quotes/quoteTypes"
 import { Building2, Download, Plus, Trash2, Upload, Wand2 } from "lucide-react"
 import { agentDebugLog } from "@/lib/agentDebugLog"
-import { useCardHover } from '@/hooks/useCardHover'
 
 const UNITS_IA: readonly UnitePrestation[] = ["m2", "ml", "h", "forfait", "u"]
 
@@ -194,12 +194,15 @@ export default function QuotesPage() {
       const doc = <QuotePdfDocument draft={draft} totals={totals} />
       const blob = await pdf(doc).toBlob()
       const url = URL.createObjectURL(blob)
-      const a = document.createElement("a")
-      a.href = url
       const num = sanitizeFilenamePart(draft.devis.numero || "SANS_NUM")
       const client = sanitizeFilenamePart(draft.client.nom || "Client")
-      a.download = `Devis_${num}_${client}.pdf`
-      a.click()
+      const link = document.createElement("a")
+      link.href = url
+      link.download = `Devis_${num}_${client}.pdf`
+      link.target = "_blank"
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
       URL.revokeObjectURL(url)
     } finally {
       // #region agent log
@@ -310,11 +313,11 @@ function QuoteForm({
   updateLigne: (id: string, patch: Partial<LignePrestation>) => void
   onLogoChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }) {
-  const { getHoverProps, getHoverStyle } = useCardHover()
   const showCapital = isSociete(draft.company.formeJuridique)
   const [iaChantierDesc, setIaChantierDesc] = useState("")
   const [iaLoading, setIaLoading] = useState(false)
   const [iaError, setIaError] = useState<string | null>(null)
+  const { getHoverProps, getHoverStyle } = useCardHover()
 
   const handleGenerateIaPrestations = async () => {
     const description = iaChantierDesc.trim()
@@ -357,8 +360,8 @@ function QuoteForm({
     <div className="space-y-6 pb-8">
       <Card
         className="surface-card backdrop-blur-sm text-foreground"
-        {...getHoverProps('devis_entreprise')}
-        style={getHoverStyle('devis_entreprise', '#22c55e')}
+        {...getHoverProps("quote_company")}
+        style={getHoverStyle("quote_company", "#7c3aed")}
       >
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -556,8 +559,8 @@ function QuoteForm({
 
       <Card
         className="surface-card backdrop-blur-sm text-foreground"
-        {...getHoverProps('devis_infos')}
-        style={getHoverStyle('devis_infos', '#22c55e')}
+        {...getHoverProps("quote_devis")}
+        style={getHoverStyle("quote_devis", "#22c55e")}
       >
         <CardHeader>
           <CardTitle>Devis</CardTitle>
@@ -616,8 +619,8 @@ function QuoteForm({
 
       <Card
         className="surface-card backdrop-blur-sm text-foreground"
-        {...getHoverProps('devis_client')}
-        style={getHoverStyle('devis_client', '#3b82f6')}
+        {...getHoverProps("quote_client")}
+        style={getHoverStyle("quote_client", "#3b82f6")}
       >
         <CardHeader>
           <CardTitle>Client</CardTitle>
@@ -676,8 +679,8 @@ function QuoteForm({
 
       <Card
         className="ai-surface-card backdrop-blur-sm text-foreground"
-        {...getHoverProps('devis_ia')}
-        style={getHoverStyle('devis_ia', '#7c3aed')}
+        {...getHoverProps("quote_ia")}
+        style={getHoverStyle("quote_ia", "#7c3aed")}
       >
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -717,8 +720,8 @@ function QuoteForm({
 
       <Card
         className="surface-card backdrop-blur-sm text-foreground"
-        {...getHoverProps('devis_prestations')}
-        style={getHoverStyle('devis_prestations', '#22c55e')}
+        {...getHoverProps("quote_lignes")}
+        style={getHoverStyle("quote_lignes", "#22c55e")}
       >
         <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-x-6 gap-y-3 space-y-0 p-6 pb-5">
           <CardTitle className="text-xl md:text-2xl tracking-tight">
@@ -821,8 +824,8 @@ function QuoteForm({
 
       <Card
         className="surface-card backdrop-blur-sm text-foreground"
-        {...getHoverProps('devis_financier')}
-        style={getHoverStyle('devis_financier', '#22c55e')}
+        {...getHoverProps("quote_financier")}
+        style={getHoverStyle("quote_financier", "#e8702a")}
       >
         <CardHeader>
           <CardTitle>Financier</CardTitle>
@@ -905,8 +908,8 @@ function QuoteForm({
 
       <Card
         className="surface-card backdrop-blur-sm text-foreground"
-        {...getHoverProps('devis_notes')}
-        style={getHoverStyle('devis_notes', '#22c55e')}
+        {...getHoverProps("quote_notes")}
+        style={getHoverStyle("quote_notes", "#7c3aed")}
       >
         <CardHeader>
           <CardTitle>Notes</CardTitle>

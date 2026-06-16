@@ -4,7 +4,7 @@ import { Users } from 'lucide-react';
 import { useCardHover } from '@/hooks/useCardHover';
 
 export default function ProspectsPage() {
-  const { getHoverProps, getHoverStyle } = useCardHover()
+  const { getHoverProps, getHoverStyle } = useCardHover();
 
   return (
     <PageWrapper>

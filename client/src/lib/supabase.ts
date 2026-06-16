@@ -344,3 +344,88 @@ export async function updateAdminCode(newCode: string): Promise<AdminCode | null
   }
 }
 
+// CRM Pipeline prospects
+export interface CrmProspectRow {
+  id: string;
+  user_id: string;
+  nom: string;
+  entreprise: string;
+  email: string | null;
+  telephone: string | null;
+  type_travaux: string | null;
+  montant_estime: number | null;
+  date_contact: string;
+  colonne: string;
+  priorite: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export type CrmProspectColonne =
+  | 'Prospect'
+  | 'Visite chantier'
+  | 'Devis envoyé'
+  | 'Devis accepté'
+  | 'En chantier'
+  | 'Facturé';
+
+export interface CreateCrmProspectInput {
+  nom: string;
+  entreprise: string;
+  type_travaux: string;
+  montant_estime: number;
+  telephone: string;
+  colonne: CrmProspectColonne;
+}
+
+export async function fetchCrmProspects(): Promise<CrmProspectRow[]> {
+  try {
+    const userId = await getCurrentUserId();
+    if (!userId) return [];
+
+    const { data, error } = await supabase
+      .from('crm_prospects')
+      .select('*')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    return data || [];
+  } catch (error) {
+    console.error('Error fetching CRM prospects:', error);
+    return [];
+  }
+}
+
+export async function createCrmProspect(
+  input: CreateCrmProspectInput,
+): Promise<CrmProspectRow | null> {
+  try {
+    const userId = await getCurrentUserId();
+    if (!userId) throw new Error('User not authenticated');
+
+    const { data, error } = await supabase
+      .from('crm_prospects')
+      .insert({
+        user_id: userId,
+        nom: input.nom,
+        entreprise: input.entreprise,
+        email: null,
+        telephone: input.telephone,
+        type_travaux: input.type_travaux,
+        montant_estime: input.montant_estime,
+        date_contact: new Date().toISOString().slice(0, 10),
+        colonne: input.colonne,
+        priorite: 'normale',
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.error('Error creating CRM prospect:', error);
+    return null;
+  }
+}
+

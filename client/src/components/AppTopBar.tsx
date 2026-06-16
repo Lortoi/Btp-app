@@ -350,17 +350,44 @@ export function AppTopBar({ showMobileMenu = true }: AppTopBarProps) {
           type="button"
           onClick={() => setSearchOpen(true)}
           aria-label="Rechercher"
-          className="navbar-search absolute left-1/2 flex w-72 -translate-x-1/2 items-center justify-between rounded-xl border border-white/10 px-4 py-2.5 transition-all duration-200 hover:border-white/20"
+          className="navbar-search absolute left-1/2 -translate-x-1/2 rounded-xl border border-white/10 transition-all duration-200 hover:border-white/20"
           style={{ background: "rgba(255,255,255,0.04)" }}
         >
-          <div className="flex items-center gap-2">
-            <Search size={14} className="text-white/40" />
-            <span className="text-sm text-white/30">Rechercher...</span>
+          <div className="flex h-10 w-10 items-center justify-center sm:hidden">
+            <Search size={16} className="text-white/40" aria-hidden />
           </div>
-          <div className="flex items-center gap-1 rounded-lg border border-white/10 bg-white/8 px-2 py-1">
-            <span className="text-xs text-white/30">⌘</span>
-            <span className="text-xs text-white/30">+</span>
-            <span className="text-xs text-white/30">K</span>
+          <div
+            className="hidden sm:flex sm:max-w-[calc(100vw-24rem)] lg:max-w-[min(400px,calc(100vw-20rem))]"
+            style={{
+              position: "relative",
+              alignItems: "center",
+              paddingTop: "10px",
+              paddingBottom: "10px",
+            }}
+          >
+            <Search
+              size={16}
+              className="pointer-events-none absolute text-white/40"
+              style={{ left: "10px" }}
+              aria-hidden
+            />
+            <div
+              className="flex w-full"
+              style={{
+                alignItems: "center",
+                justifyContent: "space-between",
+                paddingLeft: "34px",
+                paddingRight: "12px",
+                minWidth: 0,
+              }}
+            >
+              <span className="truncate text-sm text-white/30">Rechercher...</span>
+              <div className="hidden shrink-0 items-center gap-1 rounded-lg border border-white/10 bg-white/8 px-2 py-1 lg:flex">
+                <span className="text-xs text-white/30">⌘</span>
+                <span className="text-xs text-white/30">+</span>
+                <span className="text-xs text-white/30">K</span>
+              </div>
+            </div>
           </div>
         </button>
 
@@ -369,6 +396,7 @@ export function AppTopBar({ showMobileMenu = true }: AppTopBarProps) {
             type="button"
             onClick={toggleTheme}
             className={iconButtonClass}
+            style={{ zIndex: 50, position: "relative" }}
             aria-label={isLight ? "Passer en mode sombre" : "Passer en mode clair"}
           >
             {isLight ? (
