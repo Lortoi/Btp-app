@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Phone } from "lucide-react"
+import { useCardHover } from '@/hooks/useCardHover'
 
 export type ColonnePipeline =
   | "Prospect"
@@ -117,6 +118,8 @@ function prospectsPourColonne(colonne: ColonnePipeline): MockProspect[] {
 }
 
 export function CRMPipeline() {
+  const { getHoverProps, getHoverStyle } = useCardHover()
+
   return (
     <div className="w-full max-w-full overflow-x-hidden">
       <div className="flex flex-col gap-4 md:flex-row md:overflow-x-auto md:whitespace-nowrap md:pb-2 md:gap-3">
@@ -127,7 +130,11 @@ export function CRMPipeline() {
               key={id}
               className="w-full shrink-0 md:min-w-[280px] md:w-[280px]"
             >
-              <Card className="surface-card backdrop-blur-sm text-foreground h-full flex flex-col">
+              <Card
+                className="surface-card backdrop-blur-sm text-foreground h-full flex flex-col"
+                {...getHoverProps(`crm_col_${id}`)}
+                style={getHoverStyle(`crm_col_${id}`, '#7c3aed')}
+              >
                 <CardHeader className="pb-2 space-y-0">
                   <div className="flex items-center justify-between gap-2">
                     <CardTitle className="text-sm font-semibold leading-snug">{titre}</CardTitle>
@@ -147,6 +154,8 @@ export function CRMPipeline() {
                         className={`rounded-lg border border-border bg-gray-50 dark:bg-[#080d1a]/25 backdrop-blur-sm p-3 text-foreground ${
                           p.priorite === "haute" ? "border-l-[3px] border-l-[#F5A623]" : ""
                         }`}
+                        {...getHoverProps(`crm_prospect_${p.id}`)}
+                        style={getHoverStyle(`crm_prospect_${p.id}`, '#7c3aed')}
                       >
                         <div className="space-y-2">
                           <div>

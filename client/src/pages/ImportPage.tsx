@@ -24,6 +24,7 @@ import {
   type StoredInvoiceImport,
 } from "@/lib/invoiceImportStorage"
 import { useToast } from "@/hooks/use-toast"
+import { useCardHover } from '@/hooks/useCardHover'
 import { ArrowLeft, CheckCircle2, FileText, Loader2, Upload, Wand2, X } from "lucide-react"
 
 const MAX_FILES = 100
@@ -53,6 +54,7 @@ export default function ImportPage() {
   const [, setLocation] = useLocation()
   const { user } = useAuth()
   const { toast } = useToast()
+  const { getHoverProps, getHoverStyle } = useCardHover()
   const [jobs, setJobs] = useState<FileJob[]>([])
   const [analyzing, setAnalyzing] = useState(false)
   const [importId, setImportId] = useState<string | null>(null)
@@ -301,7 +303,11 @@ export default function ImportPage() {
       </header>
 
       <main className="flex-1 p-6 space-y-6 max-w-3xl overflow-x-hidden w-full">
-        <Card className="ai-surface-card backdrop-blur-sm text-foreground">
+        <Card
+          className="ai-surface-card backdrop-blur-sm text-foreground"
+          {...getHoverProps('import_pdf')}
+          style={getHoverStyle('import_pdf', '#7c3aed')}
+        >
           <CardHeader>
             <div className="flex items-center gap-2">
               <Wand2 className="h-5 w-5 text-ai-light" />
@@ -462,7 +468,11 @@ export default function ImportPage() {
         </Card>
 
         {recentImports.length > 0 && (
-          <Card className="surface-card backdrop-blur-sm text-foreground">
+          <Card
+            className="surface-card backdrop-blur-sm text-foreground"
+            {...getHoverProps('import_recent')}
+            style={getHoverStyle('import_recent', '#22c55e')}
+          >
             <CardHeader>
               <div className="flex items-start justify-between gap-3">
                 <div className="space-y-1.5">
@@ -514,7 +524,11 @@ export default function ImportPage() {
           </Card>
         )}
 
-        <Card className="surface-card backdrop-blur-sm text-foreground opacity-80">
+        <Card
+          className="surface-card backdrop-blur-sm text-foreground opacity-80"
+          {...getHoverProps('import_autres')}
+          style={getHoverStyle('import_autres', '#f59e0b')}
+        >
           <CardHeader>
             <CardTitle className="text-base">Autres méthodes</CardTitle>
             <CardDescription className="text-secondary">

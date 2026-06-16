@@ -24,6 +24,7 @@ import {
 import { Link, useLocation } from 'wouter'
 import { dashboardLayoutStyle } from "@/lib/dashboardLayoutStyle"
 import { useChantiers, type Chantier } from "@/context/ChantiersContext"
+import { useCardHover } from '@/hooks/useCardHover'
 
 export default function Dashboard() {
   const [location, setLocation] = useLocation();
@@ -368,10 +369,13 @@ const gridStroke = "rgba(255,255,255,0.08)"
 const cardBase =
   "bg-[#0a1628] border border-white/[0.06] rounded-2xl hover:border-white/15 transition-all duration-200"
 
+const KPI_HOVER_COLORS = ['#e8702a', '#f59e0b', '#22c55e', '#7c3aed', '#3b82f6'] as const
+
 // Overview Tab Component
 function OverviewTab() {
   const [, setLocation] = useLocation()
   const { chantiers } = useChantiers()
+  const { getHoverProps, getHoverStyle } = useCardHover()
   const [period, setPeriod] = useState<CaPeriod>("6 mois")
   const [sliderIndex, setSliderIndex] = useState(PERIOD_TO_SLIDER["6 mois"])
 
@@ -426,9 +430,10 @@ function OverviewTab() {
         {/* Graphique CA principal */}
         <div
           className={`chart-card fade-up ${cardBase} p-5 md:p-6 min-h-[320px]`}
+          {...getHoverProps('chart_ca')}
           style={{
             animationDelay: "0.1s",
-            boxShadow: "0 20px 60px rgba(232,112,42,0.10)",
+            ...getHoverStyle('chart_ca', '#e8702a'),
           }}
         >
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
@@ -583,7 +588,11 @@ function OverviewTab() {
         </div>
 
         {/* Graphique Devis */}
-        <div className={`fade-up ${cardBase} p-5 md:p-6`} style={{ animationDelay: "0.2s" }}>
+        <div
+          className={`fade-up ${cardBase} p-5 md:p-6`}
+          {...getHoverProps('chart_devis')}
+          style={{ animationDelay: "0.2s", ...getHoverStyle('chart_devis', '#22c55e') }}
+        >
           <p className="text-white/50 text-xs uppercase tracking-widest mb-4">
             Devis — 3 derniers mois
           </p>
@@ -640,9 +649,11 @@ function OverviewTab() {
                     setLocation(kpi.path)
                   }
                 }}
+                {...getHoverProps(`kpi_${i}`)}
                 style={{
                   animationDelay: `${0.15 + i * 0.1}s`,
                   ...KPI_CARD_STYLES[i],
+                  ...getHoverStyle(`kpi_${i}`, KPI_HOVER_COLORS[i]),
                 }}
                 className="fade-up rounded-2xl p-4 cursor-pointer transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
               >
@@ -656,7 +667,11 @@ function OverviewTab() {
         </div>
 
         {/* Chantiers récents */}
-        <div className={`fade-up ${cardBase} p-5`} style={{ animationDelay: "0.55s" }}>
+        <div
+          className={`fade-up ${cardBase} p-5`}
+          {...getHoverProps('recent_chantiers')}
+          style={{ animationDelay: "0.55s", ...getHoverStyle('recent_chantiers', '#f59e0b') }}
+        >
           <div className="flex items-center justify-between mb-1">
             <p className="text-white/50 text-xs uppercase tracking-widest">
               Chantiers récents
@@ -694,7 +709,11 @@ function OverviewTab() {
         </div>
 
         {/* Actions rapides */}
-        <div className={`fade-up ${cardBase} p-5 space-y-2`} style={{ animationDelay: "0.5s" }}>
+        <div
+          className={`fade-up ${cardBase} p-5 space-y-2`}
+          {...getHoverProps('quick_actions')}
+          style={{ animationDelay: "0.5s", ...getHoverStyle('quick_actions', '#7c3aed') }}
+        >
           <p className="text-white/50 text-xs uppercase tracking-widest mb-2">Actions rapides</p>
           <Button
             className="w-full justify-start"

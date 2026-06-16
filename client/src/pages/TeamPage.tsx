@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { useState, useEffect, useMemo } from 'react';
 import { fetchTeamMembers, createTeamMember, updateTeamMember, deleteTeamMember, type TeamMember } from '@/lib/supabase';
+import { useCardHover } from '@/hooks/useCardHover';
 
 type MembreStatut = 'Disponible' | 'En chantier' | 'Absent';
 
@@ -86,6 +87,7 @@ function statutBadgeClass(statut: MembreStatut): string {
 }
 
 export default function TeamPage() {
+  const { getHoverProps, getHoverStyle } = useCardHover();
   const [members, setMembers] = useState<TeamMember[]>([]);
   const [loading, setLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -287,7 +289,11 @@ export default function TeamPage() {
 
       <main className="flex-1 p-6 space-y-6 overflow-x-hidden w-full max-w-full">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-full">
-          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full border-l-4 border-[#e8702a] bg-gradient-to-br from-[#e8702a]/8 to-transparent">
+          <Card
+            className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full border-l-4 border-[#e8702a] bg-gradient-to-br from-[#e8702a]/8 to-transparent"
+            {...getHoverProps('kpi_membres')}
+            style={getHoverStyle('kpi_membres', '#e8702a')}
+          >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Membres</CardTitle>
               <Users className="h-4 w-4 text-[#e8702a]" />
@@ -297,7 +303,11 @@ export default function TeamPage() {
               <p className="text-xs text-subtitle">total</p>
             </CardContent>
           </Card>
-          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full border-l-4 border-[#7c3aed] bg-gradient-to-br from-[#7c3aed]/8 to-transparent">
+          <Card
+            className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full border-l-4 border-[#7c3aed] bg-gradient-to-br from-[#7c3aed]/8 to-transparent"
+            {...getHoverProps('kpi_en_chantier')}
+            style={getHoverStyle('kpi_en_chantier', '#7c3aed')}
+          >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">En chantier</CardTitle>
               <HardHat className="h-4 w-4 text-[#7c3aed]" />
@@ -307,7 +317,11 @@ export default function TeamPage() {
               <p className="text-xs text-subtitle">sur le terrain</p>
             </CardContent>
           </Card>
-          <Card className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full border-l-4 border-[#22c55e] bg-gradient-to-br from-[#22c55e]/8 to-transparent">
+          <Card
+            className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full border-l-4 border-[#22c55e] bg-gradient-to-br from-[#22c55e]/8 to-transparent"
+            {...getHoverProps('kpi_disponibles')}
+            style={getHoverStyle('kpi_disponibles', '#22c55e')}
+          >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Disponibles</CardTitle>
               <Check className="h-4 w-4 text-[#22c55e]" />
@@ -319,7 +333,11 @@ export default function TeamPage() {
           </Card>
         </div>
 
-        <Card className="surface-card backdrop-blur-sm text-foreground max-w-full">
+        <Card
+          className="surface-card backdrop-blur-sm text-foreground max-w-full"
+          {...getHoverProps('equipe_wrapper')}
+          style={getHoverStyle('equipe_wrapper', '#3b82f6')}
+        >
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Users className="h-5 w-5 text-subtitle" />
@@ -332,6 +350,8 @@ export default function TeamPage() {
                 <Card
                   key={m.id}
                   className="relative bg-gray-50 dark:bg-gray-800/50 backdrop-blur-md border border-border text-foreground overflow-hidden flex flex-col"
+                  {...getHoverProps(`equipe_${m.id}`)}
+                  style={getHoverStyle(`equipe_${m.id}`, m.couleurAvatar)}
                 >
                   <Badge
                     className={`absolute top-3 right-3 border ${statutBadgeClass(m.statut)}`}

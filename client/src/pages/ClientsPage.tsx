@@ -7,9 +7,11 @@ import { Label } from '@/components/ui/label';
 import { User, Plus, Building, Mail, Phone, Image as ImageIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useChantiers, Client } from '@/context/ChantiersContext';
+import { useCardHover } from '@/hooks/useCardHover';
 
 export default function ClientsPage() {
   const { clients, chantiers, addClient } = useChantiers();
+  const { getHoverProps, getHoverStyle } = useCardHover();
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [newClient, setNewClient] = useState({ name: '', email: '', phone: '' });
@@ -125,6 +127,8 @@ export default function ClientsPage() {
                 key={client.id}
                 className="surface-card backdrop-blur-sm text-foreground hover:shadow-lg transition-shadow cursor-pointer"
                 onClick={() => setSelectedClient(client)}
+                {...getHoverProps(`client_${client.id}`)}
+                style={getHoverStyle(`client_${client.id}`, '#3b82f6')}
               >
                 <CardHeader>
                   <div className="flex items-center gap-3">
@@ -157,7 +161,11 @@ export default function ClientsPage() {
           </div>
         ) : (
           <div>
-            <Card className="surface-card backdrop-blur-sm text-foreground mb-6">
+            <Card
+              className="surface-card backdrop-blur-sm text-foreground mb-6"
+              {...getHoverProps('client_detail')}
+              style={getHoverStyle('client_detail', '#3b82f6')}
+            >
               <CardHeader>
                 <CardTitle className="flex items-center gap-3">
                   <div className="w-12 h-12 rounded-full bg-gray-100 dark:bg-white/10 backdrop-blur-md flex items-center justify-center">
@@ -175,7 +183,11 @@ export default function ClientsPage() {
             <h2 className="text-xl font-semibold text-foreground mb-4">Chantiers de {selectedClient.name}</h2>
 
             {clientChantiers.length === 0 ? (
-              <Card className="surface-card backdrop-blur-sm text-foreground">
+              <Card
+                className="surface-card backdrop-blur-sm text-foreground"
+                {...getHoverProps('client_empty_chantiers')}
+                style={getHoverStyle('client_empty_chantiers', '#f59e0b')}
+              >
                 <CardContent className="py-12 text-center">
                   <Building className="h-12 w-12 mx-auto mb-4 text-secondary" />
                   <p className="text-subtitle">Aucun chantier pour ce client</p>
@@ -187,6 +199,8 @@ export default function ClientsPage() {
                   <Card
                     key={chantier.id}
                     className="surface-card backdrop-blur-sm text-foreground hover:shadow-lg transition-shadow"
+                    {...getHoverProps(`client_chantier_${chantier.id}`)}
+                    style={getHoverStyle(`client_chantier_${chantier.id}`, '#f59e0b')}
                   >
                     {chantier.images.length > 0 && (
                       <div className="relative h-48 overflow-hidden rounded-t-lg">

@@ -9,9 +9,11 @@ import { Bell, Moon, Shield, Upload, UserCircle, Wand2 } from "lucide-react"
 import { useLocation } from "wouter"
 import { type AppSettings, loadSettings, saveSettings } from "@/lib/settingsStorage"
 import { useToast } from "@/hooks/use-toast"
+import { useCardHover } from '@/hooks/useCardHover'
 
 export default function SettingsPage() {
   const { toast } = useToast()
+  const { getHoverProps, getHoverStyle } = useCardHover()
   const [, setLocation] = useLocation()
   const [draft, setDraft] = useState<AppSettings>(() => loadSettings())
 
@@ -50,7 +52,11 @@ export default function SettingsPage() {
       </header>
 
       <main className="flex-1 p-6 space-y-6 max-w-3xl overflow-x-hidden w-full">
-        <Card className="surface-card backdrop-blur-sm text-foreground">
+        <Card
+          className="surface-card backdrop-blur-sm text-foreground"
+          {...getHoverProps('settings_compte')}
+          style={getHoverStyle('settings_compte', '#3b82f6')}
+        >
           <CardHeader>
             <div className="flex items-center gap-2">
               <UserCircle className="h-5 w-5 text-subtitle" />
@@ -89,7 +95,11 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
 
-        <Card className="ai-surface-card backdrop-blur-sm text-foreground">
+        <Card
+          className="ai-surface-card backdrop-blur-sm text-foreground"
+          {...getHoverProps('settings_import_ia')}
+          style={getHoverStyle('settings_import_ia', '#7c3aed')}
+        >
           <CardHeader>
             <div className="flex items-center gap-2">
               <Wand2 className="h-5 w-5 text-ai-light" />
@@ -111,7 +121,11 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
 
-        <Card className="surface-card backdrop-blur-sm text-foreground">
+        <Card
+          className="surface-card backdrop-blur-sm text-foreground"
+          {...getHoverProps('settings_notifications')}
+          style={getHoverStyle('settings_notifications', '#22c55e')}
+        >
           <CardHeader>
             <div className="flex items-center gap-2">
               <Bell className="h-5 w-5 text-subtitle" />
@@ -145,7 +159,11 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
 
-        <Card className="surface-card backdrop-blur-sm text-foreground">
+        <Card
+          className="surface-card backdrop-blur-sm text-foreground"
+          {...getHoverProps('settings_apparence')}
+          style={getHoverStyle('settings_apparence', '#3b82f6')}
+        >
           <CardHeader>
             <div className="flex items-center gap-2">
               <Moon className="h-5 w-5 text-subtitle" />
@@ -167,7 +185,11 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
 
-        <Card className="surface-card backdrop-blur-sm text-foreground">
+        <Card
+          className="surface-card backdrop-blur-sm text-foreground"
+          {...getHoverProps('settings_confidentialite')}
+          style={getHoverStyle('settings_confidentialite', '#7c3aed')}
+        >
           <CardHeader>
             <div className="flex items-center gap-2">
               <Shield className="h-5 w-5 text-subtitle" />

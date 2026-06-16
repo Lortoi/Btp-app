@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useCardHover } from '@/hooks/useCardHover'
 
 /** Chantiers fictifs BTP — avril / mai / juin 2026 (données mock, hors composant) */
 interface MockPlanningChantier {
@@ -333,6 +334,7 @@ function getDaysInMonth(year: number, month: number) {
 
 export default function PlanningPage() {
   const { chantiers } = useChantiers();
+  const { getHoverProps, getHoverStyle } = useCardHover();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [isNewEventOpen, setIsNewEventOpen] = useState(false)
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
@@ -797,7 +799,11 @@ export default function PlanningPage() {
 
         {/* Liste des chantiers du mois */}
         {chantiers.length > 0 && (
-          <Card className="surface-card backdrop-blur-sm text-foreground">
+          <Card
+            className="surface-card backdrop-blur-sm text-foreground"
+            {...getHoverProps('planning_chantiers_mois')}
+            style={getHoverStyle('planning_chantiers_mois', '#3b82f6')}
+          >
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
                 <Building className="h-5 w-5" />

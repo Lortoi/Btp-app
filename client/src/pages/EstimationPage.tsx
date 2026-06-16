@@ -17,6 +17,7 @@ import { useChantiers } from "@/context/ChantiersContext"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { motion } from "framer-motion"
 import { useLocation } from "wouter"
+import { useCardHover } from '@/hooks/useCardHover'
 import {
   ArrowLeft,
   ArrowRight,
@@ -325,6 +326,7 @@ function ProgressSteps({ step }: { step: EstimationStep }) {
 }
 
 function StepPhotos({ onNext }: { onNext: () => void }) {
+  const { getHoverProps, getHoverStyle } = useCardHover()
   const [isDragging, setIsDragging] = useState(false)
   const photos = useEstimationStore((s) => s.photos)
   const addPhotos = useEstimationStore((s) => s.addPhotos)
@@ -342,7 +344,11 @@ function StepPhotos({ onNext }: { onNext: () => void }) {
   }
 
   return (
-    <Card className="surface-card backdrop-blur-sm text-foreground">
+    <Card
+      className="surface-card backdrop-blur-sm text-foreground"
+      {...getHoverProps('estimation_photos')}
+      style={getHoverStyle('estimation_photos', '#f59e0b')}
+    >
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Upload className="h-5 w-5 text-subtitle" />
@@ -444,6 +450,7 @@ function StepInfos({
   onBack: () => void
   onLaunchAnalysis: () => void
 }) {
+  const { getHoverProps, getHoverStyle } = useCardHover()
   const clientMode = useEstimationStore((s) => s.clientMode)
   const setClientMode = useEstimationStore((s) => s.setClientMode)
   const clientId = useEstimationStore((s) => s.clientId)
@@ -518,7 +525,11 @@ function StepInfos({
     surfaceM2.trim() && typeTravaux && corpsMetier && localisation.trim()
 
   return (
-    <Card className="surface-card backdrop-blur-sm text-foreground">
+    <Card
+      className="surface-card backdrop-blur-sm text-foreground"
+      {...getHoverProps('estimation_infos')}
+      style={getHoverStyle('estimation_infos', '#7c3aed')}
+    >
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Sparkles className="h-5 w-5 text-ai-light" />
@@ -879,6 +890,7 @@ function StepResults({
   onSaveChantier: () => void
   onGenerateDevis: () => void
 }) {
+  const { getHoverProps, getHoverStyle } = useCardHover()
   const results = useEstimationStore((s) => s.results)
   const margePct = useEstimationStore((s) => s.margePct)
   const tvaRate = useEstimationStore((s) => s.tvaRate)
@@ -890,7 +902,11 @@ function StepResults({
 
   if (!results) {
     return (
-      <Card className="surface-card backdrop-blur-sm text-foreground">
+      <Card
+        className="surface-card backdrop-blur-sm text-foreground"
+        {...getHoverProps('estimation_results_empty')}
+        style={getHoverStyle('estimation_results_empty', '#22c55e')}
+      >
         <CardHeader>
           <CardTitle>Résultats</CardTitle>
         </CardHeader>
@@ -901,7 +917,11 @@ function StepResults({
 
   return (
     <div className="space-y-6">
-      <Card className="surface-card backdrop-blur-sm text-foreground">
+      <Card
+        className="surface-card backdrop-blur-sm text-foreground"
+        {...getHoverProps('estimation_results')}
+        style={getHoverStyle('estimation_results', '#22c55e')}
+      >
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <CheckCircle2 className="h-5 w-5 text-green-400" />

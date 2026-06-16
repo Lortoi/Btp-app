@@ -20,6 +20,7 @@ import {
   Package,
 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import { useCardHover } from '@/hooks/useCardHover'
 import {
   CHANTIER_WORK_TYPES,
   workTypeLabel,
@@ -56,6 +57,7 @@ function isAcceptedMediaType(type: string): type is AcceptedMediaType {
 export default function AIVisualizationPage() {
   const [, setLocation] = useLocation()
   const { toast } = useToast()
+  const { getHoverProps, getHoverStyle } = useCardHover()
   const [step, setStep] = useState<Step>("upload")
   const [uploadedImage, setUploadedImage] = useState<UploadedImage | null>(null)
   const [selectedWorkType, setSelectedWorkType] = useState<ChantierWorkType | "">("")
@@ -275,7 +277,11 @@ export default function AIVisualizationPage() {
       <main className="flex-1 p-6 overflow-x-hidden w-full max-w-full">
         {step === "upload" && (
           <div className="max-w-2xl mx-auto space-y-6">
-            <Card className="ai-surface-card backdrop-blur-sm text-foreground hover-elevate">
+            <Card
+              className="ai-surface-card backdrop-blur-sm text-foreground hover-elevate"
+              {...getHoverProps('ai_vis_upload')}
+              style={getHoverStyle('ai_vis_upload', '#f59e0b')}
+            >
               <CardHeader className="text-center">
                 <div className="w-16 h-16 mx-auto rounded-xl bg-ai/10 backdrop-blur-md border border-ai/30 flex items-center justify-center mb-4">
                   <ImageIcon className="h-8 w-8 text-ai-light" />
@@ -320,7 +326,11 @@ export default function AIVisualizationPage() {
               </div>
             )}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card className="ai-surface-card backdrop-blur-sm text-foreground hover-elevate">
+              <Card
+                className="ai-surface-card backdrop-blur-sm text-foreground hover-elevate"
+                {...getHoverProps('ai_vis_photo')}
+                style={getHoverStyle('ai_vis_photo', '#f59e0b')}
+              >
                 <CardHeader>
                   <CardTitle>Photo du chantier</CardTitle>
                 </CardHeader>
@@ -344,7 +354,11 @@ export default function AIVisualizationPage() {
               </Card>
 
               <div className="space-y-6">
-                <Card className="ai-surface-card backdrop-blur-sm text-foreground hover-elevate">
+                <Card
+                  className="ai-surface-card backdrop-blur-sm text-foreground hover-elevate"
+                  {...getHoverProps('ai_vis_work_type')}
+                  style={getHoverStyle('ai_vis_work_type', '#7c3aed')}
+                >
                   <CardHeader>
                     <CardTitle>Type de travaux</CardTitle>
                     <p className="text-sm text-subtitle">
@@ -373,7 +387,11 @@ export default function AIVisualizationPage() {
                 </Card>
 
                 {selectedWorkType === "autre" && (
-                  <Card className="ai-surface-card backdrop-blur-sm text-foreground">
+                  <Card
+                    className="ai-surface-card backdrop-blur-sm text-foreground"
+                    {...getHoverProps('ai_vis_custom_work')}
+                    style={getHoverStyle('ai_vis_custom_work', '#7c3aed')}
+                  >
                     <CardContent className="pt-6">
                       <Label htmlFor="custom-work">Précisez le type de travaux</Label>
                       <Input
@@ -389,7 +407,11 @@ export default function AIVisualizationPage() {
                 )}
 
                 {selectedWorkType && (
-                  <Card className="ai-surface-card backdrop-blur-sm text-foreground hover-elevate">
+                  <Card
+                    className="ai-surface-card backdrop-blur-sm text-foreground hover-elevate"
+                    {...getHoverProps('ai_vis_goal')}
+                    style={getHoverStyle('ai_vis_goal', '#7c3aed')}
+                  >
                     <CardHeader>
                       <CardTitle>Objectif en une phrase</CardTitle>
                       <p className="text-sm text-subtitle">
@@ -427,7 +449,11 @@ export default function AIVisualizationPage() {
 
         {step === "generating" && (
           <div className="max-w-2xl mx-auto space-y-6">
-            <Card className="hover-elevate text-center ai-surface-card backdrop-blur-sm">
+            <Card
+              className="hover-elevate text-center ai-surface-card backdrop-blur-sm"
+              {...getHoverProps('ai_vis_generating')}
+              style={getHoverStyle('ai_vis_generating', '#7c3aed')}
+            >
               <CardHeader>
                 <div className="w-16 h-16 mx-auto rounded-xl bg-ai/10 border border-ai/30 flex items-center justify-center mb-4">
                   <RefreshCw className="h-8 w-8 text-ai-light animate-spin" />
@@ -451,7 +477,11 @@ export default function AIVisualizationPage() {
 
         {step === "result" && uploadedImage && report && (
           <div className="max-w-6xl mx-auto space-y-6">
-            <Card className="ai-surface-card backdrop-blur-sm text-foreground hover-elevate">
+            <Card
+              className="ai-surface-card backdrop-blur-sm text-foreground hover-elevate"
+              {...getHoverProps('ai_vis_result')}
+              style={getHoverStyle('ai_vis_result', '#7c3aed')}
+            >
               <CardHeader className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-center gap-3">
                   <CheckCircle className="h-6 w-6 text-ai-light shrink-0" />
