@@ -30,7 +30,7 @@ import {
   type CrmProspectColonne,
 } from "@/lib/supabase"
 
-const CLIENT_TYPES = ["Particulier", "Professionnel", "SCI"] as const
+const CLIENT_TYPES = ["Particulier", "Pro", "SCI"] as const
 
 type ClientType = (typeof CLIENT_TYPES)[number]
 
