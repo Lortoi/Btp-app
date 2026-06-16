@@ -16,9 +16,9 @@ import {
   Workflow,
   UserCircle,
   Sparkles,
+  ChevronRight,
   type LucideIcon,
 } from 'lucide-react';
-import AccountDialog from './AccountDialog';
 
 const AI_TOOLS = [
   { icon: Upload, label: 'Import factures', path: '/dashboard/import', iconColor: '#7c3aed', hoverId: 'import_factures' },
@@ -116,7 +116,13 @@ interface SidebarContentProps {
 function AccountBlock({ expanded }: { expanded: boolean }) {
   return (
     <div className={cn('border-b border-white/8 mb-2', expanded ? 'p-4' : 'flex justify-center p-2')}>
-      <div className={cn('flex items-center', expanded && 'gap-3')}>
+      <Link
+        href="/dashboard/compte"
+        className={cn(
+          'flex items-center cursor-pointer rounded-[10px] p-2 transition-colors hover:bg-white/5',
+          expanded && 'gap-3 w-full',
+        )}
+      >
         <div
           className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white"
           style={{ background: 'linear-gradient(135deg, #e8702a, #7c3aed)' }}
@@ -124,12 +130,15 @@ function AccountBlock({ expanded }: { expanded: boolean }) {
           D
         </div>
         {expanded && (
-          <div className="sidebar-text min-w-0">
-            <p className="truncate text-sm font-semibold text-white">Dupont Rénovation</p>
-            <p className="text-xs text-white/40">Pro</p>
-          </div>
+          <>
+            <div className="sidebar-text min-w-0 flex-1">
+              <p className="truncate text-sm font-semibold text-white">Dupont Rénovation</p>
+              <p className="text-xs text-white/40">Pro</p>
+            </div>
+            <ChevronRight className="h-4 w-4 shrink-0 opacity-40" aria-hidden />
+          </>
         )}
-      </div>
+      </Link>
     </div>
   );
 }
@@ -310,7 +319,7 @@ function SidebarContent({ compact, expanded = true, onNavigate }: SidebarContent
           </span>
         </Link>
 
-        <AccountDialog>
+        <Link href="/dashboard/compte" onClick={onNavigate}>
           <button
             type="button"
             className={cn(
@@ -324,7 +333,7 @@ function SidebarContent({ compact, expanded = true, onNavigate }: SidebarContent
             <UserCircle className="h-4 w-4 shrink-0 text-white/40" />
             <span className="text-sm text-white/60">Compte</span>
           </button>
-        </AccountDialog>
+        </Link>
       </div>
     </>
   );

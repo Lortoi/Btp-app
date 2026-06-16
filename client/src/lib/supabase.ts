@@ -530,3 +530,87 @@ export async function createChantier(input: CreateChantierInput): Promise<Chanti
   }
 }
 
+// Profil entreprise (page Compte)
+export interface UserCompanyProfile {
+  id: string;
+  email: string | null;
+  full_name: string | null;
+  nom_entreprise: string | null;
+  logo_base64: string | null;
+  adresse: string | null;
+  siret: string | null;
+  telephone: string | null;
+  tva_intracom: string | null;
+  plan: string | null;
+  plan_renewal_date: string | null;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface UpdateUserCompanyProfileInput {
+  nom_entreprise: string;
+  logo_base64: string | null;
+  adresse: string;
+  siret: string;
+  email: string;
+  telephone: string;
+  tva_intracom: string;
+}
+
+export async function fetchUserCompanyProfile(): Promise<UserCompanyProfile | null> {
+  try {
+    const userId = await getCurrentUserId();
+    if (!userId) return null;
+
+    const { data, error } = await supabase
+      .from('user_profiles')
+      .select('*')
+      .eq('id', userId)
+      .maybeSingle();
+
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.error('Error fetching user company profile:', error);
+    return null;
+  }
+}
+
+export async function updateUserCompanyProfile(
+  input: UpdateUserCompanyProfileInput,
+): Promise<UserCompanyProfile | null> {
+  try {
+    const userId = await getCurrentUserId();
+    if (!userId) throw new Error('User not authenticated');
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    const { data, error } = await supabase
+      .from('user_profiles')
+      .upsert(
+        {
+          id: userId,
+          email: input.email.trim() || user?.email || null,
+          nom_entreprise: input.nom_entreprise,
+          logo_base64: input.logo_base64,
+          adresse: input.adresse,
+          siret: input.siret,
+          telephone: input.telephone,
+          tva_intracom: input.tva_intracom,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: 'id' },
+      )
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.error('Error updating user company profile:', error);
+    return null;
+  }
+}
+

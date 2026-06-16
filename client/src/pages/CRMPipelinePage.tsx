@@ -190,7 +190,7 @@ export default function CRMPipelinePage() {
 
             <div className="space-y-2">
               <Label htmlFor="prospect-montant" className="text-foreground">
-                Montant estimé €
+                Montant €
               </Label>
               <Input
                 id="prospect-montant"
@@ -216,7 +216,7 @@ export default function CRMPipelinePage() {
 
             <div className="space-y-2">
               <Label htmlFor="prospect-statut" className="text-foreground">
-                Statut initial
+                Statut
               </Label>
               <Select
                 value={form.statut}

@@ -31,6 +31,7 @@ import CRMPipelinePage from "@/pages/CRMPipelinePage";
 import TeamPage from "@/pages/TeamPage";
 import SettingsPage from "@/pages/SettingsPage";
 import ImportPage from "@/pages/ImportPage";
+import ComptePage from "@/pages/ComptePage";
 import NotFound from "@/pages/not-found";
 
 const pageVariants = {
@@ -112,6 +113,8 @@ function Router() {
         return <ProtectedRoute><SettingsPage /></ProtectedRoute>;
       case "/dashboard/import":
         return <ProtectedRoute><ImportPage /></ProtectedRoute>;
+      case "/dashboard/compte":
+        return <ProtectedRoute><ComptePage /></ProtectedRoute>;
       default:
         return <NotFound />;
     }
