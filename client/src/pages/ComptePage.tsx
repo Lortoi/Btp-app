@@ -81,19 +81,20 @@ function applyProfileToForm(profile: UserCompanyProfile | null) {
 interface FieldInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string
   id: string
+  accentColor: string
 }
 
-function FieldInput({ label, id, style, onFocus, onBlur, ...props }: FieldInputProps) {
+function FieldInput({ label, id, accentColor, style, onFocus, onBlur, ...props }: FieldInputProps) {
   return (
     <div>
-      <label htmlFor={id} style={labelStyle}>
+      <label htmlFor={id} style={{ ...labelStyle, color: accentColor }}>
         {label}
       </label>
       <input
         id={id}
         style={{ ...inputBaseStyle, ...style }}
         onFocus={(e) => {
-          e.currentTarget.style.borderColor = "rgba(124,58,237,0.6)"
+          e.currentTarget.style.borderColor = accentColor
           onFocus?.(e)
         }}
         onBlur={(e) => {
@@ -192,11 +193,17 @@ export default function ComptePage() {
 
       <main className="flex-1 p-6 space-y-6 max-w-5xl overflow-x-hidden w-full">
         <Card
-          className="surface-card backdrop-blur-sm text-foreground"
+          className="surface-card backdrop-blur-sm text-foreground overflow-hidden"
           {...getHoverProps('compte_profil')}
-          style={getHoverStyle('compte_profil', '#3b82f6')}
+          style={{
+            borderLeft: "4px solid #7c3aed",
+            background: "linear-gradient(135deg, rgba(124,58,237,0.08), transparent)",
+            borderRadius: "12px",
+            padding: "32px",
+            ...getHoverStyle('compte_profil', '#7c3aed'),
+          }}
         >
-          <CardContent className="p-6">
+          <CardContent className="p-0">
             <form onSubmit={handleSave}>
               <div
                 className="grid grid-cols-1 md:grid-cols-2"
@@ -215,6 +222,8 @@ export default function ComptePage() {
                         objectFit: "cover",
                         margin: "0 auto",
                         border: "2px solid rgba(255,255,255,0.1)",
+                        boxShadow:
+                          "0 0 0 4px rgba(124,58,237,0.3), 0 8px 32px rgba(124,58,237,0.2)",
                       }}
                     />
                   ) : (
@@ -231,6 +240,8 @@ export default function ComptePage() {
                         fontWeight: 700,
                         color: "white",
                         margin: "0 auto",
+                        boxShadow:
+                          "0 0 0 4px rgba(124,58,237,0.3), 0 8px 32px rgba(124,58,237,0.2)",
                       }}
                     >
                       {getEntrepriseInitials(form.nomEntreprise)}
@@ -291,6 +302,7 @@ export default function ComptePage() {
                   <FieldInput
                     id="nom-entreprise"
                     label="Nom de l'entreprise"
+                    accentColor="#e8702a"
                     type="text"
                     required
                     disabled={loading}
@@ -302,6 +314,7 @@ export default function ComptePage() {
                   <FieldInput
                     id="siret-entreprise"
                     label="SIRET"
+                    accentColor="#f59e0b"
                     type="text"
                     disabled={loading}
                     value={form.siret}
@@ -310,6 +323,7 @@ export default function ComptePage() {
                   <FieldInput
                     id="email-entreprise"
                     label="Email de contact"
+                    accentColor="#3b82f6"
                     type="email"
                     disabled={loading}
                     value={form.email}
@@ -318,6 +332,7 @@ export default function ComptePage() {
                   <FieldInput
                     id="telephone-entreprise"
                     label="Téléphone"
+                    accentColor="#22c55e"
                     type="text"
                     disabled={loading}
                     value={form.telephone}
@@ -329,6 +344,7 @@ export default function ComptePage() {
                     <FieldInput
                       id="adresse-entreprise"
                       label="Adresse"
+                      accentColor="#7c3aed"
                       type="text"
                       disabled={loading}
                       value={form.adresse}
@@ -341,6 +357,7 @@ export default function ComptePage() {
                     <FieldInput
                       id="tva-entreprise"
                       label="TVA"
+                      accentColor="#a78bfa"
                       type="text"
                       disabled={loading}
                       value={form.tva}
@@ -383,10 +400,12 @@ export default function ComptePage() {
           style={{
             borderLeft: "4px solid #7c3aed",
             background: "linear-gradient(135deg, rgba(124,58,237,0.08), transparent)",
+            borderRadius: "12px",
+            padding: "20px 24px",
             ...getHoverStyle('compte_plan', '#7c3aed'),
           }}
         >
-          <CardContent className="p-6 space-y-3">
+          <CardContent className="p-0 space-y-3">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex flex-wrap items-center gap-3">
                 <span className="text-sm text-subtitle">Plan actuel</span>
@@ -411,8 +430,8 @@ export default function ComptePage() {
                 </span>
               </p>
             </div>
-            <p style={{ color: "#22c55e", fontSize: "13px" }}>
-              Licence à vie — aucun abonnement requis
+            <p style={{ color: "#22c55e", fontSize: "13px", fontWeight: 500 }}>
+              ✓ Licence à vie — aucun abonnement requis
             </p>
           </CardContent>
         </Card>

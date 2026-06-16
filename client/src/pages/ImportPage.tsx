@@ -59,6 +59,7 @@ export default function ImportPage() {
   const [importId, setImportId] = useState<string | null>(null)
   const [recentImports, setRecentImports] = useState<StoredInvoiceImport[]>(() => loadStoredImports())
   const [detailView, setDetailView] = useState<{ filename: string; extraction: ExtractedInvoice } | null>(null)
+  const [dropHover, setDropHover] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { getHoverProps, getHoverStyle } = useCardHover()
 
@@ -304,14 +305,20 @@ export default function ImportPage() {
 
       <main className="flex-1 p-6 space-y-6 max-w-3xl overflow-x-hidden w-full">
         <Card
-          className="ai-surface-card backdrop-blur-sm text-foreground"
+          className="ai-surface-card backdrop-blur-sm text-foreground overflow-hidden"
           {...getHoverProps("import_upload")}
-          style={getHoverStyle("import_upload", "#7c3aed")}
+          style={{
+            borderLeft: "4px solid #7c3aed",
+            background: "linear-gradient(135deg, rgba(124,58,237,0.08), transparent)",
+            ...getHoverStyle("import_upload", "#7c3aed"),
+          }}
         >
           <CardHeader>
             <div className="flex items-center gap-2">
               <Wand2 className="h-5 w-5 text-ai-light" />
-              <CardTitle className="text-lg">Factures PDF — analyse Claude</CardTitle>
+              <CardTitle className="text-lg" style={{ color: "#a78bfa" }}>
+                Factures PDF — analyse Claude
+              </CardTitle>
             </div>
             <CardDescription className="text-secondary">
               Jusqu&apos;à {MAX_FILES} fichiers, {MAX_BYTES / (1024 * 1024)} Mo chacun. L&apos;analyse utilise Claude
@@ -323,9 +330,19 @@ export default function ImportPage() {
           <CardContent className="space-y-4">
             <div
               {...dropHandlers}
-              className="rounded-xl border border-dashed border-ai/30 bg-ai-muted px-6 py-10 text-center cursor-pointer hover:border-ai/50 hover:shadow-ai-glow-sm transition-all"
+              onMouseEnter={() => setDropHover(true)}
+              onMouseLeave={() => setDropHover(false)}
+              className="px-6 py-10 text-center cursor-pointer transition-all"
+              style={{
+                background: dropHover ? "rgba(124,58,237,0.1)" : "rgba(124,58,237,0.06)",
+                border: `2px dashed ${dropHover ? "rgba(124,58,237,0.8)" : "rgba(124,58,237,0.4)"}`,
+                borderRadius: "12px",
+              }}
             >
-              <Upload className="h-10 w-10 mx-auto text-secondary mb-3" />
+              <Upload
+                className="mx-auto mb-3"
+                style={{ color: "#a78bfa", width: 40, height: 40 }}
+              />
               <p className="text-sm text-subtitle mb-2">Glissez-déposez vos PDF ici ou cliquez pour parcourir</p>
               <input
                 ref={fileInputRef}
@@ -340,9 +357,15 @@ export default function ImportPage() {
               />
               <Button
                 type="button"
-                variant="secondary"
-                className="mt-1"
                 onClick={() => fileInputRef.current?.click()}
+                style={{
+                  background: "linear-gradient(135deg, #7c3aed, #6d28d9)",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "10px",
+                  padding: "10px 24px",
+                  marginTop: "4px",
+                }}
               >
                 Choisir des fichiers
               </Button>
@@ -527,16 +550,48 @@ export default function ImportPage() {
         )}
 
         <Card
-          className="surface-card backdrop-blur-sm text-foreground opacity-80"
+          className="surface-card backdrop-blur-sm text-foreground opacity-80 overflow-hidden"
           {...getHoverProps("import_other_methods")}
-          style={getHoverStyle("import_other_methods", "#7c3aed")}
+          style={{
+            borderLeft: "4px solid #f59e0b",
+            background: "linear-gradient(135deg, rgba(245,158,11,0.08), transparent)",
+            ...getHoverStyle("import_other_methods", "#f59e0b"),
+          }}
         >
           <CardHeader>
-            <CardTitle className="text-base">Autres méthodes</CardTitle>
+            <CardTitle className="text-base" style={{ color: "#f59e0b" }}>
+              Autres méthodes
+            </CardTitle>
             <CardDescription className="text-secondary">
               Import CSV et saisie manuelle arrivent dans une prochaine version.
             </CardDescription>
           </CardHeader>
+          <CardContent className="pt-0 flex flex-wrap gap-2">
+            <span
+              style={{
+                background: "rgba(245,158,11,0.1)",
+                border: "1px solid rgba(245,158,11,0.2)",
+                color: "#f59e0b",
+                borderRadius: "20px",
+                padding: "4px 12px",
+                fontSize: "13px",
+              }}
+            >
+              À venir
+            </span>
+            <span
+              style={{
+                background: "rgba(245,158,11,0.1)",
+                border: "1px solid rgba(245,158,11,0.2)",
+                color: "#f59e0b",
+                borderRadius: "20px",
+                padding: "4px 12px",
+                fontSize: "13px",
+              }}
+            >
+              À venir
+            </span>
+          </CardContent>
         </Card>
 
         <div className="pb-8">

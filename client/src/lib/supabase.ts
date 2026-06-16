@@ -435,6 +435,7 @@ export interface ClientRow {
   nom: string;
   email: string | null;
   telephone: string | null;
+  adresse: string | null;
 }
 
 export type ChantierStatutDb = 'planifie' | 'en_cours' | 'termine';
@@ -472,7 +473,7 @@ export async function fetchClients(): Promise<ClientRow[]> {
 
     const { data, error } = await supabase
       .from('clients')
-      .select('id, nom, email, telephone')
+      .select('id, nom, email, telephone, adresse')
       .eq('user_id', userId)
       .order('nom', { ascending: true });
 

@@ -294,29 +294,35 @@ function ProgressSteps({ step }: { step: EstimationStep }) {
       {items.map((it, idx) => {
         const completed = step > it.n
         const active = step === it.n
-        const circleClass = completed
-          ? "bg-green-500/20 border-green-500/60 text-green-600 dark:text-green-400"
-          : active
-            ? "border-[#F5A623] bg-[#F5A623]/15 text-[#F5A623]"
-            : "bg-gray-200 dark:bg-gray-700 border-border text-secondary"
-        const labelClass = completed
-          ? "text-green-600 dark:text-green-400"
-          : active
-            ? "text-[#F5A623]"
-            : "text-secondary"
+
+        let circleBg = "hsl(var(--muted))"
+        let circleColor = "var(--muted-foreground)"
+        if (active) {
+          circleBg = "#7c3aed"
+          circleColor = "white"
+        } else if (completed) {
+          circleBg = "#22c55e"
+          circleColor = "white"
+        }
+
+        const labelColor = active ? "#7c3aed" : completed ? "#22c55e" : "var(--muted-foreground)"
+        const lineColor = step > it.n ? "#7c3aed" : "var(--border)"
 
         return (
           <div key={it.n} className="flex items-center gap-3">
             <div className="flex items-center gap-2">
               <div
-                className={`h-7 w-7 rounded-full flex items-center justify-center text-xs font-bold border ${circleClass}`}
+                className="h-7 w-7 rounded-full flex items-center justify-center text-xs font-bold"
+                style={{ background: circleBg, color: circleColor }}
               >
                 {completed ? "✓" : it.n}
               </div>
-              <div className={`text-xs font-medium ${labelClass}`}>{it.label}</div>
+              <div className="text-xs font-medium" style={{ color: labelColor }}>
+                {it.label}
+              </div>
             </div>
             {idx < items.length - 1 && (
-              <div className="h-px w-10 bg-gray-300 dark:bg-gray-600" />
+              <div className="h-px w-10" style={{ background: lineColor }} />
             )}
           </div>
         )
@@ -327,10 +333,13 @@ function ProgressSteps({ step }: { step: EstimationStep }) {
 
 function StepPhotos({ onNext }: { onNext: () => void }) {
   const [isDragging, setIsDragging] = useState(false)
+  const [dropHover, setDropHover] = useState(false)
   const photos = useEstimationStore((s) => s.photos)
   const addPhotos = useEstimationStore((s) => s.addPhotos)
   const removePhoto = useEstimationStore((s) => s.removePhoto)
   const { getHoverProps, getHoverStyle } = useCardHover()
+
+  const dropHighlighted = isDragging || dropHover
 
   const onDrop = (e: React.DragEvent) => {
     e.preventDefault()
@@ -345,13 +354,24 @@ function StepPhotos({ onNext }: { onNext: () => void }) {
 
   return (
     <Card
-      className="surface-card backdrop-blur-sm text-foreground"
+      className="surface-card backdrop-blur-sm text-foreground overflow-hidden"
       {...getHoverProps("estimation_photos")}
-      style={getHoverStyle("estimation_photos", "#7c3aed")}
+      style={{
+        borderLeft: "4px solid #7c3aed",
+        background: "linear-gradient(135deg, rgba(124,58,237,0.08), transparent)",
+        ...getHoverStyle("estimation_photos", "#7c3aed"),
+      }}
     >
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Upload className="h-5 w-5 text-subtitle" />
+        <CardTitle
+          style={{
+            color: "#a78bfa",
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+          }}
+        >
+          <Upload className="h-5 w-5 shrink-0" style={{ color: "#a78bfa" }} />
           Import des Photos du Chantier
         </CardTitle>
       </CardHeader>
@@ -366,14 +386,20 @@ function StepPhotos({ onNext }: { onNext: () => void }) {
             setIsDragging(false)
           }}
           onDrop={onDrop}
-          className={
-            "border-2 border-dashed rounded-lg p-10 md:p-12 text-center transition-colors " +
-            (isDragging
-              ? "border-gray-400 dark:border-white/40 bg-gray-100 dark:bg-white/10"
-              : "border-gray-300 dark:border-white/20 hover:border-gray-400 dark:hover:border-white/30")
-          }
+          onMouseEnter={() => setDropHover(true)}
+          onMouseLeave={() => setDropHover(false)}
+          className="text-center transition-colors"
+          style={{
+            background: dropHighlighted ? "rgba(124,58,237,0.1)" : "rgba(124,58,237,0.06)",
+            border: `2px dashed ${dropHighlighted ? "rgba(124,58,237,0.8)" : "rgba(124,58,237,0.4)"}`,
+            borderRadius: "12px",
+            padding: "48px",
+          }}
         >
-          <Upload className="h-12 w-12 mx-auto mb-4 text-subtitle" />
+          <Upload
+            className="mx-auto mb-4"
+            style={{ color: "#a78bfa", width: 40, height: 40 }}
+          />
           <p className="text-lg font-medium text-foreground mb-2">
             Glissez-déposez vos photos ici
           </p>
@@ -389,9 +415,14 @@ function StepPhotos({ onNext }: { onNext: () => void }) {
               id="photo-upload"
             />
             <Button
-              variant="outline"
-              className="text-foreground border-gray-300 dark:border-white/20 hover:bg-white/5"
               onClick={() => document.getElementById("photo-upload")?.click()}
+              style={{
+                background: "linear-gradient(135deg, #7c3aed, #6d28d9)",
+                color: "white",
+                border: "none",
+                borderRadius: "10px",
+                padding: "10px 24px",
+              }}
             >
               Sélectionner des photos
             </Button>
@@ -430,7 +461,13 @@ function StepPhotos({ onNext }: { onNext: () => void }) {
           <Button
             onClick={onNext}
             disabled={photos.length === 0}
-            className="bg-gray-100 dark:bg-white/20 backdrop-blur-md text-foreground border border-border hover:bg-gray-200 dark:hover:bg-white/30 disabled:opacity-50"
+            style={{
+              background: "linear-gradient(135deg, #7c3aed, #6d28d9)",
+              color: "white",
+              border: "none",
+              opacity: photos.length === 0 ? 0.4 : 1,
+              cursor: photos.length === 0 ? "not-allowed" : "pointer",
+            }}
           >
             Suivant
             <ArrowRight className="h-4 w-4 ml-2" />

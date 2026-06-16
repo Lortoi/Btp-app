@@ -439,6 +439,8 @@ function OverviewTab() {
           {...getHoverProps("chart_ca")}
           style={{
             animationDelay: "0.1s",
+            borderLeft: "4px solid #e8702a",
+            background: "linear-gradient(135deg, rgba(232,112,42,0.08), transparent)",
             ...getHoverStyle("chart_ca", "#e8702a"),
             ...(hoveredCard !== "chart_ca"
               ? { boxShadow: "0 20px 60px rgba(232,112,42,0.10)" }
@@ -447,7 +449,10 @@ function OverviewTab() {
         >
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
             <div>
-              <p className="text-white/50 text-xs uppercase tracking-widest">
+              <p
+                className="text-xs uppercase tracking-widest"
+                style={{ color: "#e8702a" }}
+              >
                 Chiffre d&apos;affaires
               </p>
               <p className="text-4xl md:text-5xl font-bold text-white mt-2" style={{ letterSpacing: "-0.03em" }}>
@@ -602,10 +607,15 @@ function OverviewTab() {
           {...getHoverProps("chart_devis")}
           style={{
             animationDelay: "0.2s",
+            borderLeft: "4px solid #22c55e",
+            background: "linear-gradient(135deg, rgba(34,197,94,0.08), transparent)",
             ...getHoverStyle("chart_devis", "#22c55e"),
           }}
         >
-          <p className="text-white/50 text-xs uppercase tracking-widest mb-4">
+          <p
+            className="text-xs uppercase tracking-widest mb-4"
+            style={{ color: "#22c55e" }}
+          >
             Devis — 3 derniers mois
           </p>
           <div style={{ height: 220 }}>
@@ -667,9 +677,14 @@ function OverviewTab() {
                   ...getKpiBaseStyle(kpi.hoverKey),
                   ...getHoverStyle(kpi.hoverKey, KPI_HOVER_COLORS[kpi.hoverKey]),
                 }}
-                className="fade-up rounded-2xl p-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+                className="fade-up rounded-2xl p-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 overflow-hidden"
               >
-                <p className="text-white/40 text-xs uppercase tracking-widest">{kpi.label}</p>
+                <p
+                  className="text-xs uppercase tracking-widest"
+                  style={{ color: KPI_HOVER_COLORS[kpi.hoverKey] }}
+                >
+                  {kpi.label}
+                </p>
                 <p className="text-3xl font-bold text-white mt-1" style={{ letterSpacing: "-0.02em" }}>
                   {kpi.value}
                 </p>
@@ -680,34 +695,48 @@ function OverviewTab() {
 
         {/* Chantiers récents */}
         <div
-          className={`fade-up ${cardBase} p-5`}
+          className="fade-up p-5 overflow-hidden rounded-2xl"
           {...getHoverProps("recent_chantiers")}
           style={{
             animationDelay: "0.55s",
+            borderLeft: "4px solid #f59e0b",
+            background: "linear-gradient(135deg, rgba(245,158,11,0.08), transparent)",
             ...getHoverStyle("recent_chantiers", "#f59e0b"),
           }}
         >
           <div className="flex items-center justify-between mb-1">
-            <p className="text-white/50 text-xs uppercase tracking-widest">
+            <p
+              className="text-xs uppercase tracking-widest"
+              style={{ color: "#f59e0b" }}
+            >
               Chantiers récents
             </p>
             <button
               type="button"
               onClick={() => setLocation("/dashboard/projects")}
-              className="text-white/40 hover:text-white/80 text-xs transition-colors"
+              className="text-xs transition-colors hover:opacity-80"
+              style={{ color: "#a78bfa" }}
             >
               Tout voir
             </button>
           </div>
           <div>
-            {recentChantiers.map((chantier, index) => (
+            {recentChantiers.map((chantier) => (
               <button
                 key={chantier.id}
                 type="button"
                 onClick={() => setLocation("/dashboard/projects")}
-                {...getHoverProps(`recent_chantier_${index}`)}
-                style={getHoverStyle(`recent_chantier_${index}`, "#f59e0b")}
-                className="w-full flex justify-between items-center gap-2 py-3 border-b border-white/5 last:border-b-0 text-left"
+                className="w-full flex justify-between items-center gap-2 py-3 px-2 border-b border-white/5 last:border-b-0 text-left"
+                style={{
+                  borderRadius: "8px",
+                  transition: "background 0.15s",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "rgba(255,255,255,0.03)"
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "transparent"
+                }}
               >
                 <div className="min-w-0 flex-1">
                   <p className="text-white text-sm font-medium truncate">{chantier.nom}</p>
@@ -735,22 +764,61 @@ function OverviewTab() {
           }}
         >
           <p className="text-white/50 text-xs uppercase tracking-widest mb-2">Actions rapides</p>
-          <Button
-            className="w-full justify-start"
-            variant="outline"
+          <button
+            type="button"
             onClick={() => setLocation("/dashboard/projects?openDialog=true")}
+            style={{
+              background:
+                "linear-gradient(135deg, rgba(232,112,42,0.15), rgba(232,112,42,0.05))",
+              border: "1px solid rgba(232,112,42,0.3)",
+              borderRadius: "10px",
+              color: "#e8702a",
+              padding: "14px",
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              cursor: "pointer",
+              transition: "all 0.2s",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = "rgba(232,112,42,0.7)"
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = "rgba(232,112,42,0.3)"
+            }}
           >
-            <Plus className="h-4 w-4 mr-2" />
+            <Plus className="h-4 w-4 shrink-0" />
             Nouveau Chantier
-          </Button>
-          <Button
-            className="w-full justify-start"
-            variant="outline"
+          </button>
+          <button
+            type="button"
             onClick={() => setLocation("/dashboard/quotes")}
+            style={{
+              background:
+                "linear-gradient(135deg, rgba(34,197,94,0.15), rgba(34,197,94,0.05))",
+              border: "1px solid rgba(34,197,94,0.3)",
+              borderRadius: "10px",
+              color: "#22c55e",
+              padding: "14px",
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              cursor: "pointer",
+              transition: "all 0.2s",
+              marginTop: "8px",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = "rgba(34,197,94,0.7)"
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = "rgba(34,197,94,0.3)"
+            }}
           >
-            <FileText className="h-4 w-4 mr-2" />
+            <FileText className="h-4 w-4 shrink-0" />
             Créer un Devis
-          </Button>
+          </button>
         </div>
       </div>
     </div>

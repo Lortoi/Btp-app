@@ -637,7 +637,8 @@ export default function PlanningPage() {
             <div className="flex items-center gap-2">
               <button
                 onClick={goToPreviousMonth}
-                className="h-9 w-9 rounded-xl flex items-center justify-center bg-white/5 hover:bg-white/10 border border-white/10 text-white transition-colors"
+                className="h-9 w-9 rounded-xl flex items-center justify-center bg-white/5 hover:bg-white/10 transition-colors"
+                style={{ border: "1px solid rgba(124,58,237,0.3)", color: "#a78bfa" }}
               >
                 ‹
               </button>
@@ -663,14 +664,16 @@ export default function PlanningPage() {
               </select>
               <button
                 onClick={goToNextMonth}
-                className="h-9 w-9 rounded-xl flex items-center justify-center bg-white/5 hover:bg-white/10 border border-white/10 text-white transition-colors"
+                className="h-9 w-9 rounded-xl flex items-center justify-center bg-white/5 hover:bg-white/10 transition-colors"
+                style={{ border: "1px solid rgba(124,58,237,0.3)", color: "#a78bfa" }}
               >
                 ›
               </button>
             </div>
             <button
               onClick={handleTodayClick}
-              className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white text-sm transition-colors"
+              className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-sm transition-colors"
+              style={{ border: "1px solid rgba(124,58,237,0.3)", color: "#a78bfa" }}
             >
               Aujourd'hui
             </button>
@@ -679,17 +682,25 @@ export default function PlanningPage() {
 
         {/* ── CALENDRIER UNIQUE (mobile + desktop) ──────────────── */}
         <div
-          className="w-full bg-[#0a1628] border border-white/[0.06] rounded-2xl overflow-hidden"
+          className="w-full overflow-hidden"
           {...getHoverProps('planning_calendar')}
-          style={getHoverStyle('planning_calendar', '#3b82f6')}
+          style={{
+            borderLeft: "4px solid #7c3aed",
+            background: "linear-gradient(135deg, rgba(124,58,237,0.08), transparent)",
+            borderRadius: "12px",
+            ...getHoverStyle('planning_calendar', '#3b82f6'),
+          }}
         >
           <div className="p-2 md:p-5">
 
             {/* En-têtes jours */}
             <div className="grid grid-cols-7 mb-1 md:mb-3">
               {dayNames.map((day) => (
-                <div key={day} className="text-center font-medium text-white/30 uppercase tracking-wider py-1 md:py-2"
-                  style={{ fontSize: 10 }}>
+                <div
+                  key={day}
+                  className="text-center font-medium uppercase tracking-wider py-1 md:py-2"
+                  style={{ color: "#a78bfa", fontSize: "12px" }}
+                >
                   {day}
                 </div>
               ))}
