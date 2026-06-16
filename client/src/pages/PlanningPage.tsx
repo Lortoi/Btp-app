@@ -343,7 +343,6 @@ export default function PlanningPage() {
   const [newEventTitle, setNewEventTitle] = useState("Rendez-vous")
   const [customEvents, setCustomEvents] = useState<Array<{ id: string; dateKey: string; time: string; title: string }>>([])
   const [editingEventId, setEditingEventId] = useState<string | null>(null)
-  const { getHoverProps, getHoverStyle } = useCardHover();
   
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
