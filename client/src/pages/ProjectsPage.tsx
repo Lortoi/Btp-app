@@ -261,7 +261,10 @@ export default function ProjectsPage() {
             </Link>
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
-                <Button className="w-full sm:w-auto bg-[#e8702a] hover:bg-[#d2611f] text-white rounded-xl hover:shadow-lg hover:shadow-[#e8702a]/20 border-0">
+                <Button
+                  className="w-full sm:w-auto bg-[#e8702a] hover:bg-[#d2611f] text-white rounded-xl hover:shadow-lg hover:shadow-[#e8702a]/20 border-0"
+                  style={{ boxShadow: "0 4px 20px rgba(232,112,42,0.3)" }}
+                >
                   <Plus className="h-4 w-4 mr-2" />
                   Ajouter un Chantier
                 </Button>
@@ -397,13 +400,17 @@ export default function ProjectsPage() {
       <main className="flex-1 p-6 space-y-6 overflow-x-hidden w-full max-w-full">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-full">
           <Card
-            className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full border-l-4 border-[#e8702a] bg-gradient-to-br from-[#e8702a]/8 to-transparent"
+            className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full overflow-hidden"
             {...getHoverProps('kpi_chantiers')}
-            style={getHoverStyle('kpi_chantiers', '#f59e0b')}
+            style={{
+              borderLeft: "4px solid #e8702a",
+              background: "linear-gradient(135deg, rgba(232,112,42,0.08), transparent)",
+              ...getHoverStyle('kpi_chantiers', '#f59e0b'),
+            }}
           >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Chantiers</CardTitle>
-              <Building className="h-4 w-4 text-[#e8702a]" />
+              <Building className="h-4 w-4" style={{ color: "#e8702a" }} />
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold text-white">{kpiMock.total}</div>
@@ -411,13 +418,17 @@ export default function ProjectsPage() {
             </CardContent>
           </Card>
           <Card
-            className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full border-l-4 border-[#7c3aed] bg-gradient-to-br from-[#7c3aed]/8 to-transparent"
+            className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full overflow-hidden"
             {...getHoverProps('kpi_en_cours')}
-            style={getHoverStyle('kpi_en_cours', '#f59e0b')}
+            style={{
+              borderLeft: "4px solid #22c55e",
+              background: "linear-gradient(135deg, rgba(34,197,94,0.08), transparent)",
+              ...getHoverStyle('kpi_en_cours', '#f59e0b'),
+            }}
           >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">En cours</CardTitle>
-              <HardHat className="h-4 w-4 text-[#7c3aed]" />
+              <HardHat className="h-4 w-4" style={{ color: "#22c55e" }} />
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold text-white">{kpiMock.enCours}</div>
@@ -425,13 +436,17 @@ export default function ProjectsPage() {
             </CardContent>
           </Card>
           <Card
-            className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full border-l-4 border-[#3b82f6] bg-gradient-to-br from-[#3b82f6]/8 to-transparent"
+            className="surface-card backdrop-blur-sm text-foreground flex-1 min-w-0 max-w-full overflow-hidden"
             {...getHoverProps('kpi_planifies')}
-            style={getHoverStyle('kpi_planifies', '#3b82f6')}
+            style={{
+              borderLeft: "4px solid #3b82f6",
+              background: "linear-gradient(135deg, rgba(59,130,246,0.08), transparent)",
+              ...getHoverStyle('kpi_planifies', '#3b82f6'),
+            }}
           >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Planifiés</CardTitle>
-              <ClipboardList className="h-4 w-4 text-[#3b82f6]" />
+              <ClipboardList className="h-4 w-4" style={{ color: "#3b82f6" }} />
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold text-white">{kpiMock.planifie}</div>
@@ -441,7 +456,12 @@ export default function ProjectsPage() {
         </div>
 
         <div>
-          <h2 className="text-white/40 text-xs uppercase tracking-widest mb-3">Aperçu chantiers</h2>
+          <h2
+            className="text-xs uppercase tracking-widest mb-3"
+            style={{ color: "#e8702a" }}
+          >
+            Aperçu chantiers
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-full">
             {mockChantiers.map((c, index) => (
               <Card
