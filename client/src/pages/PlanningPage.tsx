@@ -717,15 +717,21 @@ export default function PlanningPage() {
                 return (
                   <div
                     key={index}
-                    {...getHoverProps(`planning_day_${index}`)}
-                    style={getHoverStyle(`planning_day_${index}`, '#3b82f6')}
-                    className={`min-h-[80px] p-1 md:p-1.5 rounded-lg md:rounded-xl border cursor-pointer transition-colors ${
+                    className={`min-h-[80px] p-1 md:p-1.5 rounded-lg md:rounded-xl border cursor-pointer transition-colors hover:border-white/15 ${
                       day.isCurrentMonth
                         ? isToday
-                          ? 'bg-white/[0.06] border-white/30 ring-1 ring-white/20'
-                          : 'bg-white/[0.02] border-white/[0.05] hover:bg-white/[0.05] hover:border-white/10'
-                        : 'border-transparent opacity-25'
+                          ? 'border-white/30 ring-1 ring-white/20'
+                          : 'border-white/[0.05]'
+                        : 'border-transparent'
                     }`}
+                    style={{
+                      background: day.isCurrentMonth
+                        ? isToday
+                          ? 'rgba(124,58,237,0.1)'
+                          : 'rgba(255,255,255,0.03)'
+                        : 'transparent',
+                      opacity: day.isCurrentMonth ? 1 : 0.4,
+                    }}
                     role="button"
                     tabIndex={0}
                     onClick={() => openNewEvent(day.date)}
