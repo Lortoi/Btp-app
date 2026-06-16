@@ -200,7 +200,6 @@ function ProspectCard({ prospect, color, bg }: ProspectCardProps) {
       onMouseLeave={() => setHovered(false)}
       style={{
         background: "var(--card)",
-        border: "0.5px solid rgba(255,255,255,0.08)",
         borderRadius: "12px",
         padding: "18px 20px",
         display: "flex",
@@ -211,7 +210,8 @@ function ProspectCard({ prospect, color, bg }: ProspectCardProps) {
         overflow: "hidden",
         minWidth: "260px",
         flex: 1,
-        transition: "transform 0.18s ease, border-color 0.18s ease",
+        flexShrink: 0,
+        transition: "transform 0.18s ease",
         transform: hovered ? "translateY(-2px)" : "translateY(0)",
       }}
     >
@@ -224,12 +224,10 @@ function ProspectCard({ prospect, color, bg }: ProspectCardProps) {
           bottom: 0,
           width: "4px",
           background: color,
-          borderRadius: "4px 0 0 4px",
         }}
       />
 
-      <div style={{ paddingLeft: "10px", display: "flex", flexDirection: "column", gap: "14px" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "12px", paddingLeft: "8px" }}>
           <div
             style={{
               width: "38px",
@@ -255,40 +253,43 @@ function ProspectCard({ prospect, color, bg }: ProspectCardProps) {
           </div>
         </div>
 
-        <span
-          style={{
-            alignSelf: "flex-start",
-            fontSize: "11px",
-            fontWeight: 500,
-            padding: "4px 10px",
-            borderRadius: "20px",
-            background: "rgba(255,255,255,0.06)",
-            color: "rgba(255,255,255,0.55)",
-          }}
-        >
-          {prospect.typeTravaux}
+      <span
+        style={{
+          alignSelf: "flex-start",
+          fontSize: "11px",
+          fontWeight: 500,
+          padding: "4px 10px",
+          borderRadius: "20px",
+          background: "rgba(255,255,255,0.06)",
+          color: "rgba(255,255,255,0.55)",
+          marginLeft: "8px",
+        }}
+      >
+        {prospect.typeTravaux}
+      </span>
+
+      <p style={{ fontSize: "20px", fontWeight: 500, margin: 0, color, paddingLeft: "8px" }}>
+        {formatMontantEUR(prospect.montantEstime)}
+      </p>
+
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: "8px",
+          paddingTop: "12px",
+          marginLeft: "8px",
+          borderTop: "0.5px solid rgba(255,255,255,0.08)",
+          fontSize: "12px",
+          color: "rgba(255,255,255,0.45)",
+        }}
+      >
+        <span>{formatContactLabel(prospect.dateContact)}</span>
+        <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+          <Phone style={{ width: "13px", height: "13px", flexShrink: 0 }} aria-hidden />
+          {prospect.telephone}
         </span>
-
-        <p style={{ fontSize: "20px", fontWeight: 500, margin: 0, color }}>{formatMontantEUR(prospect.montantEstime)}</p>
-
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: "8px",
-            paddingTop: "12px",
-            borderTop: "0.5px solid rgba(255,255,255,0.08)",
-            fontSize: "12px",
-            color: "rgba(255,255,255,0.45)",
-          }}
-        >
-          <span>{formatContactLabel(prospect.dateContact)}</span>
-          <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-            <Phone style={{ width: "13px", height: "13px", flexShrink: 0 }} aria-hidden />
-            {prospect.telephone}
-          </span>
-        </div>
       </div>
     </div>
   )
