@@ -393,14 +393,37 @@ html.reduce-motion *::after {
 
 /* ——— Mode light (html.light) ——— */
 html.light {
+  --background: hsl(205, 65%, 82%);
+  --card: hsl(205, 55%, 88%);
+  --muted: hsl(205, 50%, 80%);
+  --border: hsl(205, 40%, 75%);
+  --input: hsl(205, 60%, 88%);
+  --foreground: hsl(220, 30%, 15%);
+  --card-foreground: hsl(220, 30%, 15%);
+  --muted-foreground: hsl(220, 20%, 35%);
+  --popover: hsl(205, 60%, 90%);
+  --popover-foreground: hsl(220, 30%, 15%);
   color-scheme: light;
   color: #0f172a;
-  background: #dde1e7 !important;
+}
+
+html.light body,
+.light body {
+  background-color: hsl(205, 70%, 85%) !important;
 }
 
 html.light body {
-  background: #dde1e7 !important;
   color: #0f172a;
+}
+
+.light .bg-card,
+.light [class*="bg-card"],
+.light [class*="bg-background"] {
+  background-color: hsl(205, 55%, 88%) !important;
+}
+
+.light * {
+  --tw-bg-opacity: 1;
 }
 
 html.light * {
@@ -445,12 +468,12 @@ html.light textarea {
 
 html.light .dashboard-layout,
 html.light .dashboard-layout[style*="radial-gradient"] {
-  background: #f8faff !important;
+  background: hsl(205, 70%, 85%) !important;
 }
 
 /* Navbar */
 html.light .surface-header {
-  background: #ffffff !important;
+  background: hsl(205, 60%, 90%) !important;
   border-bottom: 1px solid #e5e7eb !important;
   color: #111827 !important;
 }
@@ -497,7 +520,7 @@ html.light .surface-header .flex.gap-2.overflow-x-auto a button[class*="0.08"] {
 html.light .surface-card,
 html.light .bg-\[\#0a1628\],
 html.light [class*="0a1628"] {
-  background: #ffffff !important;
+  background: hsl(205, 55%, 88%) !important;
   border-color: #e5e7eb !important;
   box-shadow: none !important;
 }
@@ -525,9 +548,11 @@ html.light .recharts-cartesian-grid-vertical line {
 
 /* Sidebar */
 html.light .sidebar,
-html.light aside {
-  background: #ffffff !important;
-  border-right: 1px solid rgba(0, 0, 0, 0.08) !important;
+html.light aside,
+html.light [data-sidebar],
+html.light nav {
+  background: hsl(205, 58%, 87%) !important;
+  border-right: 1px solid hsl(205, 40%, 78%) !important;
 }
 
 html.light .sidebar .nav-item {
