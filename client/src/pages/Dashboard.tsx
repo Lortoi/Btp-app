@@ -12,7 +12,6 @@ import {
   XAxis,
   YAxis,
 } from "recharts"
-import { Button } from '@/components/ui/button'
 import Sidebar from '@/components/Sidebar'
 import { AppTopBar } from '@/components/AppTopBar'
 import {
@@ -25,6 +24,91 @@ import {
 import { Link, useLocation } from 'wouter'
 import { dashboardLayoutStyle } from "@/lib/dashboardLayoutStyle"
 import { useChantiers, type Chantier } from "@/context/ChantiersContext"
+import type { LucideIcon } from "lucide-react"
+
+const DASHBOARD_NAV_TABS: { href: string; label: string; icon: LucideIcon | null }[] = [
+  { href: "/dashboard", label: "Vue d'ensemble", icon: null },
+  { href: "/dashboard/quotes", label: "Devis", icon: FileText },
+  { href: "/dashboard/projects", label: "Chantiers", icon: Building },
+  { href: "/dashboard/crm", label: "CRM Pipeline", icon: Users },
+  { href: "/dashboard/planning", label: "Planning", icon: Calendar },
+]
+
+const navTabActiveStyle: React.CSSProperties = {
+  background: "linear-gradient(135deg, rgba(124,58,237,0.2), rgba(124,58,237,0.05))",
+  border: "1px solid rgba(124,58,237,0.4)",
+  borderRadius: "10px",
+  padding: "8px 16px",
+  color: "#a78bfa",
+  fontWeight: 500,
+  cursor: "pointer",
+  display: "flex",
+  alignItems: "center",
+  gap: "6px",
+  textDecoration: "none",
+  fontSize: "14px",
+  whiteSpace: "nowrap",
+}
+
+const navTabInactiveStyle: React.CSSProperties = {
+  background: "transparent",
+  border: "1px solid transparent",
+  borderRadius: "10px",
+  padding: "8px 16px",
+  color: "var(--muted-foreground)",
+  cursor: "pointer",
+  transition: "all 0.2s",
+  display: "flex",
+  alignItems: "center",
+  gap: "6px",
+  textDecoration: "none",
+  fontSize: "14px",
+  whiteSpace: "nowrap",
+}
+
+function DashboardNavTab({
+  href,
+  label,
+  icon: Icon,
+  active,
+}: {
+  href: string
+  label: string
+  icon: LucideIcon | null
+  active: boolean
+}) {
+  if (active) {
+    return (
+      <Link href={href}>
+        <span style={navTabActiveStyle}>
+          {Icon ? <Icon className="h-4 w-4 shrink-0" style={{ color: "currentColor" }} /> : null}
+          {label}
+        </span>
+      </Link>
+    )
+  }
+
+  return (
+    <Link href={href}>
+      <span
+        style={navTabInactiveStyle}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.background = "rgba(124,58,237,0.08)"
+          e.currentTarget.style.borderColor = "rgba(124,58,237,0.2)"
+          e.currentTarget.style.color = "#a78bfa"
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.background = "transparent"
+          e.currentTarget.style.borderColor = "transparent"
+          e.currentTarget.style.color = "var(--muted-foreground)"
+        }}
+      >
+        {Icon ? <Icon className="h-4 w-4 shrink-0" style={{ color: "currentColor" }} /> : null}
+        {label}
+      </span>
+    </Link>
+  )
+}
 
 export default function Dashboard() {
   const [location, setLocation] = useLocation();
@@ -62,76 +146,26 @@ export default function Dashboard() {
 
         {/* Tabs Navigation */}
         <div className="surface-header backdrop-blur-sm px-6 lg:rounded-tl-3xl overflow-x-hidden w-full max-w-full">
-          <div className="flex gap-2 overflow-x-auto whitespace-nowrap max-w-full lg:overflow-x-visible">
-            <Link href="/dashboard">
-              <Button
-                variant="ghost"
-                size="sm"
-                className={
-                  location === "/dashboard"
-                    ? "bg-white/[0.08] text-white"
-                    : "text-white/50 hover:text-white/80 hover:bg-white/5"
-                }
-              >
-                Vue d'ensemble
-              </Button>
-            </Link>
-            <Link href="/dashboard/quotes">
-              <Button
-                variant="ghost"
-                size="sm"
-                className={
-                  location === "/dashboard/quotes"
-                    ? "bg-white/[0.08] text-white"
-                    : "text-white/50 hover:text-white/80 hover:bg-white/5"
-                }
-              >
-                <FileText className="h-4 w-4 mr-2" />
-                Devis
-              </Button>
-            </Link>
-            <Link href="/dashboard/projects">
-              <Button
-                variant="ghost"
-                size="sm"
-                className={
-                  location === "/dashboard/projects"
-                    ? "bg-white/[0.08] text-white"
-                    : "text-white/50 hover:text-white/80 hover:bg-white/5"
-                }
-              >
-                <Building className="h-4 w-4 mr-2" />
-                Chantiers
-              </Button>
-            </Link>
-            <Link href="/dashboard/crm">
-              <Button
-                variant="ghost"
-                size="sm"
-                className={
-                  location === "/dashboard/crm"
-                    ? "bg-white/[0.08] text-white"
-                    : "text-white/50 hover:text-white/80 hover:bg-white/5"
-                }
-              >
-                <Users className="h-4 w-4 mr-2" />
-                CRM Pipeline
-              </Button>
-            </Link>
-            <Link href="/dashboard/planning">
-              <Button
-                variant="ghost"
-                size="sm"
-                className={
-                  location === "/dashboard/planning"
-                    ? "bg-white/[0.08] text-white"
-                    : "text-white/50 hover:text-white/80 hover:bg-white/5"
-                }
-              >
-                <Calendar className="h-4 w-4 mr-2" />
-                Planning
-              </Button>
-            </Link>
+          <div
+            className="overflow-x-auto whitespace-nowrap max-w-full lg:overflow-x-visible"
+            style={{
+              background: "rgba(255,255,255,0.03)",
+              borderRadius: "12px",
+              padding: "4px",
+              border: "1px solid rgba(255,255,255,0.06)",
+              display: "flex",
+              gap: "2px",
+            }}
+          >
+            {DASHBOARD_NAV_TABS.map((tab) => (
+              <DashboardNavTab
+                key={tab.href}
+                href={tab.href}
+                label={tab.label}
+                icon={tab.icon}
+                active={location === tab.href}
+              />
+            ))}
           </div>
         </div>
 

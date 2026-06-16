@@ -4,7 +4,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { AIAssistantButton } from "@/components/AIAssistantPanel"
-import { Bell, Settings, Search, Moon, Sun } from "lucide-react"
+import { Bell, Settings, Search, Moon, Sun, FileText, HardHat, User, Calendar } from "lucide-react"
 import { useLocation } from "wouter"
 import { cn } from "@/lib/utils"
 
@@ -199,6 +199,21 @@ interface NotificationsPopoverProps {
   onNavigate: (path: string) => void
 }
 
+function getNotificationIcon(title: string) {
+  switch (title) {
+    case "Devis en attente":
+      return { Icon: FileText, color: "#22c55e" }
+    case "Chantier en cours":
+      return { Icon: HardHat, color: "#f59e0b" }
+    case "Nouveau prospect":
+      return { Icon: User, color: "#3b82f6" }
+    case "Rappel planning":
+      return { Icon: Calendar, color: "#7c3aed" }
+    default:
+      return { Icon: Bell, color: "#a78bfa" }
+  }
+}
+
 function NotificationsPopover({ onNavigate }: NotificationsPopoverProps) {
   const [open, setOpen] = useState(false)
   const [notifications, setNotifications] = useState(INITIAL_NOTIFICATIONS)
@@ -240,11 +255,19 @@ function NotificationsPopover({ onNavigate }: NotificationsPopoverProps) {
         sideOffset={8}
         className="w-[min(360px,calc(100vw-2rem))] rounded-2xl border border-white/10 bg-[#0c1a30] p-0 text-white shadow-xl"
       >
-        <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
+        <div
+          className="flex items-center justify-between"
+          style={{
+            borderLeft: "4px solid #e8702a",
+            background: "linear-gradient(135deg, rgba(232,112,42,0.08), transparent)",
+            padding: "16px",
+            borderRadius: "12px 12px 0 0",
+          }}
+        >
           <div>
-            <p className="text-sm font-semibold text-white">Notifications</p>
+            <p style={{ color: "#e8702a", fontWeight: 600, fontSize: "14px" }}>Notifications</p>
             {unreadCount > 0 && (
-              <p className="text-xs text-white/40">
+              <p style={{ color: "var(--muted-foreground)", fontSize: "12px" }}>
                 {unreadCount} non lue{unreadCount > 1 ? "s" : ""}
               </p>
             )}
@@ -253,7 +276,15 @@ function NotificationsPopover({ onNavigate }: NotificationsPopoverProps) {
             <button
               type="button"
               onClick={markAllRead}
-              className="text-xs text-[#e8702a] transition hover:text-[#e8702a]/80"
+              style={{
+                background: "transparent",
+                border: "1px solid rgba(232,112,42,0.4)",
+                color: "#e8702a",
+                borderRadius: "8px",
+                padding: "4px 10px",
+                fontSize: "12px",
+                cursor: "pointer",
+              }}
             >
               Tout marquer lu
             </button>
@@ -265,17 +296,28 @@ function NotificationsPopover({ onNavigate }: NotificationsPopoverProps) {
             <p className="px-4 py-8 text-center text-sm text-white/40">Aucune notification</p>
           ) : (
             <ul className="py-1">
-              {notifications.map((notification) => (
+              {notifications.map((notification, index) => {
+                const { Icon, color } = getNotificationIcon(notification.title)
+                return (
                 <li key={notification.id}>
                   <button
                     type="button"
                     onClick={() => handleNotificationClick(notification)}
                     className={cn(
-                      "flex w-full gap-3 px-4 py-3 text-left transition hover:bg-white/5",
+                      "flex w-full gap-3 px-4 py-3 text-left",
                       !notification.read && "bg-white/[0.03]",
                     )}
+                    style={{ borderRadius: "8px", transition: "0.15s" }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = "rgba(255,255,255,0.03)"
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = notification.read
+                        ? "transparent"
+                        : "rgba(255,255,255,0.03)"
+                    }}
                   >
-                    <span className="mt-0.5 text-lg leading-none">{notification.emoji}</span>
+                    <Icon className="mt-0.5 h-5 w-5 shrink-0" style={{ color }} aria-hidden />
                     <div className="min-w-0 flex-1">
                       <div className="flex items-start justify-between gap-2">
                         <p
@@ -287,27 +329,48 @@ function NotificationsPopover({ onNavigate }: NotificationsPopoverProps) {
                           {notification.title}
                         </p>
                         {!notification.read && (
-                          <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-[#e8702a]" />
+                          <span
+                            className="mt-1.5 h-2 w-2 shrink-0 rounded-full"
+                            style={{ backgroundColor: "#e8702a" }}
+                          />
                         )}
                       </div>
                       <p className="mt-0.5 line-clamp-2 text-xs text-white/40">{notification.body}</p>
                       <p className="mt-1 text-[11px] text-white/30">{notification.time}</p>
                     </div>
                   </button>
+                  {index < notifications.length - 1 && (
+                    <div
+                      style={{ height: "1px", background: "rgba(255,255,255,0.05)", margin: "0 16px" }}
+                    />
+                  )}
                 </li>
-              ))}
+              )})}
             </ul>
           )}
         </ScrollArea>
 
-        <div className="border-t border-white/10 px-4 py-2">
+        <div>
           <button
             type="button"
             onClick={() => {
               setOpen(false)
               onNavigate("/dashboard/settings")
             }}
-            className="w-full rounded-lg py-2 text-center text-xs text-white/40 transition hover:bg-white/5 hover:text-white/60"
+            className="w-full text-center text-xs transition-colors"
+            style={{
+              color: "#a78bfa",
+              borderTop: "1px solid rgba(255,255,255,0.06)",
+              padding: "12px",
+              background: "transparent",
+              cursor: "pointer",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = "#7c3aed"
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = "#a78bfa"
+            }}
           >
             Gérer les notifications
           </button>
