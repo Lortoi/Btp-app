@@ -246,8 +246,8 @@ function ProspectCard({ prospect, color, bg }: ProspectCardProps) {
             {getInitials(prospect.nom)}
           </div>
           <div style={{ minWidth: 0 }}>
-            <p style={{ fontSize: "14px", fontWeight: 600, margin: 0, lineHeight: 1.3 }}>{prospect.nom}</p>
-            <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.45)", margin: "2px 0 0", lineHeight: 1.3 }}>
+            <p style={{ fontSize: "14px", fontWeight: 600, margin: 0, lineHeight: 1.3, color: "var(--foreground)" }}>{prospect.nom}</p>
+            <p style={{ fontSize: "12px", color: "var(--muted-foreground)", margin: "2px 0 0", lineHeight: 1.3 }}>
               {prospect.entreprise}
             </p>
           </div>
@@ -261,7 +261,7 @@ function ProspectCard({ prospect, color, bg }: ProspectCardProps) {
           padding: "4px 10px",
           borderRadius: "20px",
           background: "rgba(255,255,255,0.06)",
-          color: "rgba(255,255,255,0.55)",
+          color: "var(--muted-foreground)",
           marginLeft: "8px",
         }}
       >
@@ -282,7 +282,7 @@ function ProspectCard({ prospect, color, bg }: ProspectCardProps) {
           marginLeft: "8px",
           borderTop: "0.5px solid rgba(255,255,255,0.08)",
           fontSize: "12px",
-          color: "rgba(255,255,255,0.45)",
+          color: "var(--muted-foreground)",
         }}
       >
         <span>{formatContactLabel(prospect.dateContact)}</span>
@@ -383,7 +383,7 @@ export function CRMPipeline({ prospects }: { prospects: MockProspect[] }) {
                 <p
                   style={{
                     fontSize: "13px",
-                    color: "rgba(255,255,255,0.35)",
+                    color: "var(--muted-foreground)",
                     padding: "24px 12px",
                     margin: 0,
                   }}

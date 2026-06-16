@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'wouter';
 import { cn } from '@/lib/utils';
 import { useMobileNavStore } from '@/stores/mobileNavStore';
@@ -8,23 +8,14 @@ import {
   Wand2,
   User,
   Users,
-  Settings,
   Upload,
   Calendar,
   Building,
   Calculator,
   Workflow,
-  UserCircle,
-  Sparkles,
   ChevronRight,
   type LucideIcon,
 } from 'lucide-react';
-
-const AI_TOOLS = [
-  { icon: Upload, label: 'Import factures', path: '/dashboard/import', iconColor: '#7c3aed', hoverId: 'import_factures' },
-  { icon: Calculator, label: 'Estimation automatique', path: '/dashboard/estimation', iconColor: '#7c3aed', hoverId: 'estimation_automatique' },
-  { icon: Wand2, label: 'Visualisation IA', path: '/dashboard/ai-visualization', iconColor: '#7c3aed', hoverId: 'visualisation_ia' },
-] as const;
 
 const NAV_ICON_COLORS: Record<string, string> = {
   '/dashboard': '#e8702a',
@@ -158,21 +149,8 @@ function SectionLabel({ children, compact, muted }: { children: React.ReactNode;
 }
 
 function SidebarContent({ compact, expanded = true, onNavigate }: SidebarContentProps) {
-  const [location, setLocation] = useLocation();
-  const [aiMenuOpen, setAiMenuOpen] = useState(false);
+  const [location] = useLocation();
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
-  const aiMenuRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!aiMenuOpen) return;
-    const handler = (e: MouseEvent) => {
-      if (aiMenuRef.current && !aiMenuRef.current.contains(e.target as Node)) {
-        setAiMenuOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
-  }, [aiMenuOpen]);
 
   const menuItems = [
     { icon: Home, label: "Vue d'ensemble", path: '/dashboard', hoverId: 'vue_ensemble' },
@@ -187,19 +165,9 @@ function SidebarContent({ compact, expanded = true, onNavigate }: SidebarContent
     { icon: Calculator, label: 'Estimation automatique', path: '/dashboard/estimation', hoverId: 'estimation_automatique' },
   ];
 
-  const quickActions = [
-    { icon: FileText, label: 'Nouveau Devis', path: '/dashboard/quotes', iconColor: '#e8702a', hoverId: 'nouveau_devis' as const },
-    { icon: Building, label: 'Ajouter Chantier', path: '/dashboard/projects?openDialog=true', iconColor: '#e8702a', hoverId: 'ajouter_chantier' as const },
-  ];
-
   const isActive = (path: string) => {
     if (path === '/dashboard') return location === '/dashboard';
     return location === path || location.startsWith(`${path}?`);
-  };
-
-  const handleNavigate = (path: string) => {
-    setLocation(path);
-    onNavigate?.();
   };
 
   return (
@@ -225,116 +193,7 @@ function SidebarContent({ compact, expanded = true, onNavigate }: SidebarContent
           />
         ))}
 
-        <SectionLabel compact={compact}>Actions Rapides</SectionLabel>
-        {quickActions.map((action) => (
-          <button
-            key={action.path}
-            type="button"
-            onClick={() => handleNavigate(action.path)}
-            className={cn(
-              'nav-item flex w-full items-center gap-2.5 rounded-lg text-left transition-colors',
-              compact ? 'py-2 px-3 text-sm' : 'h-9 gap-3 rounded-xl px-2',
-            )}
-            onMouseEnter={() => setHoveredItem(action.hoverId)}
-            onMouseLeave={() => setHoveredItem(null)}
-            style={getNavItemHoverStyle(action.hoverId, hoveredItem, false)}
-          >
-            <action.icon className="h-4 w-4 shrink-0" style={{ color: action.iconColor }} />
-            <span className="truncate text-sm text-white/60">{action.label}</span>
-          </button>
-        ))}
-
-        <SectionLabel compact={compact} muted>
-          Outils avancés
-        </SectionLabel>
-        {AI_TOOLS.map((tool) => (
-          <NavItem
-            key={tool.path}
-            icon={tool.icon}
-            label={tool.label}
-            path={tool.path}
-            active={isActive(tool.path)}
-            iconColor={tool.iconColor}
-            hoverId={tool.hoverId}
-            hoveredItem={hoveredItem}
-            setHoveredItem={setHoveredItem}
-            compact={compact}
-            onNavigate={onNavigate}
-          />
-        ))}
       </nav>
-
-      <div className={cn('mt-auto border-t border-white/[0.08]', compact ? 'space-y-0.5 p-1' : 'space-y-1 p-2')}>
-        <div ref={aiMenuRef} className="relative mb-1">
-          <button
-            type="button"
-            onClick={() => setAiMenuOpen((v) => !v)}
-            className={cn(
-              'flex w-full items-center gap-2.5 rounded-lg border border-violet-500/20 bg-violet-600/10 transition-colors hover:bg-violet-600/20',
-              compact ? 'py-2 px-3 text-sm' : 'rounded-xl px-2 py-2',
-            )}
-            onMouseEnter={() => setHoveredItem('outils_ia')}
-            onMouseLeave={() => setHoveredItem(null)}
-            style={getNavItemHoverStyle('outils_ia', hoveredItem, false)}
-          >
-            <Sparkles className="h-4 w-4 shrink-0 text-[#7c3aed]" />
-            <span className="text-sm text-[#7c3aed]">Outils IA</span>
-          </button>
-
-          {aiMenuOpen && (
-            <div className="absolute bottom-full left-0 z-50 mb-2 w-52 overflow-hidden rounded-2xl border border-white/10 bg-[#0e1e36] shadow-xl">
-              {AI_TOOLS.map((tool) => (
-                <button
-                  key={tool.path}
-                  type="button"
-                  onClick={() => {
-                    handleNavigate(tool.path);
-                    setAiMenuOpen(false);
-                  }}
-                  className="flex w-full items-center gap-3 border-b border-white/[0.05] px-4 py-3 text-left text-sm text-white/70 transition-colors last:border-b-0 hover:bg-white/5 hover:text-white"
-                >
-                  <tool.icon className="h-4 w-4 shrink-0" style={{ color: tool.iconColor }} />
-                  {tool.label}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-
-        <Link href="/dashboard/settings" onClick={onNavigate}>
-          <span
-            className={cn(
-              'nav-item flex w-full cursor-pointer items-center gap-2.5 rounded-lg transition-colors',
-              compact ? 'py-2 px-3 text-sm' : 'h-10 gap-3 rounded-xl px-2',
-              isActive('/dashboard/settings') && 'bg-white/8',
-            )}
-            onMouseEnter={() => !isActive('/dashboard/settings') && setHoveredItem('parametres')}
-            onMouseLeave={() => !isActive('/dashboard/settings') && setHoveredItem(null)}
-            style={getNavItemHoverStyle('parametres', hoveredItem, isActive('/dashboard/settings'))}
-          >
-            <Settings className="h-4 w-4 shrink-0 text-white/40" />
-            <span className={cn('text-sm', isActive('/dashboard/settings') ? 'text-white' : 'text-white/60')}>
-              Paramètres
-            </span>
-          </span>
-        </Link>
-
-        <Link href="/dashboard/compte" onClick={onNavigate}>
-          <button
-            type="button"
-            className={cn(
-              'nav-item flex w-full items-center gap-2.5 rounded-lg transition-colors',
-              compact ? 'py-2 px-3 text-sm' : 'h-10 gap-3 rounded-xl px-2',
-            )}
-            onMouseEnter={() => setHoveredItem('compte')}
-            onMouseLeave={() => setHoveredItem(null)}
-            style={getNavItemHoverStyle('compte', hoveredItem, false)}
-          >
-            <UserCircle className="h-4 w-4 shrink-0 text-white/40" />
-            <span className="text-sm text-white/60">Compte</span>
-          </button>
-        </Link>
-      </div>
     </>
   );
 }
@@ -360,7 +219,7 @@ export default function Sidebar() {
 
       <aside
         className={cn(
-          'sidebar fixed left-0 top-0 z-50 flex h-full flex-col border-r border-white/8 bg-[#060e1f] transition-all duration-300 ease-in-out',
+          'sidebar fixed left-0 top-0 z-50 flex h-full flex-col overflow-y-auto border-r border-white/8 bg-[#060e1f] transition-all duration-300 ease-in-out',
           isOpen ? 'w-64' : 'w-0 overflow-hidden',
         )}
       >

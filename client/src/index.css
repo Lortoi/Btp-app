@@ -460,9 +460,30 @@ html.light h1,
 html.light h2,
 html.light h3,
 html.light h4,
-html.light label,
-html.light div {
+html.light label {
   color: #0f172a;
+}
+
+html.light div {
+  color: inherit;
+}
+
+html.light .crm-card p,
+html.light .crm-card span,
+html.light .crm-card div {
+  color: #0f172a !important;
+}
+
+html.light [style*="color: rgba(255,255,255"] {
+  color: #0f172a !important;
+}
+
+html.light [style*="color: white"] {
+  color: #0f172a !important;
+}
+
+html.light [style*="color: #fff"] {
+  color: #0f172a !important;
 }
 
 html.light .text-white { color: #0f172a !important; }
