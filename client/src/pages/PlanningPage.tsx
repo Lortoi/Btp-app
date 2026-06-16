@@ -8,7 +8,6 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useCardHover } from '@/hooks/useCardHover'
 
 /** Chantiers fictifs BTP — avril / mai / juin 2026 (données mock, hors composant) */
 interface MockPlanningChantier {
