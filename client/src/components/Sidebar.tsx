@@ -92,10 +92,10 @@ function NavItem({
         className={cn(
           'nav-item flex w-full cursor-pointer items-center gap-2.5 rounded-lg transition-colors',
           compact ? 'py-2 px-3 text-sm' : 'h-10 gap-3 rounded-xl px-2',
-          active ? 'bg-white/8' : 'hover:bg-white/5',
+          active && 'bg-white/8',
         )}
-        onMouseEnter={() => setHoveredItem(hoverId)}
-        onMouseLeave={() => setHoveredItem(null)}
+        onMouseEnter={() => !active && setHoveredItem(hoverId)}
+        onMouseLeave={() => !active && setHoveredItem(null)}
         style={getNavItemHoverStyle(hoverId, hoveredItem, active)}
       >
         <Icon className="h-4 w-4 shrink-0" style={{ color: iconColor }} />
@@ -180,7 +180,7 @@ function SidebarContent({ compact, expanded = true, onNavigate }: SidebarContent
 
   const quickActions = [
     { icon: FileText, label: 'Nouveau Devis', path: '/dashboard/quotes', iconColor: '#e8702a', hoverId: 'nouveau_devis' as const },
-    { icon: Building, label: 'Ajouter Chantier', path: '/dashboard/projects?openDialog=true', iconColor: '#e8702a' },
+    { icon: Building, label: 'Ajouter Chantier', path: '/dashboard/projects?openDialog=true', iconColor: '#e8702a', hoverId: 'ajouter_chantier' as const },
   ];
 
   const isActive = (path: string) => {
@@ -223,16 +223,12 @@ function SidebarContent({ compact, expanded = true, onNavigate }: SidebarContent
             type="button"
             onClick={() => handleNavigate(action.path)}
             className={cn(
-              'nav-item flex w-full items-center gap-2.5 rounded-lg text-left transition-colors hover:bg-white/5',
+              'nav-item flex w-full items-center gap-2.5 rounded-lg text-left transition-colors',
               compact ? 'py-2 px-3 text-sm' : 'h-9 gap-3 rounded-xl px-2',
             )}
-            {...('hoverId' in action && action.hoverId
-              ? {
-                  onMouseEnter: () => setHoveredItem(action.hoverId),
-                  onMouseLeave: () => setHoveredItem(null),
-                  style: getNavItemHoverStyle(action.hoverId, hoveredItem, false),
-                }
-              : {})}
+            onMouseEnter={() => setHoveredItem(action.hoverId)}
+            onMouseLeave={() => setHoveredItem(null)}
+            style={getNavItemHoverStyle(action.hoverId, hoveredItem, false)}
           >
             <action.icon className="h-4 w-4 shrink-0" style={{ color: action.iconColor }} />
             <span className="truncate text-sm text-white/60">{action.label}</span>
@@ -301,10 +297,10 @@ function SidebarContent({ compact, expanded = true, onNavigate }: SidebarContent
             className={cn(
               'nav-item flex w-full cursor-pointer items-center gap-2.5 rounded-lg transition-colors',
               compact ? 'py-2 px-3 text-sm' : 'h-10 gap-3 rounded-xl px-2',
-              isActive('/dashboard/settings') ? 'bg-white/8' : 'hover:bg-white/5',
+              isActive('/dashboard/settings') && 'bg-white/8',
             )}
-            onMouseEnter={() => setHoveredItem('parametres')}
-            onMouseLeave={() => setHoveredItem(null)}
+            onMouseEnter={() => !isActive('/dashboard/settings') && setHoveredItem('parametres')}
+            onMouseLeave={() => !isActive('/dashboard/settings') && setHoveredItem(null)}
             style={getNavItemHoverStyle('parametres', hoveredItem, isActive('/dashboard/settings'))}
           >
             <Settings className="h-4 w-4 shrink-0 text-white/40" />
@@ -318,7 +314,7 @@ function SidebarContent({ compact, expanded = true, onNavigate }: SidebarContent
           <button
             type="button"
             className={cn(
-              'nav-item flex w-full items-center gap-2.5 rounded-lg transition-colors hover:bg-white/5',
+              'nav-item flex w-full items-center gap-2.5 rounded-lg transition-colors',
               compact ? 'py-2 px-3 text-sm' : 'h-10 gap-3 rounded-xl px-2',
             )}
             onMouseEnter={() => setHoveredItem('compte')}
